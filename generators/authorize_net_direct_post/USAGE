@@ -1,0 +1,20 @@
+Description:
+    Generates a simple implementation of Authorize.Net's Direct Post Method integration method.
+
+Example:
+    ./script/generate authorize_net_direct_post payments API_LOGIN_ID API_TRANSACTION_KEY MERCHANT_HASH_VALUE
+
+    This will create:
+        README-AuthorizeNet
+        app/views/payments
+        app/views/payments/payment.erb
+        app/views/payments/receipt.erb
+        app/views/payments/relay_response.erb
+        app/views/layouts/authorize_net.erb
+        config/authorize_net.yml
+        config/initializers/authorize_net.rb
+        app/controller/payments_controller.rb
+        route payment_payment
+        route payment_receipt
+        route payment_relay_response
+        gem authorize-net
