@@ -19,13 +19,14 @@ of boiler plate code.
 ## Installation
 
 Goto the Authorize.Net SDK download page and download the Ruby gem. Then
-
+````
   > gem install authorize-net-1.5.1.gem
-
+````
 ## Usage
 
 ### Advanced Merchant Integration (AIM)
 
+````ruby
   require 'rubygems'
   require 'authorize_net'
   
@@ -38,17 +39,19 @@ Goto the Authorize.Net SDK download page and download the Ruby gem. Then
   else
     raise "Failed to make purchase."
   end
+````
 
 ### Direct Post Method (DPM)
 
 A generator is provided to aid in setting up a Direct Post Method application. In the example below +payments+ is the name of the controller to generate.
-
+````
   > sudo gem install rails -v '~> 2.1'
   > rails my_direct_post_app
   > cd my_direct_post_app
   > script/generate authorize_net_direct_post payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
   > script/server
-  
+````
+
 After running the generator you will probably want to customize the payment form found in <tt>app/views/payments/payment.erb</tt> and the receipt found in <tt>app/views/payments/receipt.erb</tt>.
 
 There is also a default layout generated, <tt>app/views/layouts/authorize_net.erb</tt>. If you already have your own layout, you can delete that file and the reference to it in the controller (<tt>app/controllers/payments_controller.rb</tt>).
@@ -56,13 +59,13 @@ There is also a default layout generated, <tt>app/views/layouts/authorize_net.er
 ### Server Integration Method (SIM)
 
 A generator is provided to aid in setting up a Server Integration Method application. In the example below +payments+ is the name of the controller to generate.
-
+````
   > sudo gem install rails -v '~> 2.1'
   > rails my_sim_app
   > cd my_sim_app
   > script/generate authorize_net_sim payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
   > script/server
-  
+````  
 After running the generator you will probably want to customize the payment page found in <tt>app/views/payments/payment.erb</tt> and the thank you page found in <tt>app/views/payments/thank_you.erb</tt>.
 
 You may also want to customize the actual payment form and receipt pages. That can be done by making the necessary changes to the AuthorizeNet::SIM::Transaction object (<tt>@sim_transaction</tt>) found in the +payment+ action in <tt>app/controllers/payments_controller.rb</tt>. The styling of those hosted pages are controlled by the AuthorizeNet::SIM::HostedReceiptPage and AuthorizeNet::SIM::HostedPaymentForm objects (which are passed to the AuthorizeNet::SIM::Transaction).
@@ -70,7 +73,7 @@ You may also want to customize the actual payment form and receipt pages. That c
 There is also a default layout generated, <tt>app/views/layouts/authorize_net.erb</tt>. If you already have your own layout, you can delete that file and the reference to it in the controller (<tt>app/controllers/payments_controller.rb</tt>).
 
 ### Automated Recurring Billing (ARB)
-
+````ruby
   require 'rubygems'
   require 'authorize_net'
   
@@ -94,9 +97,9 @@ There is also a default layout generated, <tt>app/views/layouts/authorize_net.er
   else
     raise "Failed to create a subscription."
   end
-
+````
 ### Card Present (CP)
-
+````ruby
   require 'rubygems'
   require 'authorize_net'
 
@@ -109,7 +112,7 @@ There is also a default layout generated, <tt>app/views/layouts/authorize_net.er
   else
     raise "Failed to make purchase."
   end
-
+````
 ## Credit Card Test Numbers
 
 For your reference, you can use the following test credit card numbers.
