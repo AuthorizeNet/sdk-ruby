@@ -15,6 +15,7 @@ of boiler plate code.
 * RubyGem 1.3.7 or higher (to build the gem)
 * RDoc 1.0 or higher (to build documentation)
 * Rake 0.8.7 or higher (to use the rake tasks)
+* RSpec 2.1 or higher (to run rspec tests)
 
 ## Installation
 
@@ -22,6 +23,14 @@ Goto the Authorize.Net SDK download page and download the Ruby gem. Then
 ````
   > gem install authorize-net-1.5.1.gem
 ````
+## Registration & Configuration
+
+Get a sandbox account at https://developer.authorize.net/sandbox/
+Instructions for obtaining an API login_id and transaction_id are at https://developer.authorize.net/faqs/#gettranskey
+To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained from the aboce instructions
+api_transaction_key: {transaction_key_value}
+api_login_id: {login_id_value}
+
 ## Usage
 
 ### Advanced Merchant Integration (AIM)
