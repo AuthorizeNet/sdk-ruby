@@ -26,11 +26,13 @@ Goto the Authorize.Net SDK download page and download the Ruby gem. Then
 ## Registration & Configuration
 
 Get a sandbox account at https://developer.authorize.net/sandbox/
-Instructions for obtaining an API login_id and transaction_id are at https://developer.authorize.net/faqs/#gettranskey
-To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained from the aboce instructions
+To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained from the above instructions
+
+#obtain an API login_id and transaction_id from instructions at https://developer.authorize.net/faqs/#gettranskey
 api_transaction_key: {transaction_key_value}
 api_login_id: {login_id_value}
-
+#obtained by setting md5 hash value under Account
+md5_value: {md5_value}
 ## Usage
 
 ### Advanced Merchant Integration (AIM)
