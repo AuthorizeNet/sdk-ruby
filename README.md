@@ -26,7 +26,7 @@ Goto the Authorize.Net SDK download page and download the Ruby gem. Then
 ## Registration & Configuration
 
 Get a sandbox account at https://developer.authorize.net/sandbox/
-To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained from the above instructions
+To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained as described below.
 ````
 #obtain an API login_id and transaction_id according to instructions at https://developer.authorize.net/faqs/#gettranskey
 api_transaction_key: {transaction_key_value}
