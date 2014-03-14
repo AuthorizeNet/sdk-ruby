@@ -27,13 +27,13 @@ Goto the Authorize.Net SDK download page and download the Ruby gem. Then
 
 Get a sandbox account at https://developer.authorize.net/sandbox/
 To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained from the above instructions
-
+````
 #obtain an API login_id and transaction_id according to instructions at https://developer.authorize.net/faqs/#gettranskey
 api_transaction_key: {transaction_key_value}
 api_login_id: {login_id_value}
 #obtained md5 hash value by first setting the hash value in https://sandbox.authorize.net/ under the Account tab->MD5 Hash
 md5_value: {md5_value}
-
+````
 To get spec/reporting_spec.rb to pass, enable Transaction Details API also under the Account tab.
 ## Usage
 
