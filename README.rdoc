@@ -8,7 +8,7 @@ encoding) behind the scenes. Providing the end developer with this allows the
 developer to start integrating immediately without having to write out a mass
 of boiler plate code.
 
-## General API Documentation
+## RESTful API Documentation
 http://developer.authorize.net/api/reference
 
 ## Prerequisites
