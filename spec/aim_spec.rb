@@ -84,7 +84,7 @@ describe AuthorizeNet::AIM::Transaction do
   end
   
   it "should parse the response properly" do
-    Net::HTTP.stub!(:start).and_return(@response)
+    Net::HTTP.stub(:start).and_return(@response)
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => @gateway, :test => @test_mode)
     response = transaction.purchase(@amount, @credit_card)
     response.should be_kind_of(AuthorizeNet::AIM::Response)

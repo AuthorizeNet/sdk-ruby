@@ -207,10 +207,10 @@ describe AuthorizeNet::Reporting do
     it "should be able to build a batch statistics entity" do
       # stub our connection response
       net_response = Net::HTTPOK.new('1.1', 200, 'OK')
-      net_response.stub!(:body).and_return(@response)
+      net_response.stub(:body).and_return(@response)
       connection = Net::HTTP.new('http://www.example.com')
-      connection.stub!(:start).and_return(net_response)
-      Net::HTTP.stub!(:new).and_return(connection)
+      connection.stub(:start).and_return(net_response)
+      Net::HTTP.stub(:new).and_return(connection)
       
       transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
       transaction.should respond_to(:get_settled_batch_list)
@@ -279,10 +279,10 @@ describe AuthorizeNet::Reporting do
       
       # stub our connection response
       net_response = Net::HTTPOK.new('1.1', 200, 'OK')
-      net_response.stub!(:body).and_return(@response)
+      net_response.stub(:body).and_return(@response)
       connection = Net::HTTP.new('http://www.example.com')
-      connection.stub!(:start).and_return(net_response)
-      Net::HTTP.stub!(:new).and_return(connection)
+      connection.stub(:start).and_return(net_response)
+      Net::HTTP.stub(:new).and_return(connection)
       
       transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
       transaction.should respond_to(:get_transaction_list)
@@ -379,10 +379,10 @@ describe AuthorizeNet::Reporting do
       
       # stub our connection response
       net_response = Net::HTTPOK.new('1.1', 200, 'OK')
-      net_response.stub!(:body).and_return(@response)
+      net_response.stub(:body).and_return(@response)
       connection = Net::HTTP.new('http://www.example.com')
-      connection.stub!(:start).and_return(net_response)
-      Net::HTTP.stub!(:new).and_return(connection)
+      connection.stub(:start).and_return(net_response)
+      Net::HTTP.stub(:new).and_return(connection)
       
       transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
       transaction.should respond_to(:get_transaction_details)
