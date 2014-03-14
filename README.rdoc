@@ -34,7 +34,7 @@ api_login_id: {login_id_value}
 #obtained md5 hash value by first setting the hash value in https://sandbox.authorize.net/ under the Account tab->MD5 Hash
 md5_value: {md5_value}
 ````
-To get spec/reporting_spec.rb to pass, enable Transaction Details API also under the Account tab.
+To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ under Account tab->Transaction Details API and enable it.
 ## Usage
 
 ### Advanced Merchant Integration (AIM)
