@@ -197,6 +197,18 @@ describe AuthorizeNet::CIM::Transaction do
       response.success?.should be_true
     end
     
+    it "should be able to update payment profiles with a masked exp date" do
+      @payment_profile.cust_type = :business
+
+      transaction = AuthorizeNet::CIM::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+      transaction.should respond_to(:update_payment_profile)
+      @credit_card_with_masked_exp_date = AuthorizeNet::CreditCard.new('4111111111111111', 'XXXX')
+      @payment_profile.payment_method = @credit_card_with_masked_exp_date
+      
+      response = transaction.update_payment_profile(@payment_profile, @profile)
+      response.success?.should be_true
+    end
+    
     it "should be able to validate payment profiles" do
       @payment_profile.cust_type = :business
 
