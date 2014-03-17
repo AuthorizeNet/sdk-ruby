@@ -272,7 +272,8 @@ describe AuthorizeNet::CIM::Transaction do
       end
       
       it "should support refunding a transaction"
-      
+      #this test won't be created.  It requires overnight settlement in order to work.
+
       it "should support capture only transactions"
       
       it "should be able to support multiple payment profiles" do
