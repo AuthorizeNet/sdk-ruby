@@ -22,7 +22,7 @@ http://developer.authorize.net/api/reference
 
 ## Installation
 
-Goto the Authorize.Net SDK download page and download the Ruby gem. Then
+Go to the Authorize.Net SDK download page and download the Ruby gem. Then
 ````
   > gem install authorize-net-1.5.1.gem
 ````
