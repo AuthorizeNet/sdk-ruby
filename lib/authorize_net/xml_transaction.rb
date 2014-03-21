@@ -220,7 +220,7 @@ module AuthorizeNet
         # convert MMYY expiration dates into the XML equivalent
         unless value.nil?
           begin
-            return Date.strptime(value.to_s, '%m%y').strftime('%Y-%m')
+            return value.to_s.downcase == 'xxxx' ? 'XXXX' : Date.strptime(value.to_s, '%m%y').strftime('%Y-%m')
           rescue
             # If we didn't get the exp_date in MMYY format, try our best to convert it
             return Date.parse(value.to_s).strftime('%Y-%m')
