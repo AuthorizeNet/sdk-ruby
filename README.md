@@ -1,5 +1,7 @@
 # Authorize.Net Ruby SDK
 
+'gem install authorizenet'
+
 The Authorize.Net Ruby SDK is meant to offer an alternate object-oriented
 model of development with the Authorize.net APIs (Version 3.1). The SDK is
 based entirely off the name-value pair API, but performs the core payment
@@ -8,8 +10,6 @@ encoding) behind the scenes. Providing the end developer with this allows the
 developer to start integrating immediately without having to write out a mass
 of boiler plate code.
 
-## RESTful API Documentation
-http://developer.authorize.net/api/reference
 
 ## Prerequisites
 
