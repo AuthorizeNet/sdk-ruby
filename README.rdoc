@@ -22,9 +22,8 @@ http://developer.authorize.net/api/reference
 
 ## Installation
 
-Goto the Authorize.Net SDK download page and download the Ruby gem. Then
 ````
-  > gem install authorize-net-1.5.1.gem
+  > gem install authorizenet
 ````
 ## Registration & Configuration
 
@@ -44,7 +43,7 @@ To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ unde
 
 ````ruby
   require 'rubygems'
-  require 'authorize_net'
+  require 'authorizenet'
   
   transaction = AuthorizeNet::AIM::Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
   credit_card = AuthorizeNet::CreditCard.new('4111111111111111', '1120')
@@ -91,7 +90,7 @@ There is also a default layout generated, <tt>app/views/layouts/authorize_net.er
 ### Automated Recurring Billing (ARB)
 ````ruby
   require 'rubygems'
-  require 'authorize_net'
+  require 'authorizenet'
   
   transaction = AuthorizeNet::ARB::Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
   subscription = AuthorizeNet::ARB::Subscription.new(
@@ -117,7 +116,7 @@ There is also a default layout generated, <tt>app/views/layouts/authorize_net.er
 ### Card Present (CP)
 ````ruby
   require 'rubygems'
-  require 'authorize_net'
+  require 'authorizenet'
 
   transaction = AuthorizeNet::AIM::Transaction.new('API_LOGIN', 'API_KEY', :gateway => :card_present_sandbox)
   credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_1 => '%B4111111111111111^DOE/JOHN^1803101000000000020000831000000?')
