@@ -42,7 +42,7 @@ end
 
 desc "Builds the gem"
 task :gem do
-  %x"gem build authorize-net.gemspec"
+  %x"gem build authorizenet.gemspec"
 end
 
 desc "Builds the documentation"

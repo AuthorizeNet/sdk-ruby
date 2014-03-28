@@ -283,10 +283,11 @@ describe AuthorizeNet::CIM::Transaction do
         direct_response.success?.should be_true
       end
       
-      it "should support refunding a transaction"
+      #it "should support refunding a transaction"
       #this test won't be created.  It requires overnight settlement in order to work.
 
       it "should support capture only transactions"
+
       
       it "should be able to support multiple payment profiles" do
         @partial_auth_payment_profile.customer_payment_profile_id = create_payment_profile(@partial_auth_payment_profile, @profile)
