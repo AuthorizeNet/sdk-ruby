@@ -5,8 +5,8 @@ module AuthorizeNet::SIM
   class Response < AuthorizeNet::KeyValueResponse
     
     # Our MD5 digest generator.
-    @@digest = OpenSSL::Digest::Digest.new('md5')
-    
+    @@digest = OpenSSL::Digest.new('md5')
+
     include AuthorizeNet::SIM::Fields
     
     # Constructs a new response object from a +raw_response+. Provides utility methods

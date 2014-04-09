@@ -7,8 +7,8 @@ module AuthorizeNet::SIM
     RANDOM_SEQUENCE_MAX = (1 << 32) - 1
     
     # Our MD5 digest generator.
-    @@digest  = OpenSSL::Digest::Digest.new('md5')
-    
+    @@digest  = OpenSSL::Digest.new('md5')
+
     # The default options for the constructor.
     @@option_defaults = {
       :sequence => nil,
