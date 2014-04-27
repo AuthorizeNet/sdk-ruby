@@ -25,12 +25,12 @@ module AuthorizeNet::ARB
     
     attr_accessor :name, :length, :unit, :start_date, :total_occurrences, :trial_occurrences, :amount, :trial_amount, :invoice_number, :description, :subscription_id, :credit_card, :billing_address, :shipping_address, :customer
     
-    # Override the length setter to provide support for :unlimited shortcut. Do not document this method in rdoc.
-    def length=(new_length) #:nodoc:
-      if new_length == :unlimited
-        @length = UNLIMITED_OCCURRENCES
+    # Override the total_occurrences setter to provide support for :unlimited shortcut.
+    def total_occurrences=(new_total_occurrences) #:nodoc:
+      if new_total_occurrences == :unlimited
+        @total_occurrences = UNLIMITED_OCCURRENCES
       else
-        @length = new_length
+        @total_occurrences = new_total_occurrences
       end
     end
     
