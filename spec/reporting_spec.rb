@@ -64,9 +64,10 @@ describe AuthorizeNet::Reporting do
     response.success?.should be_true
     response.should respond_to(:transaction)
   end
-
-  it "should be able to fetch arb transaction details" do
-    # this transaction was setup previously.
+=begin
+  # To get this test to run.  You must setup an ARB subscription. After the subscription runs a transaction get
+  # the transaction_id and put it in this test.
+  it "should be able to fetch transaction details with subscription info" do
     transaction_id = 2212429253
 
     transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
@@ -74,8 +75,10 @@ describe AuthorizeNet::Reporting do
     detail_response = transaction.get_transaction_details(transaction_id)
     detail_response.success?.should be_true
     detail_response.should respond_to(:transaction)
+    detail_response.transaction.subscription_id.should == 2072134
+    detail_response.transaction.subscription_paynum.should == 1
   end
-
+=end
   describe "parsing batch statistics" do
     before do
       @response = '<getSettledBatchListResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
@@ -397,9 +400,6 @@ describe AuthorizeNet::Reporting do
 
       transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
       transaction.should respond_to(:get_transaction_details)
-      #transaction_id = 2212429253
-      #old_transaction_id = 2156246780
-      2156246780
       response = transaction.get_transaction_details('2212429253')
       response.success?.should be_true
       response.should respond_to(:transaction)
