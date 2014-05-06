@@ -10,7 +10,8 @@ module AuthorizeNet::Reporting
                   :type, :response_code, :response_reason_code, :response_reason_description,
                   :auth_code, :avs_response, :card_code_response, :cavv_response,
                   :fds_filter_action, :fds_filters, :batch, :prepaid_balance_remaining,
-                  :payment_method, :recurring_billing, :bill_to, :ship_to, :auth_amount
+                  :payment_method, :recurring_billing, :bill_to, :ship_to, :auth_amount,
+                  :subscription_id, :subscription_paynum
     
     def submitted_at=(time)
       if time.kind_of?(DateTime)

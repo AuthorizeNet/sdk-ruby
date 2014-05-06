@@ -118,7 +118,16 @@ module AuthorizeNet::Reporting
           transaction.customer ||= AuthorizeNet::CIM::CustomerProfile.new()
           transaction.customer.payment_profiles = [AuthorizeNet::CIM::PaymentProfile.new(:cust_type => customer_type)]
         end
-        
+
+        subscription = @transaction.at_css('subscription')
+        unless subscription.nil?
+          subscription_id = node_content_unless_nil(@transaction.at_css('subscription').at_css('id'))
+          transaction.subscription_id = value_to_decimal(subscription_id) unless subscription_id.nil?
+
+          pay_num = node_content_unless_nil(@transaction.at_css('subscription').at_css('payNum'))
+          transaction.subscription_paynum = value_to_decimal(pay_num) unless pay_num.nil?
+        end
+
         return transaction
       end
     end
