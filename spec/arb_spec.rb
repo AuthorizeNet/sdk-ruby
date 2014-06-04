@@ -39,7 +39,7 @@ describe AuthorizeNet::ARB::Transaction do
   
   it "should not have a response if the transaction hasn't been run" do
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => @gateway)
-    transaction.has_response?.should be_false
+    transaction.has_response?.should be_falsey
   end
   
   it "should support the returning its response object" do
@@ -49,11 +49,11 @@ describe AuthorizeNet::ARB::Transaction do
   
   it "should know if its running against the sandbox or not" do
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
-    transaction.test?.should be_true
+    transaction.test?.should be_truthy
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :live)
-    transaction.test?.should be_false
+    transaction.test?.should be_falsey
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => 'moose')
-    transaction.test?.should be_true
+    transaction.test?.should be_truthy
   end
   
   it "should have a response after running a transaction" do
@@ -65,36 +65,36 @@ describe AuthorizeNet::ARB::Transaction do
   it "should support creating a subscription" do
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
     response = transaction.create(@subscription)
-    response.success?.should be_true
+    response.success?.should be_truthy
   end
   
   it "should support canceling a subscription" do
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
     response = transaction.create(@subscription)
-    response.success?.should be_true
+    response.success?.should be_truthy
     cancel = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
     response = cancel.cancel(response.subscription_id)
-    response.success?.should be_true
+    response.success?.should be_truthy
   end
   
   it "should support getting the status of a subscription" do
     create = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
     response = create.create(@subscription)
-    response.success?.should be_true
+    response.success?.should be_truthy
     status = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
     response = status.get_status(response.subscription_id)
-    response.success?.should be_true
+    response.success?.should be_truthy
     response.subscription_status.should == AuthorizeNet::ARB::Subscription::Status::ACTIVE
   end
   
   it "should support updating a subscription" do
     create = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
     response = create.create(@subscription)
-    response.success?.should be_true
+    response.success?.should be_truthy
     update = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
     subscription = AuthorizeNet::ARB::Subscription.new(:subscription_id => response.subscription_id, :billing_address => AuthorizeNet::Address.new(:first_name => 'Jane', :last_name => 'Doe'))
     response = update.update(subscription)
-    response.success?.should be_true
+    response.success?.should be_truthy
   end
 end
 

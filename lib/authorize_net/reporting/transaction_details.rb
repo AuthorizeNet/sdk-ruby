@@ -11,7 +11,7 @@ module AuthorizeNet::Reporting
                   :auth_code, :avs_response, :card_code_response, :cavv_response,
                   :fds_filter_action, :fds_filters, :batch, :prepaid_balance_remaining,
                   :payment_method, :recurring_billing, :bill_to, :ship_to, :auth_amount,
-                  :subscription_id, :subscription_paynum
+                  :subscription_id, :subscription_paynum, :solution_id, :solution_name, :returns
     
     def submitted_at=(time)
       if time.kind_of?(DateTime)

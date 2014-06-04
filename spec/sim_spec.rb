@@ -45,9 +45,9 @@ describe AuthorizeNet::SIM::Transaction do
   
   it "should know if its in test mode" do
     transaction = AuthorizeNet::SIM::Transaction.new(@api_login, @api_key, @amount, :test => true)
-    transaction.test?.should be_true
+    transaction.test?.should be_truthy
     transaction = AuthorizeNet::SIM::Transaction.new(@api_login, @api_key, @amount, :test => false)
-    transaction.test?.should be_false
+    transaction.test?.should be_falsey
   end
 end
 

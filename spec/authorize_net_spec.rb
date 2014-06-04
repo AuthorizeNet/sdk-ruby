@@ -3,12 +3,12 @@ require "spec_helper"
 describe AuthorizeNet do
 
   it "should have a module called AuthorizeNet" do
-    defined?(AuthorizeNet).should be_true
+    defined?(AuthorizeNet).should be_truthy
     AuthorizeNet.class.should equal(Module)
   end
   
   it "should have a module called AIM" do
-    defined?(AuthorizeNet::AIM).should be_true
+    defined?(AuthorizeNet::AIM).should be_truthy
     AuthorizeNet::AIM.class.should equal(Module)
   end
 

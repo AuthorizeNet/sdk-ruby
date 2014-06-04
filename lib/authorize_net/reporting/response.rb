@@ -128,6 +128,23 @@ module AuthorizeNet::Reporting
           transaction.subscription_paynum = value_to_decimal(pay_num) unless pay_num.nil?
         end
 
+        solution = @transaction.at_css('solution')
+        unless solution.nil?
+          solution_id = node_content_unless_nil(@transaction.at_css('solution').at_css('id'))
+          transaction.solution_id = value_to_decimal(solution_id) unless solution_id.nil?
+
+          transaction.solution_name = node_content_unless_nil(@transaction.at_css('solution').at_css('name'))
+        end
+
+        returned_items = @transaction.at_css('returnedItems')
+        unless returned_items.nil?
+          transaction.returns ||= AuthorizeNet::Reporting::ReturnedItem.new
+          returned_items.element_children.each do |child|
+            returned_item = build_entity(child, Fields::RETURNED_ITEM_ENTITY_DESCRIPTION)
+            transaction.returns.add_returned_item(returned_item)
+          end
+        end
+
         return transaction
       end
     end

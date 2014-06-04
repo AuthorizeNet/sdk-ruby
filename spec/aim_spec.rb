@@ -38,18 +38,18 @@ describe AuthorizeNet::AIM::Transaction do
   
   it "should know if its in test mode" do
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => AuthorizeNet::AIM::Transaction::Gateway::TEST, :test => true)
-    transaction.test?.should be_true
+    transaction.test?.should be_truthy
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => AuthorizeNet::AIM::Transaction::Gateway::TEST, :test => false)
-    transaction.test?.should be_true
+    transaction.test?.should be_truthy
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => AuthorizeNet::AIM::Transaction::Gateway::LIVE, :test => true)
-    transaction.test?.should be_true
+    transaction.test?.should be_truthy
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => AuthorizeNet::AIM::Transaction::Gateway::LIVE, :test => false)
-    transaction.test?.should be_false
+    transaction.test?.should be_falsey
   end
   
   it "should not have a response if the transaciton hasn't been run" do
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => @gateway, :test => @test_mode)
-    transaction.has_response?.should be_false
+    transaction.has_response?.should be_falsey
   end
   
   it "should support the addition of fields to the transaction body" do
@@ -89,7 +89,7 @@ describe AuthorizeNet::AIM::Transaction do
     response = transaction.purchase(@amount, @credit_card)
     response.should be_kind_of(AuthorizeNet::AIM::Response)
     response.transaction_id.length.should >= 3
-    response.success?.should be_true
+    response.success?.should be_truthy
     response.avs_response.should  == AuthorizeNet::AIM::Response::AVSResponseCode::ADDRESS_AND_ZIP5_MATCH
     response.card_type.should == AuthorizeNet::AIM::Response::CardType::VISA
     response.card_type.should_not == AuthorizeNet::AIM::Response::CardType::MASTER_CARD
@@ -126,7 +126,7 @@ describe AuthorizeNet::AIM::Transaction do
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => @gateway, :test => @test_mode)
     transaction.purchase(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
     transaction.response.fields[:amount].should == @amount
-    transaction.response.success?.should be_true
+    transaction.response.success?.should be_truthy
   end
   
   it "should support custom fields in the response" do
@@ -156,14 +156,14 @@ describe AuthorizeNet::AIM::Transaction do
   it "should accept an ECheck for a purchase" do
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => @gateway, :test => @test_mode)
     transaction.purchase(@amount, @echeck).should be_kind_of(AuthorizeNet::AIM::Response)
-    transaction.response.success?.should be_true
+    transaction.response.success?.should be_truthy
   end
   
   it "should support adding line items" do
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => @gateway, :test => @test_mode)
     transaction.add_line_item("item1", "Foo", "Bar", "5", "5.00", "TRUE")
     transaction.purchase(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
-    transaction.response.success?.should be_true
+    transaction.response.success?.should be_truthy
     transaction.fields[:line_item].should == ["item1<|>Foo<|>Bar<|>5<|>5.00<|>TRUE"]
   end
   
@@ -172,7 +172,7 @@ describe AuthorizeNet::AIM::Transaction do
     customer = AuthorizeNet::Customer.new(:ip => '127.0.0.1')
     transaction.set_customer(customer)
     transaction.purchase(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
-    transaction.response.success?.should be_true
+    transaction.response.success?.should be_truthy
   end
   
   it "should support setting an address" do
@@ -180,7 +180,7 @@ describe AuthorizeNet::AIM::Transaction do
     address = AuthorizeNet::Address.new(:city => 'San Francisco', :state => 'NY')
     transaction.set_address(address)
     transaction.purchase(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
-    transaction.response.success?.should be_true
+    transaction.response.success?.should be_truthy
   end
   
   it "should support setting a shipping address" do
@@ -188,7 +188,7 @@ describe AuthorizeNet::AIM::Transaction do
     address = AuthorizeNet::ShippingAddress.new(:city => 'San Francisco', :state => 'NY', :tax => 10.00)
     transaction.set_shipping_address(address)
     transaction.purchase(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
-    transaction.response.success?.should be_true
+    transaction.response.success?.should be_truthy
   end
   
   it "should support adding an email receipt" do
@@ -196,84 +196,84 @@ describe AuthorizeNet::AIM::Transaction do
     email = AuthorizeNet::EmailReceipt.new(:header => 'TEST!')
     transaction.set_email_receipt(email)
     transaction.purchase(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
-    transaction.response.success?.should be_true
+    transaction.response.success?.should be_truthy
   end
   
   it "should be able to void a purchase" do
     purchase = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => @gateway, :test => false)
     purchase.purchase(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
     purchase.response.fields[:amount].should == @amount
-    purchase.response.success?.should be_true
+    purchase.response.success?.should be_truthy
     void = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :gateway => @gateway, :test => false)
     void.void(purchase.response.transaction_id)
-    void.response.success?.should be_true
+    void.response.success?.should be_truthy
   end
   
   it "should be able to capture a prior authorization" do
     auth = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => @gateway, :test => false)
     auth.authorize(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
     auth.response.fields[:amount].should == @amount
-    auth.response.success?.should be_true
+    auth.response.success?.should be_truthy
     capture = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :gateway => @gateway, :test => false)
     capture.prior_auth_capture(auth.response.transaction_id)
-    capture.response.success?.should be_true
+    capture.response.success?.should be_truthy
   end
   
   it "should be able to run a card present purchase with track 1 data" do
     @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_1 => '%B4111111111111111^DOE/JOHN^1803101000000000020000831000000?')
     purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
     response = purchase.purchase(@amount, @credit_card)
-    response.success?.should be_true
+    response.success?.should be_truthy
   end
   
   it "should be able to run a card present purchase with LRC codes in the track 1 data" do
     @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_1 => "%B4111111111111111^DOE/JOHN^1803101000000000020000831000000?\xAA")
     purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
     response = purchase.purchase(@amount, @credit_card)
-    response.success?.should be_true
+    response.success?.should be_truthy
   end
   
   it "should be able to run a card present purchase with no LRC or Start/End Sentinels in track 1 data" do
     @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_1 => "B4111111111111111^DOE/JOHN^1803101000000000020000831000000")
     purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
     response = purchase.purchase(@amount, @credit_card)
-    response.success?.should be_true
+    response.success?.should be_truthy
   end
   
   it "should be able to run a card present purchase with track 2 data" do
      @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_2 => ';4111111111111111=1803101000020000831?')
      purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
      response = purchase.purchase(@amount, @credit_card)
-     response.success?.should be_true
+     response.success?.should be_truthy
    end
 
    it "should be able to run a card present purchase with LRC codes in the track 2 data" do
      @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_2 => ";4111111111111111=1803101000020000831?\x33")
      purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
      response = purchase.purchase(@amount, @credit_card)
-     response.success?.should be_true
+     response.success?.should be_truthy
    end
    
    it "should be able to run a card present purchase with no LRC or Start/End Sentinels in track 2 data" do
       @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_2 => "4111111111111111=1803101000020000831")
       purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
       response = purchase.purchase(@amount, @credit_card)
-      response.success?.should be_true
+      response.success?.should be_truthy
     end
   
   it "should be able to validate the passed MD5 hash" do
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => @gateway, :test => @test_mode)
     transaction.purchase(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
-    transaction.response.success?.should be_true
-    transaction.response.valid_md5?(@api_login, @md5_value).should be_true
+    transaction.response.success?.should be_truthy
+    transaction.response.valid_md5?(@api_login, @md5_value).should be_truthy
   end
   
   it "should be able to validate the passed MD5 hash for card present transactions" do
     @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_1 => '%B4111111111111111^DOE/JOHN^1803101000000000020000831000000?')
     purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
     response = purchase.purchase(@amount, @credit_card)
-    response.success?.should be_true
-    response.valid_md5?(@cp_api_login, @cp_md5_value).should be_true
+    response.success?.should be_truthy
+    response.valid_md5?(@cp_api_login, @cp_md5_value).should be_truthy
   end
 end
 
@@ -304,7 +304,7 @@ describe AuthorizeNet::AIM::Response do
     @element.should be_kind_of(Nokogiri::XML::Element)
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :test => false)
     response = AuthorizeNet::AIM::Response.new(@element, transaction)
-    response.success?.should be_true
+    response.success?.should be_truthy
     response.response_reason_text.should == 'This transaction has been approved.'
   end
 end

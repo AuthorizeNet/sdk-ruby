@@ -689,6 +689,18 @@ module AuthorizeNet
         ],
         AuthorizeNet::LineItem
       )
+
+      attr_accessor :id, :date_utc, :date_local, :code, :description
+      RETURNED_ITEM_ENTITY_DESCRIPTION = EntityDescription.new([
+             {:id => :id},
+             {:dateUTC => :date_utc},
+             {:dateLocal => :date_local},
+             {:code => :code},
+             {:description => :description}
+         ],
+         AuthorizeNet::Reporting::ReturnedItem
+      )
+
       
       TRANSACTION_DETAILS_ENTITY_DESCRIPTION = EntityDescription.new([
           {:transId => :id},
