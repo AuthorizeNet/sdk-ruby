@@ -42,7 +42,7 @@ module AuthorizeNet::Reporting
             transaction = build_entity(child, Fields::TRANSACTION_DETAILS_ENTITY_DESCRIPTION)
             
             # handle some stuff thats too tricky for EntityDecription to handle
-            first_name = node_content_unless_nil(child.at_css('firstName'))
+             first_name = node_content_unless_nil(child.at_css('firstName'))
             last_name = node_content_unless_nil(child.at_css('lastName'))
             unless first_name.nil? && last_name.nil?
               address = AuthorizeNet::Address.new(:first_name => first_name, :last_name => last_name)

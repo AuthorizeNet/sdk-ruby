@@ -4,7 +4,7 @@ module AuthorizeNet::Reporting
   class TransactionDetails
     
     include AuthorizeNet::Model
-    
+
     attr_accessor :id, :submitted_at, :status, :order, :customer, :account_type,
                   :account_number, :settle_amount, :reference_id, :split_tender_id,
                   :type, :response_code, :response_reason_code, :response_reason_description,
@@ -20,7 +20,6 @@ module AuthorizeNet::Reporting
         @submitted_at = DateTime.parse(time.to_s)
       end
     end
-    
-  end
 
+  end
 end

@@ -318,6 +318,8 @@ describe AuthorizeNet::Reporting do
       order = transactions[2].order
       order.nil?.should be_falsey
       order.invoice_num.should == '0.0119129953556076'
+      transactions[2].returns.should be_truthy
+      transactions[0].returns.should be_falsey
     end
 
     it "should be able to build a transaction details object from the transaction details response" do
@@ -518,8 +520,6 @@ describe AuthorizeNet::Reporting do
       transaction.avs_response.should == 'Y'
       transaction.auth_amount.should == 40000.00
       transaction.settle_amount.should == 40000.00
-
-      #TODO: this is actually returning a string "false" which is testing incorrectly here. Need to fix
       transaction.recurring_billing.should be_truthy
     end
 
@@ -616,32 +616,5 @@ describe AuthorizeNet::Reporting do
       transaction.returns.returned_items[0].code = 'R02'
       transaction.returns.returned_items[0].code = 'Account Closed'
     end
-=begin
-    TODO:remove this
-    it "should be able to fetch transaction details with returned items and solution" do
-      transaction_id = 2148887918
-
-      transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
-      transaction.should respond_to(:get_transaction_details)
-      detail_response = transaction.get_transaction_details(transaction_id)
-      detail_response.success?.should be_truthy
-      detail_response.should respond_to(:transaction)
-      transaction = detail_response.transaction
-
-      transaction.should be_kind_of(AuthorizeNet::Reporting::TransactionDetails)
-      transaction.response_code.should == "1"
-      transaction.response_reason_code.should == "1"
-      transaction.response_reason_description.should == "Approval"
-      transaction.solution_id = 'A1000004'
-      transaction.solution_name = 'Volusion Shopping Cart'
-
-      transaction.returns.returned_items.length.should == 1
-      transaction.returns.returned_items.should be_kind_of(Array)
-      transaction.returns.returned_items[0].should be_kind_of(AuthorizeNet::Reporting::ReturnedItem)
-      transaction.returns.returned_items[0].id = 2148887938
-      transaction.returns.returned_items[0].code = 'R02'
-      transaction.returns.returned_items[0].code = 'Account Closed'
-    end
-=end
   end
 end

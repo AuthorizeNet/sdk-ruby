@@ -733,7 +733,8 @@ module AuthorizeNet
           {:customer => CUSTOMER_ENTITY_DESCRIPTION, :_value => :customer},
           {:billTo => AuthorizeNet::CIM::Fields::ADDRESS_ENTITY_DESCRIPTION, :_value => :bill_to},
           {:shipTo => AuthorizeNet::CIM::Fields::ADDRESS_ENTITY_DESCRIPTION, :_value => :ship_to},
-          {:recurringBilling => :recurring_billing, :_convert => :value_to_boolean}
+          {:recurringBilling => :recurring_billing, :_convert => :value_to_boolean},
+          {:hasReturnedItems => :returns, :_convert => :value_to_boolean}
         ],
         AuthorizeNet::Reporting::TransactionDetails
       )
