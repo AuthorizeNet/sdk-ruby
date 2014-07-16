@@ -51,11 +51,13 @@ To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ unde
 
 A generator is provided to aid in setting up a Direct Post Method application. In the example below +payments+ is the name of the controller to generate.
 ````
-  > sudo gem install rails -v '~> 2.1'
-  > rails my_direct_post_app
+  > sudo gem install rails -v '>= 3.2'
+  > sudo gem install authorizenet
+  > rails new my_direct_post_app
   > cd my_direct_post_app
-  > script/generate authorize_net_direct_post payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
-  > script/server
+  > edit Gemfile and add the line "gem 'authorizenet'"
+  > rails g authorize_net:direct_post payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
+  > rails server 
 ````
 
 After running the generator you will probably want to customize the payment form found in <tt>app/views/payments/payment.erb</tt> and the receipt found in <tt>app/views/payments/receipt.erb</tt>.
@@ -66,11 +68,12 @@ There is also a default layout generated, <tt>app/views/layouts/authorize_net.er
 
 A generator is provided to aid in setting up a Server Integration Method application. In the example below +payments+ is the name of the controller to generate.
 ````
-  > sudo gem install rails -v '~> 2.1'
-  > rails my_sim_app
+  > sudo gem install rails -v '>= 3.2'
+  > sudo gem install authorizenet
+  > rails new my_sim_app
   > cd my_sim_app
-  > script/generate authorize_net_sim payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
-  > script/server
+  > rails g authorize:sim payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
+  > rails server
 ````  
 After running the generator you will probably want to customize the payment page found in <tt>app/views/payments/payment.erb</tt> and the thank you page found in <tt>app/views/payments/thank_you.erb</tt>.
 
