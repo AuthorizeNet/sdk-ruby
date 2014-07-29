@@ -8,6 +8,7 @@
 * RubyGem 1.3.7 or higher (to build the gem)
 * RDoc 1.0 or higher (to build documentation)
 * Rake 0.8.7 or higher (to use the rake tasks)
+* Bundle 1.6 or higher
 * RSpec 2.1 or higher (to run rspec tests)
 
 ## Installation from rubygems.org
