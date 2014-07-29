@@ -11,10 +11,19 @@
 * Rake 0.8.7 or higher (to use the rake tasks)
 * RSpec 2.1 or higher (to run rspec tests)
 
-## Installation
+## Installation from rubygems.org
 
 ````
-  > gem install authorizenet
+  > sudo gem install authorizenet
+````
+##
+
+# Installation from project
+
+````
+  > bundle install
+  > rake gem
+  > sudo gem install ./authorizenet-1.8.2.gem
 ````
 ## Registration & Configuration
 
@@ -35,11 +44,11 @@ To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ unde
 ````ruby
   require 'rubygems'
   require 'authorizenet'
-  
+
   transaction = AuthorizeNet::AIM::Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
   credit_card = AuthorizeNet::CreditCard.new('4111111111111111', '1120')
   response = transaction.purchase('10.00', credit_card)
-  
+
   if response.success?
     puts "Successfully made a purchase (authorization code: #{response.authorization_code})"
   else
@@ -57,7 +66,7 @@ A generator is provided to aid in setting up a Direct Post Method application. I
   > cd my_direct_post_app
   > edit Gemfile and add the line "gem 'authorizenet'"
   > rails g authorize_net:direct_post payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
-  > rails server 
+  > rails server
 ````
 
 After running the generator you will probably want to customize the payment form found in <tt>app/views/payments/payment.erb</tt> and the receipt found in <tt>app/views/payments/receipt.erb</tt>.
@@ -74,7 +83,7 @@ A generator is provided to aid in setting up a Server Integration Method applica
   > cd my_sim_app
   > rails g authorize:sim payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
   > rails server
-````  
+````
 After running the generator you will probably want to customize the payment page found in <tt>app/views/payments/payment.erb</tt> and the thank you page found in <tt>app/views/payments/thank_you.erb</tt>.
 
 You may also want to customize the actual payment form and receipt pages. That can be done by making the necessary changes to the AuthorizeNet::SIM::Transaction object (<tt>@sim_transaction</tt>) found in the +payment+ action in <tt>app/controllers/payments_controller.rb</tt>. The styling of those hosted pages are controlled by the AuthorizeNet::SIM::HostedReceiptPage and AuthorizeNet::SIM::HostedPaymentForm objects (which are passed to the AuthorizeNet::SIM::Transaction).
@@ -85,7 +94,7 @@ There is also a default layout generated, <tt>app/views/layouts/authorize_net.er
 ````ruby
   require 'rubygems'
   require 'authorizenet'
-  
+
   transaction = AuthorizeNet::ARB::Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
   subscription = AuthorizeNet::ARB::Subscription.new(
     :name => "Monthly Gift Basket",
@@ -100,7 +109,7 @@ There is also a default layout generated, <tt>app/views/layouts/authorize_net.er
     :billing_address => AuthorizeNet::Address.new(:first_name => 'John', :last_name => 'Doe')
   )
   response = transaction.create(subscription)
-  
+
   if response.success?
     puts "Successfully created a subscription (subscription id: #{response.subscription_id})"
   else

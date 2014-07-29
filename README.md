@@ -11,10 +11,19 @@
 * Rake 0.8.7 or higher (to use the rake tasks)
 * RSpec 2.1 or higher (to run rspec tests)
 
-## Installation
+## Installation from rubygems.org
 
 ````
-  > gem install authorizenet
+  > sudo gem install authorizenet
+````
+##
+
+# Installation from project
+
+````
+  > bundle install
+  > rake gem
+  > sudo gem install ./authorizenet-1.8.2.gem
 ````
 ## Registration & Configuration
 
