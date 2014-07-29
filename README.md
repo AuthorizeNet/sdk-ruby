@@ -5,7 +5,6 @@
 ## Prerequisites
 
 * Ruby 1.8.7 or higher
-* Nokogiri 1.4.3 or higher
 * RubyGem 1.3.7 or higher (to build the gem)
 * RDoc 1.0 or higher (to build documentation)
 * Rake 0.8.7 or higher (to use the rake tasks)
