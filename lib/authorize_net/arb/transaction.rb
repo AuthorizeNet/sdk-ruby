@@ -22,8 +22,7 @@ module AuthorizeNet::ARB
     @@date_fields = [:subscription_start_date]
     
     # The class to wrap our response in.
-    @response_class = AuthorizeNet::ARB::Response
-    
+    @response_class = AuthorizeNet::ARB::Response   
     
     # Constructs an ARB transaction. You can use the new ARB transaction object
     # to issue a request to the payment gateway and parse the response into a new
@@ -106,7 +105,38 @@ module AuthorizeNet::ARB
       handle_subscription_id(subscription_id)
       run
     end
-    
+
+    # Sets up and submits a subscription list query (ARBGetSubscriptionListRequest). Returns a response object 
+    # which contains the list of subscription details and the total number of subscriptions matching the search 
+    # criteria. Sorting and Paging are optional parameters.
+    #
+    # Valid values for search type parameter:
+    #    cardExpiringThisMonth
+    #    subscriptionActive
+    #    subscriptionExpiringThisMonth
+    #    subscriptionInactive
+    #
+    # Typical usage:
+    # 
+    #   sorting = AuthorizeNet::ARB::Sorting.new('name',true)
+    #   paging = AuthorizeNet::ARB::Paging.new(1,1000)
+    #   response = transaction.get_subscription_list('subscriptionActive',sorting,paging)
+    #
+    def get_subscription_list(search_type, sorting = nil, paging = nil)
+      unless search_type.nil?
+        self.class.instance_variable_set(:@response_class,SubscriptionListResponse)
+        @type = Type::ARB_GET_SUBSCRIPTION_LIST
+        set_fields(:search_type => search_type.to_s) 
+        unless sorting.nil?  
+          set_fields(sorting.to_hash) 
+        end
+        unless paging.nil?
+          set_fields(paging.to_hash) 
+        end
+      run
+      end
+    end
+      
     # Sets up and submits a subscription cancelation (ARBCancelSubscriptionRequest) transaction. Returns a response object. If the transaction
     # has already been run, it will return nil.
     # 

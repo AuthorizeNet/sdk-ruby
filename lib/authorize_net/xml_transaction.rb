@@ -18,6 +18,7 @@ module AuthorizeNet
       ARB_UPDATE = "ARBUpdateSubscriptionRequest"
       ARB_GET_STATUS = "ARBGetSubscriptionStatusRequest"
       ARB_CANCEL = "ARBCancelSubscriptionRequest"
+      ARB_GET_SUBSCRIPTION_LIST = "ARBGetSubscriptionListRequest"
       CIM_CREATE_PROFILE = "createCustomerProfileRequest"
       CIM_CREATE_PAYMENT = "createCustomerPaymentProfileRequest"
       CIM_CREATE_ADDRESS = "createCustomerShippingAddressRequest"
@@ -157,6 +158,7 @@ module AuthorizeNet
         multivalue = node[:_multivalue]
         conditional = node[:_conditional]
         value = node[nodeName]
+
         unless conditional.nil?
           value = self.send(conditional, nodeName)
         end
@@ -238,7 +240,7 @@ module AuthorizeNet
       end
       
       fields = @fields
-      
+  
       builder = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |x|
         x.send(@type.to_sym, :xmlns => XML_NAMESPACE) {
           x.merchantAuthentication {
@@ -248,8 +250,7 @@ module AuthorizeNet
           build_nodes(x, self.class.const_get(:FIELDS)[@type], fields)
         }
       end
-      @xml = builder.to_xml
-      
+      @xml = builder.to_xml 
       url = URI.parse(@gateway)
       
       request = Net::HTTP::Post.new(url.path)

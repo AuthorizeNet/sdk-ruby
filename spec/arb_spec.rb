@@ -96,6 +96,21 @@ describe AuthorizeNet::ARB::Transaction do
     response = update.update(subscription)
     response.success?.should be_truthy
   end
+
+  it "should be able to retrieve list of subscriptions" do
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    sorting = AuthorizeNet::ARB::Sorting.new('name',true)
+    paging = AuthorizeNet::ARB::Paging.new(1,1000)
+    response = transaction.get_subscription_list('subscriptionActive',sorting,paging)
+    response.success?.should be_truthy
+    
+    unless response.subscription_details.nil?
+      response.subscription_details.length.should > 0
+    else
+      warn "no subscriptons found - please create some."
+    end
+
+  end
 end
 
 describe AuthorizeNet::ARB::Response do
@@ -186,6 +201,7 @@ describe AuthorizeNet::ARB::Subscription do
     subscription.unit = :months
     subscription.unit.should == AuthorizeNet::ARB::Subscription::IntervalUnits::MONTH
   end
+
 end
 
 
