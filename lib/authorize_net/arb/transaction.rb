@@ -135,6 +135,7 @@ module AuthorizeNet::ARB
         end
       run
       end
+      return response
     end
       
     # Sets up and submits a subscription cancelation (ARBCancelSubscriptionRequest) transaction. Returns a response object. If the transaction
