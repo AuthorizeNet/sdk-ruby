@@ -165,7 +165,7 @@ module AuthorizeNet
   module ARB
     # Contains the various lists of fields needed by the ARB API.
     module Fields
-      
+
       # Describes the order and nesting of fields in the ARB Subscription XML.
       SUBSCRIPTION_FIELDS = {:subscription => [
         {:name => :subscription_name},
@@ -251,13 +251,31 @@ module AuthorizeNet
         {:refId => :reference_id},
         {:subscriptionId => :subscription_id}
       ]
+
+      # Describes the order and nesting of fields in the ARB ARBGetSubscriptionListRequest XML.
+      GET_SUBSCRIPTION_LIST_FIELDS = [
+        {:refId => :reference_id},
+        {:searchType => :search_type},
+        {:sorting => [
+           {:orderBy => :order_by},
+           {:orderDescending => :order_descending}
+          ]
+        },
+        {:paging => [
+           {:limit  => :limit},
+           {:offset => :offset}
+          ]
+        }
+      ]
       
       FIELDS = {
         AuthorizeNet::XmlTransaction::Type::ARB_CREATE => CREATE_FIELDS,
         AuthorizeNet::XmlTransaction::Type::ARB_UPDATE => UPDATE_FIELDS,
         AuthorizeNet::XmlTransaction::Type::ARB_GET_STATUS => GET_STATUS_FIELDS,
-        AuthorizeNet::XmlTransaction::Type::ARB_CANCEL => CANCEL_FIELDS
+        AuthorizeNet::XmlTransaction::Type::ARB_CANCEL => CANCEL_FIELDS,
+        AuthorizeNet::XmlTransaction::Type::ARB_GET_SUBSCRIPTION_LIST => GET_SUBSCRIPTION_LIST_FIELDS
       }
+
     end
   end
   

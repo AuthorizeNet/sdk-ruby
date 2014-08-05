@@ -52,6 +52,11 @@ require "authorize_net/sim/response"
 
 # ARB
 
+require "authorize_net/arb/paging"
+require "authorize_net/arb/sorting"
+require "authorize_net/arb/subscription_list_response"
+require "authorize_net/arb/subscription_detail"
+require "authorize_net/arb/fields"
 require "authorize_net/arb/subscription"
 require "authorize_net/arb/response"
 require "authorize_net/arb/transaction"

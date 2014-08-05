@@ -13,7 +13,7 @@ describe AuthorizeNet::ARB::Transaction do
       warn "WARNING: Running w/o valid AuthorizeNet sandbox credentials. Create spec/credentials.yml."
     end
   end
-  
+
   before do
     @gateway = :sandbox
     @subscription = AuthorizeNet::ARB::Subscription.new(
@@ -95,6 +95,82 @@ describe AuthorizeNet::ARB::Transaction do
     subscription = AuthorizeNet::ARB::Subscription.new(:subscription_id => response.subscription_id, :billing_address => AuthorizeNet::Address.new(:first_name => 'Jane', :last_name => 'Doe'))
     response = update.update(subscription)
     response.success?.should be_truthy
+  end
+
+  it "should be able to retrieve list of subscriptions" do
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    sorting = AuthorizeNet::ARB::Sorting.new('name',true)
+    paging = AuthorizeNet::ARB::Paging.new(1,1000)
+    response = transaction.get_subscription_list('subscriptionActive',sorting,paging)
+    response.success?.should be_truthy
+    
+    unless response.subscription_details.nil?
+      response.subscription_details.length.should > 0
+    else
+      warn "no subscriptons found - please create some."
+    end
+  end
+
+  it "should return successful response for valid subscription list search types and sortBy fields" do
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    paging = AuthorizeNet::ARB::Paging.new(1,1000)
+
+    # iterate over valid search types
+    [:cardExpiringThisMonth,:subscriptionActive,:subscriptionExpiringThisMonth, 
+                                                         :subscriptionInactive].each{ |searchType|
+      # iterate over valid sortBy fields
+      [:id,:name,:status,:createTimeStampUTC,:lastName,:firstName,:accountNumber,:amount,
+                                                                     :pastOccurrences].each{ |sortBy|
+        sorting = AuthorizeNet::ARB::Sorting.new(sortBy,false)
+        response = transaction.get_subscription_list(searchType,sorting,paging)
+        response.success?.should be_truthy
+      }
+    }
+  end
+
+  it "should return error when invalid search type specified" do
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    paging = AuthorizeNet::ARB::Paging.new(1,1000)
+    sorting = AuthorizeNet::ARB::Sorting.new(:name,true)
+    
+    response = transaction.get_subscription_list(:bogusSearchType,sorting,paging)
+    response.success?.should be_falsey
+  end
+
+  it "should return error when invalid sortBy field specified" do
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    paging = AuthorizeNet::ARB::Paging.new(1,1000)
+    sorting = AuthorizeNet::ARB::Sorting.new(:bogusSortField,true)
+    
+    response = transaction.get_subscription_list(:subscriptionActive,sorting,paging)
+    response.success?.should be_falsey
+  end
+
+  it "should return error when invalid order descending parameter is specified" do
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    paging = AuthorizeNet::ARB::Paging.new(1,1000)
+    sorting = AuthorizeNet::ARB::Sorting.new(:name,2)
+    
+    response = transaction.get_subscription_list(:subscriptionActive,sorting,paging)
+    response.success?.should be_falsey
+  end
+
+  it "should return error when invalid paging offset is specified" do
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    paging = AuthorizeNet::ARB::Paging.new(0,1000)
+    sorting = AuthorizeNet::ARB::Sorting.new(:name,false)
+    
+    response = transaction.get_subscription_list(:subscriptionActive,sorting,paging)
+    response.success?.should be_falsey
+  end
+
+  it "should return error when invalid paging limit is specified" do
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    paging = AuthorizeNet::ARB::Paging.new(1,-1)
+    sorting = AuthorizeNet::ARB::Sorting.new(:name,false)
+    
+    response = transaction.get_subscription_list(:subscriptionActive,sorting,paging)
+    response.success?.should be_falsey
   end
 end
 
@@ -186,6 +262,6 @@ describe AuthorizeNet::ARB::Subscription do
     subscription.unit = :months
     subscription.unit.should == AuthorizeNet::ARB::Subscription::IntervalUnits::MONTH
   end
-end
 
+end
 
