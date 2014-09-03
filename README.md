@@ -81,7 +81,7 @@ A generator is provided to aid in setting up a Server Integration Method applica
   > sudo gem install authorizenet
   > rails new my_sim_app
   > cd my_sim_app
-  > rails g authorize:sim payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
+  > rails g authorize_net:sim payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
   > rails server
 ````  
 After running the generator you will probably want to customize the payment page found in <tt>app/views/payments/payment.erb</tt> and the thank you page found in <tt>app/views/payments/thank_you.erb</tt>.
