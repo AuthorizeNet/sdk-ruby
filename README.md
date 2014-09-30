@@ -83,6 +83,9 @@ A generator is provided to aid in setting up a Server Integration Method applica
   > sudo gem install authorizenet
   > rails new my_sim_app
   > cd my_sim_app
+````
+  Edit Gemfile and add the line "gem 'authorizenet'"
+````
   > rails g authorize:sim payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
   > rails server
 ````  
