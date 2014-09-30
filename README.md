@@ -64,7 +64,9 @@ A generator is provided to aid in setting up a Direct Post Method application. I
   > sudo gem install authorizenet
   > rails new my_direct_post_app
   > cd my_direct_post_app
-  > edit Gemfile and add the line "gem 'authorizenet'"
+````
+  Edit Gemfile and add the line "gem 'authorizenet'"
+````
   > rails g authorize_net:direct_post payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
   > rails server 
 ````
