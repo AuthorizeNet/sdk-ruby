@@ -93,7 +93,7 @@ describe AuthorizeNet::CIM::Transaction do
   it "should be able to delete customer profiles" do
     # create a profile to delete
     profile_id = create_profile(profile)
-    
+
     # delete it
     transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => :sandbox)
     expect(transaction).to respond_to(:delete_profile)
@@ -132,6 +132,19 @@ describe AuthorizeNet::CIM::Transaction do
     expect(response.success?).to eq true
     
     delete_profile(profile_id)
+  end
+
+  it "should be able to receive hosted profile access token" do
+    # build a profile
+    profile_id = create_profile(profile)
+
+    transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => :sandbox)
+    expect(transaction).to respond_to(:get_hosted_profile_token)
+
+    response = transaction.get_hosted_profile_token(profile_id)
+
+    expect(response.success?).to eq true
+    expect(response.token).not_to be_empty
   end
   
   describe "performing actions on payment profiles" do

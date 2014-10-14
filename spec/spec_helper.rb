@@ -6,7 +6,7 @@ RSpec.configure do |config|
     begin
       CREDENTIALS = YAML.load_file(File.dirname(__FILE__) + "/credentials.yml")
     rescue Errno::ENOENT
-      compile_error "Error: Running w/o valid AuthorizeNet sandbox credentials. Create spec/credentials.yml."
+      warn "WARNING: Running w/o valid AuthorizeNet sandbox credentials. Create spec/credentials.yml."
     end
   end
 end
