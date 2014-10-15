@@ -2,8 +2,8 @@ require "spec_helper"
 
 describe AuthorizeNet::CIM::Transaction do
 
-  let(:api_key) { CREDENTIALS['api_transaction_key'] }
-  let(:api_login) { CREDENTIALS['api_login_id'] }
+  let(:api_key) { credentials['api_transaction_key'] }
+  let(:api_login) { credentials['api_login_id'] }
   let(:chrs) { [('a'..'z'),('A'..'Z'),('0'..'9')].map(&:to_a).flatten }
   let(:gateway) { :sandbox }
   let(:credit_card) { AuthorizeNet::CreditCard.new('4111111111111111', '01' + (Time.now + (3600 * 24 * 365)).strftime('%y')) }
@@ -442,8 +442,8 @@ describe AuthorizeNet::CIM::Transaction do
 end
 
 describe AuthorizeNet::CIM::Response do
-  let(:api_key) { CREDENTIALS['api_transaction_key'] }
-  let(:api_login) { CREDENTIALS['api_login_id'] }
+  let(:api_key) { credentials['api_transaction_key'] }
+  let(:api_login) { credentials['api_login_id'] }
 
   it "should support instantiation" do
     expect(AuthorizeNet::CIM::Response.new('', nil)).to be_instance_of(AuthorizeNet::CIM::Response)
