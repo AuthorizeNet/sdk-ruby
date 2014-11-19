@@ -20,6 +20,7 @@ module AuthorizeNet
       ARB_CANCEL = "ARBCancelSubscriptionRequest"
       ARB_GET_SUBSCRIPTION_LIST = "ARBGetSubscriptionListRequest"
       CIM_CREATE_PROFILE = "createCustomerProfileRequest"
+      CIM_CREATE_PROFILE_FROM_TRANSACTION = "createCustomerProfileFromTransactionRequest"
       CIM_CREATE_PAYMENT = "createCustomerPaymentProfileRequest"
       CIM_CREATE_ADDRESS = "createCustomerShippingAddressRequest"
       CIM_CREATE_TRANSACTION = "createCustomerProfileTransactionRequest"

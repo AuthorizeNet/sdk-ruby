@@ -283,7 +283,7 @@ module AuthorizeNet
     module Fields
       
       REFID_FIELDS = {:refId => :reference_id}
-      
+             
       VALIDATION_MODE_FIELDS = {:validationMode => :validation_mode}
       
       CUSTOMER_PROFILE_ID_FIELDS = {:customerProfileId => :customer_profile_id}
@@ -538,6 +538,7 @@ module AuthorizeNet
       
       FIELDS = {
         AuthorizeNet::XmlTransaction::Type::CIM_CREATE_PROFILE => CREATE_PROFILE_FIELDS,
+        AuthorizeNet::XmlTransaction::Type::CIM_CREATE_PROFILE_FROM_TRANSACTION => TRANSACTION_FIELDS,
         AuthorizeNet::XmlTransaction::Type::CIM_CREATE_PAYMENT => CREATE_PAYMENT_FIELDS,
         AuthorizeNet::XmlTransaction::Type::CIM_CREATE_ADDRESS => CREATE_ADDRESS_FIELDS,
         AuthorizeNet::XmlTransaction::Type::CIM_CREATE_TRANSACTION => CREATE_TRANSACTION_FIELDS,
