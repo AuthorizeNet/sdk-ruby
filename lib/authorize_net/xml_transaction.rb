@@ -19,6 +19,7 @@ module AuthorizeNet
       ARB_GET_STATUS = "ARBGetSubscriptionStatusRequest"
       ARB_CANCEL = "ARBCancelSubscriptionRequest"
       ARB_GET_SUBSCRIPTION_LIST = "ARBGetSubscriptionListRequest"
+      API_CREATE_TRANSACTION = "createTransactionRequest"
       CIM_CREATE_PROFILE = "createCustomerProfileRequest"
       CIM_CREATE_PROFILE_FROM_TRANSACTION = "createCustomerProfileFromTransactionRequest"
       CIM_CREATE_PAYMENT = "createCustomerPaymentProfileRequest"
@@ -252,6 +253,7 @@ module AuthorizeNet
         }
       end
       @xml = builder.to_xml 
+
       url = URI.parse(@gateway)
       
       request = Net::HTTP::Post.new(url.path)
