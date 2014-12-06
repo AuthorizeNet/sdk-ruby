@@ -419,6 +419,123 @@ module AuthorizeNet::API
     end
   end
   
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}OperationType
+  class OperationType < ::String
+    DECRYPT = OperationType.new("DECRYPT")
+  end
+  
+# {AnetApi/xml/v1/schema/AnetApiSchema.xsd}KeyManagementScheme
+  #   dUKPT - KeyManagementScheme::DUKPT
+  class KeyManagementScheme
+    include ROXML
+    # inner class for member: DUKPT
+    # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}DUKPT
+    #   operation - OperationType
+    #   mode - KeyManagementScheme::DUKPT::Mode
+    #   deviceInfo - KeyManagementScheme::DUKPT::DeviceInfo
+    #   encryptedData - KeyManagementScheme::DUKPT::EncryptedData
+    class DUKPT
+      include ROXML
+      # inner class for member: Mode
+      # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}Mode
+      #   pIN - SOAP::SOAPString
+      #   data - SOAP::SOAPString
+      class Mode
+        include ROXML
+        xml_accessor :pIN
+        xml_accessor :data
+  
+        def initialize(pIN = nil, data = nil)
+          @pIN = pIN
+          @data = data
+        end
+      end
+  
+      # inner class for member: DeviceInfo
+      # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}DeviceInfo
+      #   description - SOAP::SOAPString
+      class DeviceInfo
+        include ROXML
+        xml_accessor :description
+  
+        def initialize(description = nil)
+          @description = description
+        end
+      end
+  
+      # inner class for member: EncryptedData
+      # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}EncryptedData
+      #   value - SOAP::SOAPString
+      class EncryptedData
+        include ROXML
+        xml_accessor :value
+  
+        def initialize(value = nil)
+          @value = value
+        end
+      end
+  
+      xml_accessor :operation#, :as => OperationType
+      xml_accessor :mode, :as => Mode
+      xml_accessor :deviceInfo, :as => DeviceInfo
+      xml_accessor :encryptedData, :as => EncryptedData
+  
+      def initialize(operation = nil, mode = nil, deviceInfo = nil, encryptedData = nil)
+        @operation = operation
+        @mode = mode
+        @deviceInfo = deviceInfo
+        @encryptedData = encryptedData
+      end
+    end
+  
+    xml_accessor :dUKPT, :as => DUKPT
+  
+    def initialize(dUKPT = nil)
+      @dUKPT = dUKPT
+    end
+  end
+  
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}EncryptionAlgorithmType
+  class EncryptionAlgorithmType < ::String
+    AES = EncryptionAlgorithmType.new("AES")
+    RSA = EncryptionAlgorithmType.new("RSA")
+    TDES = EncryptionAlgorithmType.new("TDES")
+  end
+  
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}EncodingType
+  class EncodingType < ::String
+    Base64 = EncodingType.new("Base64")
+    Hex = EncodingType.new("Hex")
+  end
+  
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}KeyValue
+  #   encoding - EncodingType
+  #   encryptionAlgorithm - EncryptionAlgorithmType
+  #   scheme - KeyManagementScheme
+  class KeyValue
+    include ROXML
+    xml_accessor :encoding#, :as => EncodingType
+    xml_accessor :encryptionAlgorithm#, :as => EncryptionAlgorithmType
+    xml_accessor :scheme, :as => KeyManagementScheme
+  
+    def initialize(encoding = nil, encryptionAlgorithm = nil, scheme = nil)
+      @encoding = encoding
+      @encryptionAlgorithm = encryptionAlgorithm
+      @scheme = scheme
+    end
+  end
+  
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}KeyBlock
+  #   value - KeyValue
+  class KeyBlock
+    include ROXML
+    xml_accessor :value, :as => KeyValue
+  
+    def initialize(value = nil)
+      @value = value
+    end
+  end
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}encryptedTrackDataType
   #   formOfPayment - KeyBlock
   class EncryptedTrackDataType
@@ -599,6 +716,37 @@ module AuthorizeNet::API
     end
   end
   
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}impersonationAuthenticationType
+  #   partnerLoginId - SOAP::SOAPString
+  #   partnerTransactionKey - SOAP::SOAPString
+  class ImpersonationAuthenticationType
+    include ROXML
+    xml_accessor :partnerLoginId
+    xml_accessor :partnerTransactionKey
+  
+    def initialize(partnerLoginId = nil, partnerTransactionKey = nil)
+      @partnerLoginId = partnerLoginId
+      @partnerTransactionKey = partnerTransactionKey
+    end
+  end
+  
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}fingerPrintType
+  #   hashValue - SOAP::SOAPString
+  #   sequence - SOAP::SOAPString
+  #   timestamp - SOAP::SOAPString
+  class FingerPrintType
+    include ROXML
+    xml_accessor :hashValue
+    xml_accessor :sequence
+    xml_accessor :timestamp
+  
+    def initialize(hashValue = nil, sequence = nil, timestamp = nil)
+      @hashValue = hashValue
+      @sequence = sequence
+      @timestamp = timestamp
+    end
+  end
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}merchantAuthenticationType
   #   name - SOAP::SOAPString
   #   transactionKey - SOAP::SOAPString
@@ -625,37 +773,6 @@ module AuthorizeNet::API
       @impersonationAuthentication = impersonationAuthentication
       @fingerPrint = fingerPrint
       @mobileDeviceId = mobileDeviceId
-    end
-  end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}fingerPrintType
-  #   hashValue - SOAP::SOAPString
-  #   sequence - SOAP::SOAPString
-  #   timestamp - SOAP::SOAPString
-  class FingerPrintType
-    include ROXML
-    xml_accessor :hashValue
-    xml_accessor :sequence
-    xml_accessor :timestamp
-  
-    def initialize(hashValue = nil, sequence = nil, timestamp = nil)
-      @hashValue = hashValue
-      @sequence = sequence
-      @timestamp = timestamp
-    end
-  end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}impersonationAuthenticationType
-  #   partnerLoginId - SOAP::SOAPString
-  #   partnerTransactionKey - SOAP::SOAPString
-  class ImpersonationAuthenticationType
-    include ROXML
-    xml_accessor :partnerLoginId
-    xml_accessor :partnerTransactionKey
-  
-    def initialize(partnerLoginId = nil, partnerTransactionKey = nil)
-      @partnerLoginId = partnerLoginId
-      @partnerTransactionKey = partnerTransactionKey
     end
   end
   
@@ -787,189 +904,9 @@ module AuthorizeNet::API
     end
   end
   
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}transactionRequestType
-  #   transactionType - SOAP::SOAPString
-  #   amount - SOAP::SOAPDecimal
-  #   currencyCode - SOAP::SOAPString
-  #   payment - PaymentType
-  #   profile - CustomerProfilePaymentType
-  #   solution - SolutionType
-  #   authCode - SOAP::SOAPString
-  #   refTransId - SOAP::SOAPString
-  #   splitTenderId - SOAP::SOAPString
-  #   order - OrderType
-  #   lineItems - ArrayOfLineItem
-  #   tax - ExtendedAmountType
-  #   duty - ExtendedAmountType
-  #   shipping - ExtendedAmountType
-  #   taxExempt - SOAP::SOAPBoolean
-  #   poNumber - SOAP::SOAPString
-  #   customer - CustomerDataType
-  #   billTo - CustomerAddressType
-  #   shipTo - NameAndAddressType
-  #   customerIP - SOAP::SOAPString
-  #   cardholderAuthentication - CcAuthenticationType
-  #   retail - TransRetailInfoType
-  #   transactionSettings - ArrayOfSetting
-  #   userFields - TransactionRequestType::UserFields
-  class TransactionRequestType
-    include ROXML
-    # inner class for member: userFields
-    # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}userFields
-    class UserFields < ::Array
-    end
   
-    xml_accessor :transactionType
-    xml_accessor :amount
-    xml_accessor :currencyCode
-    xml_accessor :payment, :as => PaymentType
-    xml_accessor :profile, :as => CustomerProfilePaymentType
-    xml_accessor :solution, :as => SolutionType
-    xml_accessor :authCode
-    xml_accessor :refTransId
-    xml_accessor :splitTenderId
-    xml_accessor :order, :as => OrderType
-    xml_accessor :lineItems, :as => [LineItemType]
-    xml_accessor :tax, :as => ExtendedAmountType
-    xml_accessor :duty, :as => ExtendedAmountType
-    xml_accessor :shipping, :as => ExtendedAmountType
-    xml_accessor :taxExempt
-    xml_accessor :poNumber
-    xml_accessor :customer, :as => CustomerDataType
-    xml_accessor :billTo, :as => CustomerAddressType
-    xml_accessor :shipTo, :as => NameAndAddressType
-    xml_accessor :customerIP
-    xml_accessor :cardholderAuthentication, :as => CcAuthenticationType
-    xml_accessor :retail, :as => TransRetailInfoType
-    xml_accessor :transactionSettings, :as => SettingType
-    xml_accessor :userFields, :as => TransactionRequestType::UserFields
   
-    def initialize(transactionType = nil, amount = nil, currencyCode = nil, payment = nil, profile = nil, solution = nil, authCode = nil, refTransId = nil, splitTenderId = nil, order = nil, lineItems = nil, tax = nil, duty = nil, shipping = nil, taxExempt = nil, poNumber = nil, customer = nil, billTo = nil, shipTo = nil, customerIP = nil, cardholderAuthentication = nil, retail = nil, transactionSettings = nil, userFields = nil)
-      @transactionType = transactionType
-      @amount = amount
-      @currencyCode = currencyCode
-      @payment = payment
-      @profile = profile
-      @solution = solution
-      @authCode = authCode
-      @refTransId = refTransId
-      @splitTenderId = splitTenderId
-      @order = order
-      @lineItems = lineItems
-      @tax = tax
-      @duty = duty
-      @shipping = shipping
-      @taxExempt = taxExempt
-      @poNumber = poNumber
-      @customer = customer
-      @billTo = billTo
-      @shipTo = shipTo
-      @customerIP = customerIP
-      @cardholderAuthentication = cardholderAuthentication
-      @retail = retail
-      @transactionSettings = transactionSettings
-      @userFields = userFields
-    end
-  end
   
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}KeyManagementScheme
-  #   dUKPT - KeyManagementScheme::DUKPT
-  class KeyManagementScheme
-    include ROXML
-    # inner class for member: DUKPT
-    # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}DUKPT
-    #   operation - OperationType
-    #   mode - KeyManagementScheme::DUKPT::Mode
-    #   deviceInfo - KeyManagementScheme::DUKPT::DeviceInfo
-    #   encryptedData - KeyManagementScheme::DUKPT::EncryptedData
-    class DUKPT
-      include ROXML
-      # inner class for member: Mode
-      # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}Mode
-      #   pIN - SOAP::SOAPString
-      #   data - SOAP::SOAPString
-      class Mode
-        include ROXML
-        xml_accessor :pIN
-        xml_accessor :data
-  
-        def initialize(pIN = nil, data = nil)
-          @pIN = pIN
-          @data = data
-        end
-      end
-  
-      # inner class for member: DeviceInfo
-      # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}DeviceInfo
-      #   description - SOAP::SOAPString
-      class DeviceInfo
-        include ROXML
-        xml_accessor :description
-  
-        def initialize(description = nil)
-          @description = description
-        end
-      end
-  
-      # inner class for member: EncryptedData
-      # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}EncryptedData
-      #   value - SOAP::SOAPString
-      class EncryptedData
-        include ROXML
-        xml_accessor :value
-  
-        def initialize(value = nil)
-          @value = value
-        end
-      end
-  
-      xml_accessor :operation
-      xml_accessor :mode
-      xml_accessor :deviceInfo
-      xml_accessor :encryptedData
-  
-      def initialize(operation = nil, mode = nil, deviceInfo = nil, encryptedData = nil)
-        @operation = operation
-        @mode = mode
-        @deviceInfo = deviceInfo
-        @encryptedData = encryptedData
-      end
-    end
-  
-    xml_accessor :dUKPT
-  
-    def initialize(dUKPT = nil)
-      @dUKPT = dUKPT
-    end
-  end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}KeyValue
-  #   encoding - EncodingType
-  #   encryptionAlgorithm - EncryptionAlgorithmType
-  #   scheme - KeyManagementScheme
-  class KeyValue
-    include ROXML
-    xml_accessor :encoding, :as => EncodingType
-    xml_accessor :encryptionAlgorithm, :as => EncryptionAlgorithmType
-    xml_accessor :scheme, :as => KeyManagementScheme
-  
-    def initialize(encoding = nil, encryptionAlgorithm = nil, scheme = nil)
-      @encoding = encoding
-      @encryptionAlgorithm = encryptionAlgorithm
-      @scheme = scheme
-    end
-  end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}KeyBlock
-  #   value - KeyValue
-  class KeyBlock
-    include ROXML
-    xml_accessor :value, :as => KeyValue
-  
-    def initialize(value = nil)
-      @value = value
-    end
-  end
   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}settingType
   #   settingName - SOAP::SOAPString
@@ -2058,8 +1995,8 @@ module AuthorizeNet::API
     xml_accessor :accountType
     xml_accessor :splitTenderId
     xml_accessor :prePaidCard
-    xml_accessor :messages, :as => [AuthorizeNet::API::TransactionResponse::Messages::Message]
-    xml_accessor :errors
+    xml_accessor :messages, :as => [Messages::Message]
+    xml_accessor :errors, :as => [Errors::Error]
     xml_accessor :splitTenderPayments
     xml_accessor :userFields
     xml_accessor :shipTo
@@ -2290,26 +2227,6 @@ module AuthorizeNet::API
     end
   end
   
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerProfilePaymentType
-  #   createProfile - SOAP::SOAPBoolean
-  #   customerProfileId - (any)
-  #   paymentProfile - PaymentProfile
-  #   shippingProfileId - (any)
-  class CustomerProfilePaymentType
-    include ROXML
-    xml_accessor :createProfile
-    xml_accessor :customerProfileId
-    xml_accessor :paymentProfile
-    xml_accessor :shippingProfileId
-  
-    def initialize(createProfile = nil, customerProfileId = nil, paymentProfile = nil, shippingProfileId = nil)
-      @createProfile = createProfile
-      @customerProfileId = customerProfileId
-      @paymentProfile = paymentProfile
-      @shippingProfileId = shippingProfileId
-    end
-  end
-  
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}paymentProfile
   #   paymentProfileId - (any)
   #   cardCode - (any)
@@ -2321,6 +2238,26 @@ module AuthorizeNet::API
     def initialize(paymentProfileId = nil, cardCode = nil)
       @paymentProfileId = paymentProfileId
       @cardCode = cardCode
+    end
+  end
+  
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerProfilePaymentType
+  #   createProfile - SOAP::SOAPBoolean
+  #   customerProfileId - (any)
+  #   paymentProfile - PaymentProfile
+  #   shippingProfileId - (any)
+  class CustomerProfilePaymentType
+    include ROXML
+    xml_accessor :createProfile
+    xml_accessor :customerProfileId
+    xml_accessor :paymentProfile, :as => PaymentProfile
+    xml_accessor :shippingProfileId
+  
+    def initialize(createProfile = nil, customerProfileId = nil, paymentProfile = nil, shippingProfileId = nil)
+      @createProfile = createProfile
+      @customerProfileId = customerProfileId
+      @paymentProfile = paymentProfile
+      @shippingProfileId = shippingProfileId
     end
   end
   
@@ -2475,24 +2412,6 @@ module AuthorizeNet::API
   class DeviceActivationEnum < ::String
     Activate = DeviceActivationEnum.new("Activate")
     Disable = DeviceActivationEnum.new("Disable")
-  end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}OperationType
-  class OperationType < ::String
-    DECRYPT = OperationType.new("DECRYPT")
-  end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}EncryptionAlgorithmType
-  class EncryptionAlgorithmType < ::String
-    AES = EncryptionAlgorithmType.new("AES")
-    RSA = EncryptionAlgorithmType.new("RSA")
-    TDES = EncryptionAlgorithmType.new("TDES")
-  end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}EncodingType
-  class EncodingType < ::String
-    Base64 = EncodingType.new("Base64")
-    Hex = EncodingType.new("Hex")
   end
   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}settingNameEnum
@@ -3468,47 +3387,7 @@ module AuthorizeNet::API
       @supportInformation = supportInformation
     end
   end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}createTransactionRequest
-  #   merchantAuthentication - MerchantAuthenticationType
-  #   refId - SOAP::SOAPString
-  #   transactionRequest - TransactionRequestType
-  class CreateTransactionRequest 
-    include ROXML
-    xml_accessor :merchantAuthentication, :as => MerchantAuthenticationType
-    xml_accessor :refId
-    xml_accessor :transactionRequest, :as => TransactionRequestType
-  
-    def initialize(merchantAuthentication = nil, refId = nil, transactionRequest = nil)
-      @merchantAuthentication = merchantAuthentication
-      @refId = refId
-      @transactionRequest = transactionRequest
-    end
-  end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}createTransactionResponse
-  #   refId - SOAP::SOAPString
-  #   messages - MessagesType
-  #   sessionToken - SOAP::SOAPString
-  #   transactionResponse - TransactionResponse
-  #   profileResponse - CreateProfileResponse
-  class CreateTransactionResponse 
-    include ROXML
-    xml_accessor :refId
-    xml_accessor :messages, :as => MessagesType
-    xml_accessor :sessionToken
-    xml_accessor :transactionResponse, :as => TransactionResponse
-    xml_accessor :profileResponse
-  
-    def initialize(refId = nil, messages = nil, sessionToken = nil, transactionResponse = nil, profileResponse = nil)
-      @refId = refId
-      @messages = messages
-      @sessionToken = sessionToken
-      @transactionResponse = transactionResponse
-      @profileResponse = profileResponse
-    end
-  end
-  
+   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}getBatchStatisticsRequest
   #   merchantAuthentication - MerchantAuthenticationType
   #   refId - SOAP::SOAPString
@@ -3926,6 +3805,131 @@ module AuthorizeNet::API
       @settlementStateEnum = settlementStateEnum
       @transactionStatusEnum = transactionStatusEnum
       @transactionTypeEnum = transactionTypeEnum
+    end
+  end
+  
+# {AnetApi/xml/v1/schema/AnetApiSchema.xsd}transactionRequestType
+  #   transactionType - SOAP::SOAPString
+  #   amount - SOAP::SOAPDecimal
+  #   currencyCode - SOAP::SOAPString
+  #   payment - PaymentType
+  #   profile - CustomerProfilePaymentType
+  #   solution - SolutionType
+  #   authCode - SOAP::SOAPString
+  #   refTransId - SOAP::SOAPString
+  #   splitTenderId - SOAP::SOAPString
+  #   order - OrderType
+  #   lineItems - ArrayOfLineItem
+  #   tax - ExtendedAmountType
+  #   duty - ExtendedAmountType
+  #   shipping - ExtendedAmountType
+  #   taxExempt - SOAP::SOAPBoolean
+  #   poNumber - SOAP::SOAPString
+  #   customer - CustomerDataType
+  #   billTo - CustomerAddressType
+  #   shipTo - NameAndAddressType
+  #   customerIP - SOAP::SOAPString
+  #   cardholderAuthentication - CcAuthenticationType
+  #   retail - TransRetailInfoType
+  #   transactionSettings - ArrayOfSetting
+  #   userFields - TransactionRequestType::UserFields
+  class TransactionRequestType
+    include ROXML
+    # inner class for member: userFields
+    # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}userFields
+    class UserFields < ::Array
+    end
+  
+    xml_accessor :transactionType
+    xml_accessor :amount
+    xml_accessor :currencyCode
+    xml_accessor :payment, :as => PaymentType
+    xml_accessor :profile, :as => CustomerProfilePaymentType
+    xml_accessor :solution, :as => SolutionType
+    xml_accessor :authCode
+    xml_accessor :refTransId
+    xml_accessor :splitTenderId
+    xml_accessor :order, :as => OrderType
+    xml_accessor :lineItems, :as => [LineItemType]
+    xml_accessor :tax, :as => ExtendedAmountType
+    xml_accessor :duty, :as => ExtendedAmountType
+    xml_accessor :shipping, :as => ExtendedAmountType
+    xml_accessor :taxExempt
+    xml_accessor :poNumber
+    xml_accessor :customer, :as => CustomerDataType
+    xml_accessor :billTo, :as => CustomerAddressType
+    xml_accessor :shipTo, :as => NameAndAddressType
+    xml_accessor :customerIP
+    xml_accessor :cardholderAuthentication, :as => CcAuthenticationType
+    xml_accessor :retail, :as => TransRetailInfoType
+    xml_accessor :transactionSettings, :as => SettingType
+    xml_accessor :userFields#, :as => TransactionRequestType::UserFields
+  
+    def initialize(transactionType = nil, amount = nil, currencyCode = nil, payment = nil, profile = nil, solution = nil, authCode = nil, refTransId = nil, splitTenderId = nil, order = nil, lineItems = nil, tax = nil, duty = nil, shipping = nil, taxExempt = nil, poNumber = nil, customer = nil, billTo = nil, shipTo = nil, customerIP = nil, cardholderAuthentication = nil, retail = nil, transactionSettings = nil, userFields = nil)
+      @transactionType = transactionType
+      @amount = amount
+      @currencyCode = currencyCode
+      @payment = payment
+      @profile = profile
+      @solution = solution
+      @authCode = authCode
+      @refTransId = refTransId
+      @splitTenderId = splitTenderId
+      @order = order
+      @lineItems = lineItems
+      @tax = tax
+      @duty = duty
+      @shipping = shipping
+      @taxExempt = taxExempt
+      @poNumber = poNumber
+      @customer = customer
+      @billTo = billTo
+      @shipTo = shipTo
+      @customerIP = customerIP
+      @cardholderAuthentication = cardholderAuthentication
+      @retail = retail
+      @transactionSettings = transactionSettings
+      @userFields = userFields
+    end
+  end
+  
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}createTransactionRequest
+  #   merchantAuthentication - MerchantAuthenticationType
+  #   refId - SOAP::SOAPString
+  #   transactionRequest - TransactionRequestType
+  class CreateTransactionRequest 
+    include ROXML
+    xml_accessor :merchantAuthentication, :as => MerchantAuthenticationType
+    xml_accessor :refId
+    xml_accessor :transactionRequest, :as => TransactionRequestType
+  
+    def initialize(merchantAuthentication = nil, refId = nil, transactionRequest = nil)
+      @merchantAuthentication = merchantAuthentication
+      @refId = refId
+      @transactionRequest = transactionRequest
+    end
+  end
+  
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}createTransactionResponse
+  #   refId - SOAP::SOAPString
+  #   messages - MessagesType
+  #   sessionToken - SOAP::SOAPString
+  #   transactionResponse - TransactionResponse
+  #   profileResponse - CreateProfileResponse
+  class CreateTransactionResponse 
+    include ROXML
+    xml_accessor :refId
+    xml_accessor :messages, :as => MessagesType
+    xml_accessor :sessionToken
+    xml_accessor :transactionResponse, :as => TransactionResponse
+    xml_accessor :profileResponse
+  
+    def initialize(refId = nil, messages = nil, sessionToken = nil, transactionResponse = nil, profileResponse = nil)
+      @refId = refId
+      @messages = messages
+      @sessionToken = sessionToken
+      @transactionResponse = transactionResponse
+      @profileResponse = profileResponse
     end
   end
 end

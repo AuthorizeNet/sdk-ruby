@@ -5,7 +5,6 @@ module AuthorizeNet::API
        super
     end
     
-    # An internal method that builds the POST body, submits it to the gateway, and constructs a Response object with the response.
     def make_request(request,responseClass)
      unless responseClass.nil? or request.nil?
        begin
