@@ -14,10 +14,6 @@ module AuthorizeNet::API
   class ArrayOfString < ::Array
   end
   
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfLineItem
-  class ArrayOfLineItem < ::Array
-  end
-  
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfBatchStatisticType
   class ArrayOfBatchStatisticType < ::Array
   end
@@ -704,7 +700,7 @@ module AuthorizeNet::API
     xml_accessor :type
     xml_accessor :id
     xml_accessor :email
-    xml_accessor :driversLicense
+    xml_accessor :driversLicense, :as => DriversLicenseType
     xml_accessor :taxId
   
     def initialize(type = nil, id = nil, email = nil, driversLicense = nil, taxId = nil)
@@ -903,11 +899,7 @@ module AuthorizeNet::API
       @timestamp = timestamp
     end
   end
-  
-  
-  
-  
-  
+    
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}settingType
   #   settingName - SOAP::SOAPString
   #   settingValue - SOAP::SOAPString
@@ -919,6 +911,14 @@ module AuthorizeNet::API
     def initialize(settingName = nil, settingValue = nil)
       @settingName = settingName
       @settingValue = settingValue
+    end
+  end
+  
+  class Settings
+    include ROXML
+    xml_accessor :settings, :as => [SettingType]
+    def initialize(settings = [])
+      @settings = settings
     end
   end
   
@@ -944,6 +944,15 @@ module AuthorizeNet::API
     def initialize(name = nil, value = nil)
       @name = name
       @value = value
+    end
+  end
+  
+  class UserFields
+    include ROXML
+    xml_accessor :userFields, :as => [UserField]
+    
+    def initialize(userFields = [])
+      @userFields = userFields
     end
   end
   
@@ -1128,7 +1137,7 @@ module AuthorizeNet::API
   #   description - SOAP::SOAPString
   class ExtendedAmountType
     include ROXML
-    xml_accessor :amount
+    xml_accessor :amount, :as => BigDecimal
     xml_accessor :name
     xml_accessor :description
   
@@ -1151,8 +1160,8 @@ module AuthorizeNet::API
     xml_accessor :itemId
     xml_accessor :name
     xml_accessor :description
-    xml_accessor :quantity
-    xml_accessor :unitPrice
+    xml_accessor :quantity, :as => BigDecimal
+    xml_accessor :unitPrice, :as => BigDecimal
     xml_accessor :taxable
   
     def initialize(itemId = nil, name = nil, description = nil, quantity = nil, unitPrice = nil, taxable = nil)
@@ -1162,6 +1171,16 @@ module AuthorizeNet::API
       @quantity = quantity
       @unitPrice = unitPrice
       @taxable = taxable
+    end
+  end
+  
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfLineItem
+  class LineItems
+    include ROXML
+    xml_accessor :lineItems, :as => [LineItemType]
+    
+    def initialize(lineItems = [])
+     @lineItems = lineItems
     end
   end
   
@@ -3834,14 +3853,9 @@ module AuthorizeNet::API
   #   transactionSettings - ArrayOfSetting
   #   userFields - TransactionRequestType::UserFields
   class TransactionRequestType
-    include ROXML
-    # inner class for member: userFields
-    # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}userFields
-    class UserFields < ::Array
-    end
-  
+    include ROXML 
     xml_accessor :transactionType
-    xml_accessor :amount
+    xml_accessor :amount, :as => BigDecimal
     xml_accessor :currencyCode
     xml_accessor :payment, :as => PaymentType
     xml_accessor :profile, :as => CustomerProfilePaymentType
@@ -3850,7 +3864,7 @@ module AuthorizeNet::API
     xml_accessor :refTransId
     xml_accessor :splitTenderId
     xml_accessor :order, :as => OrderType
-    xml_accessor :lineItems, :as => [LineItemType]
+    xml_accessor :lineItems, :as => LineItems
     xml_accessor :tax, :as => ExtendedAmountType
     xml_accessor :duty, :as => ExtendedAmountType
     xml_accessor :shipping, :as => ExtendedAmountType
@@ -3862,8 +3876,8 @@ module AuthorizeNet::API
     xml_accessor :customerIP
     xml_accessor :cardholderAuthentication, :as => CcAuthenticationType
     xml_accessor :retail, :as => TransRetailInfoType
-    xml_accessor :transactionSettings, :as => SettingType
-    xml_accessor :userFields#, :as => TransactionRequestType::UserFields
+    xml_accessor :transactionSettings, :as => Settings
+    xml_accessor :userFields, :as => UserFields
   
     def initialize(transactionType = nil, amount = nil, currencyCode = nil, payment = nil, profile = nil, solution = nil, authCode = nil, refTransId = nil, splitTenderId = nil, order = nil, lineItems = nil, tax = nil, duty = nil, shipping = nil, taxExempt = nil, poNumber = nil, customer = nil, billTo = nil, shipTo = nil, customerIP = nil, cardholderAuthentication = nil, retail = nil, transactionSettings = nil, userFields = nil)
       @transactionType = transactionType

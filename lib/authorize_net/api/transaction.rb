@@ -5,9 +5,8 @@ module AuthorizeNet::API
        super
     end
        
-    def create_transaction(request)
-      @type = Type::API_CREATE_TRANSACTION      
-      make_request(request,CreateTransactionResponse)
+    def create_transaction(request)  
+      make_request(request,CreateTransactionResponse,Type::API_CREATE_TRANSACTION)
     end
 
   end

@@ -5,10 +5,10 @@ module AuthorizeNet::API
        super
     end
     
-    def make_request(request,responseClass)
+    def make_request(request,responseClass,type)
      unless responseClass.nil? or request.nil?
        begin
-        @xml = serialize(request)
+        @xml = serialize(request,type)
         respXml = send_request(@xml)
         @response = deserialize(respXml.body,responseClass) 
        rescue Exception => msg  
@@ -17,12 +17,12 @@ module AuthorizeNet::API
      end
     end
     
-    def serialize(object)
+    def serialize(object,type)
       doc = Nokogiri::XML::Document.new
       doc.root = object.to_xml     
      
       builder = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |x|
-        x.send(@type.to_sym, :xmlns => XML_NAMESPACE) {
+        x.send(type.to_sym, :xmlns => XML_NAMESPACE) {
           x.merchantAuthentication {
             x.name @api_login_id
             x.transactionKey @api_transaction_key
