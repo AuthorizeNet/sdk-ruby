@@ -8,6 +8,8 @@ describe Transaction do
       creds = YAML.load_file(File.dirname(__FILE__) + "/credentials.yml")
       @api_key = creds['api_transaction_key']
       @api_login = creds['api_login_id']
+      @gateway = :sandbox
+      @transaction = Transaction.new(@api_login, @api_key, :gateway => @gateway)
     rescue Errno::ENOENT => e
       @api_key = "TEST"
       @api_login = "TEST"
@@ -16,24 +18,14 @@ describe Transaction do
   end
 
   before do
-    @gateway = :sandbox
     create_transaction_request
     create_transaction_response
   end
-  
-  it "should support instantiation" do
-    Transaction.new(@api_login, @api_key).should be_instance_of(Transaction)
-  end
-  
+   
   it "should serialize and deserialize CreateTransactionRequest" do
-    transaction = Transaction.new(@api_login, @api_key, :gateway => @gateway)
-    
-    #serialize request to xml
-    xmlText = transaction.serialize(@createTransactionRequest,Transaction::Type::API_CREATE_TRANSACTION)
-    
-    #deserialize back to object
     expected = @createTransactionRequest.transactionRequest
-    actual = CreateTransactionRequest.from_xml(xmlText).transactionRequest    
+
+    actual = get_actual(@createTransactionRequest,CreateTransactionRequest,Transaction::Type::API_CREATE_TRANSACTION).transactionRequest 
      
     #validate all properties 
     expected.amount.should == actual.amount
@@ -148,12 +140,7 @@ describe Transaction do
   it "should serialize and deserialize CreateTransactionResponse" do 
     expected = @createTransactionResponse.transactionResponse
     
-    transaction = Transaction.new(@api_login, @api_key, :gateway => @gateway)
-       
-    #serialize response object to xml
-    xmlText = transaction.serialize(@createTransactionResponse,"createTransactionResponse")
-  
-    actResponse = CreateTransactionResponse.from_xml(xmlText)
+    actResponse = get_actual(@createTransactionResponse,CreateTransactionResponse,"createTransactionResponse")
     
     actual = actResponse.transactionResponse
     
@@ -238,6 +225,78 @@ describe Transaction do
     @createTransactionResponse.profileResponse.customerShippingAddressIdList.numericStrings.each_with_index do |item,index|
       item.should == actResponse.profileResponse.customerShippingAddressIdList.numericStrings[index]
     end
+  end
+  
+  it "should serialize and deserialize BankAccountType" do
+    expected = BankAccountType.new("123","123","123","name",EcheckTypeEnum::ARC,"123","123")
+    actual = get_actual(expected, BankAccountType, "bankAccountType")
+    
+    expected.accountType.should == actual.accountType
+    expected.routingNumber.should == actual.routingNumber
+    expected.accountNumber.should == actual.accountNumber
+    expected.nameOnAccount.should == actual.nameOnAccount
+    expected.echeckType.should == actual.echeckType
+    expected.bankName.should == actual.bankName
+    expected.checkNumber.should == actual.checkNumber
+  end 
+ 
+  it "should serialize and deserialize CreditCardTrackType" do
+    expected = CreditCardTrackType.new("track1","track2")
+    actual = get_actual(expected, CreditCardTrackType, "creditCardTrackType")
+    
+    expected.track1.should == actual.track1
+    expected.track2.should == actual.track2
+  end
+  
+  it "should serialize and deserialize PayPalType" do
+    expected = PayPalType.new("123","123","123","123","123","123")
+    actual = get_actual(expected, PayPalType, "payPalType")
+    
+    expected.successUrl.should == actual.successUrl
+    expected.cancelUrl.should == actual.cancelUrl
+    expected.paypalLc.should == actual.paypalLc
+    expected.paypalHdrImg.should == actual.paypalHdrImg
+    expected.paypalPayflowcolor.should == actual.paypalPayflowcolor
+    expected.payerID.should == actual.payerID
+  end
+  
+  it "should serialize and deserialize OpaqueDataType" do
+    expected = OpaqueDataType.new("dataDescriptor","dataValue")
+    actual = get_actual(expected, OpaqueDataType, "opaqueDataType")
+    
+    expected.dataDescriptor.should == actual.dataDescriptor
+    expected.dataValue.should == actual.dataValue
+    
+  end
+  
+  it "should serialize and deserialize EncryptedTrackDataType" do
+    expected = EncryptedTrackDataType.new
+    expected.formOfPayment = KeyBlock.new
+    expected.formOfPayment.value = KeyValue.new
+    expected.formOfPayment.value.encoding = EncodingType::Base64
+    expected.formOfPayment.value.encryptionAlgorithm = EncryptionAlgorithmType::TDES
+    expected.formOfPayment.value.scheme = KeyManagementScheme.new
+    expected.formOfPayment.value.scheme.dUKPT = KeyManagementScheme::DUKPT.new
+    
+    expected.formOfPayment.value.scheme.dUKPT.operation = OperationType::DECRYPT
+    expected.formOfPayment.value.scheme.dUKPT.mode = KeyManagementScheme::DUKPT::Mode.new("1234","1234")
+    expected.formOfPayment.value.scheme.dUKPT.deviceInfo = KeyManagementScheme::DUKPT::DeviceInfo.new("description")
+    expected.formOfPayment.value.scheme.dUKPT.encryptedData = KeyManagementScheme::DUKPT::EncryptedData.new("bla")
+    
+    actual = get_actual(expected, EncryptedTrackDataType, "encryptedTrackDataType")
+    
+    expected.formOfPayment.value.encoding.should == actual.formOfPayment.value.encoding
+    expected.formOfPayment.value.encryptionAlgorithm.should == actual.formOfPayment.value.encryptionAlgorithm
+    expected.formOfPayment.value.scheme.dUKPT.operation.should == actual.formOfPayment.value.scheme.dUKPT.operation
+    expected.formOfPayment.value.scheme.dUKPT.mode.pIN.should == actual.formOfPayment.value.scheme.dUKPT.mode.pIN
+    expected.formOfPayment.value.scheme.dUKPT.mode.data.should == actual.formOfPayment.value.scheme.dUKPT.mode.data
+    expected.formOfPayment.value.scheme.dUKPT.deviceInfo.description.should == actual.formOfPayment.value.scheme.dUKPT.deviceInfo.description
+    expected.formOfPayment.value.scheme.dUKPT.encryptedData.value.should == actual.formOfPayment.value.scheme.dUKPT.encryptedData.value
+  end
+
+  def get_actual(expected, className, topElement)
+    xmlText = @transaction.serialize(expected,topElement)
+    className.from_xml(xmlText)
   end
   
   def create_transaction_request
