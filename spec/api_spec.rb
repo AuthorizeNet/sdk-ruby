@@ -17,76 +17,15 @@ describe Transaction do
 
   before do
     @gateway = :sandbox
-    @createTransactionRequest = CreateTransactionRequest.new()
-    
-    #all simple props
-    @createTransactionRequest.transactionRequest = TransactionRequestType.new()
-    @createTransactionRequest.transactionRequest.amount = 37.55
-    @createTransactionRequest.transactionRequest.currencyCode = "USD"
-    @createTransactionRequest.transactionRequest.authCode = "1546"
-    @createTransactionRequest.transactionRequest.refTransId = "123"
-    @createTransactionRequest.transactionRequest.splitTenderId = "123"
-    @createTransactionRequest.transactionRequest.taxExempt = true
-    @createTransactionRequest.transactionRequest.poNumber = "12345"
-    @createTransactionRequest.transactionRequest.customerIP = "12345"
-    
-    @createTransactionRequest.transactionRequest.payment = PaymentType.new()
-    @createTransactionRequest.transactionRequest.payment.creditCard = CreditCardType.new('4111111111111111','0515','123','123') 
-    
-    @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
-    
-    #CustomerProfilePaymentType
-    @createTransactionRequest.transactionRequest.profile = CustomerProfilePaymentType.new()
-    @createTransactionRequest.transactionRequest.profile.createProfile = true
-    @createTransactionRequest.transactionRequest.profile.customerProfileId = '123abc'
-    @createTransactionRequest.transactionRequest.profile.shippingProfileId = '123abc'
-    @createTransactionRequest.transactionRequest.profile.paymentProfile = PaymentProfile.new("12345rr","456da")
-    
-    #Solution Type
-    @createTransactionRequest.transactionRequest.solution = SolutionType.new("id123","name123")
-    
-    #OrderType
-    @createTransactionRequest.transactionRequest.order = OrderType.new("invoiceNumber123","description123")
-    
-    #LineItemType
-    @createTransactionRequest.transactionRequest.lineItems = LineItems.new([LineItemType.new("itemId123","name123","description123",123,45.67,true),
-                                            LineItemType.new("itemId456","name456","description456",456,35.67,false)])
-    #ExtendedAmountType                                        
-    @createTransactionRequest.transactionRequest.tax = ExtendedAmountType.new(11.32,"taxName","taxDescription")
-    @createTransactionRequest.transactionRequest.duty = ExtendedAmountType.new(12.35,"dutyName","dutyDescription")
-    @createTransactionRequest.transactionRequest.shipping = ExtendedAmountType.new(5.32,"shippingName","shippingDescription")
-    
-    #CustomerDataType
-    driversLicense = DriversLicenseType.new("DrivLicenseNumber123","WA","05/05/1990")
-    @createTransactionRequest.transactionRequest.customer = CustomerDataType.new(CustomerTypeEnum::Individual,"custId1",
-                                                  "a@a.com",driversLicense,"1234567")
-    
-    #BillTo                                              
-    @createTransactionRequest.transactionRequest.billTo = CustomerAddressType.new("firstNameBT","lastNameBT","companyBT","addressBT","New York","NY",
-          "10010","USA","2121111111","2121111111")
-    #ShipTo                                              
-    @createTransactionRequest.transactionRequest.shipTo = NameAndAddressType.new("firstNameST","lastNameST","companyST","addressST","New York","NY",
-          "10010","USA")
-    
-    #CardHolderAuthentication
-    @createTransactionRequest.transactionRequest.cardholderAuthentication = CcAuthenticationType.new("authenticationIndicator1","cardholderAuthenticationValue1")
-    
-    #Retail
-    @createTransactionRequest.transactionRequest.retail  = TransRetailInfoType.new("some market type","some device type")
-    
-    #TransactionSettings
-    @createTransactionRequest.transactionRequest.transactionSettings = Settings.new([SettingType.new("setting1","value1"),
-                                                                   SettingType.new("setting2","value2")])
-    
-    #UserFields
-    @createTransactionRequest.transactionRequest.userFields = UserFields.new([UserField.new("field1","fieldValue1"),UserField.new("field2","fieldValue2")])
+    create_transaction_request
+    create_transaction_response
   end
   
   it "should support instantiation" do
     Transaction.new(@api_login, @api_key).should be_instance_of(Transaction)
   end
   
-  it "should support serialization and deserialization" do
+  it "should serialize and deserialize CreateTransactionRequest" do
     transaction = Transaction.new(@api_login, @api_key, :gateway => @gateway)
     
     #serialize request to xml
@@ -204,5 +143,189 @@ describe Transaction do
       item.name.should == actual.userFields.userFields[index].name
       item.value.should == actual.userFields.userFields[index].value
     end
+  end
+  
+  it "should serialize and deserialize CreateTransactionResponse" do 
+    expected = @createTransactionResponse.transactionResponse
+    
+    transaction = Transaction.new(@api_login, @api_key, :gateway => @gateway)
+       
+    #serialize response object to xml
+    xmlText = transaction.serialize(@createTransactionResponse,"createTransactionResponse")
+   
+    actResponse = CreateTransactionResponse.from_xml(xmlText)
+    
+    actual = actResponse.transactionResponse
+    
+    #validate
+    @createTransactionResponse.refId.should == actResponse.refId
+    @createTransactionResponse.sessionToken.should == actResponse.sessionToken
+    @createTransactionResponse.messages.resultCode.should == actResponse.messages.resultCode
+    @createTransactionResponse.messages.messages.each_with_index do |item,index|
+      item.code.should == actResponse.messages.messages[index].code
+      item.text.should == actResponse.messages.messages[index].text
+    end
+
+    expected.responseCode.should == actual.responseCode
+    expected.rawResponseCode.should == actual.rawResponseCode
+    expected.authCode.should == actual.authCode
+    expected.avsResultCode.should == actual.avsResultCode
+    expected.cvvResultCode.should == actual.cvvResultCode
+    expected.cavvResultCode.should == actual.cavvResultCode
+    expected.transId.should == actual.transId
+    expected.refTransID.should == actual.refTransID
+    expected.transHash.should == actual.transHash
+    expected.testRequest.should == actual.testRequest
+    expected.accountNumber.should == actual.accountNumber
+    expected.accountType.should == actual.accountType
+    expected.splitTenderId.should == actual.splitTenderId
+=begin    
+    tResp.prePaidCard = TransactionResponse::PrePaidCard.new("123.33","123.33","123.33")
+    tResp.messages = TransactionResponse::Messages.new
+    tResp.messages.messages = [TransactionResponse::Messages::Message.new("code1","descr1"),
+                               TransactionResponse::Messages::Message.new("code1","descr1")]
+        
+    tResp.errors = TransactionResponse::Errors.new
+    tResp.errors.errors = [TransactionResponse::Errors::Error.new("code1","descr1"),
+                           TransactionResponse::Errors::Error.new("errorCode1","errorDescr1")]
+                           
+    tResp.splitTenderPayments = TransactionResponse::SplitTenderPayments.new
+    tResp.splitTenderPayments.splitTenderPayments = 
+          [
+             TransactionResponse::SplitTenderPayments::SplitTenderPayment.new("transId1","responseCode1","responseToCustomer1",
+               "authCode1", "accountNumber1", "accountType1", "requestedAmount1", "approvedAmount1", "balanceOnCard1"),
+            TransactionResponse::SplitTenderPayments::SplitTenderPayment.new("transId12","responseCode12","responseToCustomer12",
+                           "authCode12", "accountNumber12", "accountType12", "requestedAmount12", "approvedAmount12", 
+                           "balanceOnCard12") ]
+    
+    tResp.userFields = UserFields.new([UserField.new("field1","fieldValue1"),UserField.new("field2","fieldValue2")])
+    
+    tResp.shipTo = shipTo = NameAndAddressType.new("firstNameST","lastNameST","companyST","addressST","New York","NY",
+                                                                      "10010","USA")
+    tResp.secureAcceptance = TransactionResponse::SecureAcceptance.new("secureAcceptanceUrl1","payerID1")
+
+    #@createTransactionResponse.profileResponse
+=end
+     
+  end
+  
+  def create_transaction_request
+    #create transaction request
+    @createTransactionRequest = CreateTransactionRequest.new
+    
+    #all simple props
+    @createTransactionRequest.transactionRequest = TransactionRequestType.new
+    tReq = @createTransactionRequest.transactionRequest
+    tReq.amount = 37.55
+    tReq.currencyCode = "USD"
+    tReq.authCode = "1546"
+    tReq.refTransId = "123"
+    tReq.splitTenderId = "123"
+    tReq.taxExempt = true
+    tReq.poNumber = "12345"
+    tReq.customerIP = "12345"
+    
+    tReq.payment = PaymentType.new
+    tReq.payment.creditCard = CreditCardType.new('4111111111111111','0515','123','123') 
+    
+    tReq.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+    
+    #CustomerProfilePaymentType
+    tReq.profile = CustomerProfilePaymentType.new
+    tReq.profile.createProfile = true
+    tReq.profile.customerProfileId = '123abc'
+    tReq.profile.shippingProfileId = '123abc'
+    tReq.profile.paymentProfile = PaymentProfile.new("12345rr","456da")
+    
+    #Solution Type
+    tReq.solution = SolutionType.new("id123","name123")
+    
+    #OrderType
+    tReq.order = OrderType.new("invoiceNumber123","description123")
+    
+    #LineItemType
+    tReq.lineItems = LineItems.new([LineItemType.new("itemId123","name123","description123",123,45.67,true),
+                                            LineItemType.new("itemId456","name456","description456",456,35.67,false)])
+    #ExtendedAmountType                                        
+    tReq.tax = ExtendedAmountType.new(11.32,"taxName","taxDescription")
+    tReq.duty = ExtendedAmountType.new(12.35,"dutyName","dutyDescription")
+    tReq.shipping = ExtendedAmountType.new(5.32,"shippingName","shippingDescription")
+    
+    #CustomerDataType
+    driversLicense = DriversLicenseType.new("DrivLicenseNumber123","WA","05/05/1990")
+    tReq.customer = CustomerDataType.new(CustomerTypeEnum::Individual,"custId1",
+                                                  "a@a.com",driversLicense,"1234567")
+    
+    #BillTo                                              
+    tReq.billTo = CustomerAddressType.new("firstNameBT","lastNameBT","companyBT","addressBT","New York","NY",
+          "10010","USA","2121111111","2121111111")
+    #ShipTo                                              
+    tReq.shipTo = NameAndAddressType.new("firstNameST","lastNameST","companyST","addressST","New York","NY",
+          "10010","USA")
+    
+    #CardHolderAuthentication
+    tReq.cardholderAuthentication = CcAuthenticationType.new("authenticationIndicator1","cardholderAuthenticationValue1")
+    
+    #Retail
+    tReq.retail  = TransRetailInfoType.new("some market type","some device type")
+    
+    #TransactionSettings
+    tReq.transactionSettings = Settings.new([SettingType.new("setting1","value1"),
+                                                                   SettingType.new("setting2","value2")])
+    
+    #UserFields
+    tReq.userFields = UserFields.new([UserField.new("field1","fieldValue1"),UserField.new("field2","fieldValue2")])
+  end
+  
+  def create_transaction_response
+    @createTransactionResponse = CreateTransactionResponse.new
+    @createTransactionResponse.refId = "someRefId123"
+    @createTransactionResponse.sessionToken = "some session token"
+    @createTransactionResponse.messages = MessagesType.new
+    @createTransactionResponse.messages.resultCode = MessageTypeEnum::Ok
+    @createTransactionResponse.messages.messages = [MessagesType::Message.new("code1","text1"),
+                                                    MessagesType::Message.new("code2","text2") ]
+    
+    @createTransactionResponse.transactionResponse = TransactionResponse.new
+    tResp = @createTransactionResponse.transactionResponse
+    tResp.responseCode = "123"
+    tResp.rawResponseCode = "123"
+    tResp.authCode = "123"
+    tResp.avsResultCode = "123"
+    tResp.cvvResultCode = "123"
+    tResp.cavvResultCode = "123"
+    tResp.transId = "123"
+    tResp.refTransID = "123"
+    tResp.transHash = "123"
+    tResp.testRequest = "123"
+    tResp.accountNumber = "123"
+    tResp.accountType = "123"
+    tResp.splitTenderId = "123"
+    
+    tResp.prePaidCard = TransactionResponse::PrePaidCard.new("123.33","123.33","123.33")
+    tResp.messages = TransactionResponse::Messages.new
+    tResp.messages.messages = [TransactionResponse::Messages::Message.new("code1","descr1"),
+                               TransactionResponse::Messages::Message.new("code1","descr1")]
+        
+    tResp.errors = TransactionResponse::Errors.new
+    tResp.errors.errors = [TransactionResponse::Errors::Error.new("code1","descr1"),
+                           TransactionResponse::Errors::Error.new("errorCode1","errorDescr1")]
+                           
+    tResp.splitTenderPayments = TransactionResponse::SplitTenderPayments.new
+    tResp.splitTenderPayments.splitTenderPayments = 
+          [
+             TransactionResponse::SplitTenderPayments::SplitTenderPayment.new("transId1","responseCode1","responseToCustomer1",
+               "authCode1", "accountNumber1", "accountType1", "requestedAmount1", "approvedAmount1", "balanceOnCard1"),
+            TransactionResponse::SplitTenderPayments::SplitTenderPayment.new("transId12","responseCode12","responseToCustomer12",
+                           "authCode12", "accountNumber12", "accountType12", "requestedAmount12", "approvedAmount12", 
+                           "balanceOnCard12") ]
+    
+    tResp.userFields = UserFields.new([UserField.new("field1","fieldValue1"),UserField.new("field2","fieldValue2")])
+    
+    tResp.shipTo = shipTo = NameAndAddressType.new("firstNameST","lastNameST","companyST","addressST","New York","NY",
+                                                                      "10010","USA")
+    tResp.secureAcceptance = TransactionResponse::SecureAcceptance.new("secureAcceptanceUrl1","payerID1")
+
+    #@createTransactionResponse.profileResponse
   end
 end

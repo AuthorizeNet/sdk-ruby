@@ -1905,7 +1905,8 @@ module AuthorizeNet::API
   
     # inner class for member: messages
     # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}messages
-    class Messages < ::Array
+    class Messages
+      include ROXML
       # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}message
       #   code - SOAP::SOAPString
       #   description - SOAP::SOAPString
@@ -1919,12 +1920,18 @@ module AuthorizeNet::API
           @description = description
         end
       end
+      
+      xml_accessor :messages, :as => [Message]
+      
+      def initialize(messages = [])
+        @messages = messages
+      end
     end
   
     # inner class for member: errors
     # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}errors
-    class Errors < ::Array
-  
+    class Errors
+      include ROXML
       # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}error
       #   errorCode - SOAP::SOAPString
       #   errorText - SOAP::SOAPString
@@ -1938,11 +1945,17 @@ module AuthorizeNet::API
           @errorText = errorText
         end
       end
+      
+      xml_accessor :errors, :as => [Error]
+      
+      def initialize(errors = [])
+        @errors = errors
+      end
     end
   
     # inner class for member: splitTenderPayments
     # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}splitTenderPayments
-    class SplitTenderPayments < ::Array
+    class SplitTenderPayments      
       include ROXML
       # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}splitTenderPayment
       #   transId - SOAP::SOAPString
@@ -1978,13 +1991,14 @@ module AuthorizeNet::API
           @balanceOnCard = balanceOnCard
         end
       end
+      
+      xml_accessor :splitTenderPayments, :as => [SplitTenderPayment]
+      
+      def initialize(splitTenderPayments = [])
+        @splitTenderPayments = splitTenderPayments
+      end
     end
-  
-    # inner class for member: userFields
-    # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}userFields
-    class UserFields < ::Array
-    end
-  
+   
     # inner class for member: secureAcceptance
     # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}secureAcceptance
     #   secureAcceptanceUrl - SOAP::SOAPString
@@ -2013,13 +2027,13 @@ module AuthorizeNet::API
     xml_accessor :accountNumber
     xml_accessor :accountType
     xml_accessor :splitTenderId
-    xml_accessor :prePaidCard
-    xml_accessor :messages, :as => [Messages::Message]
-    xml_accessor :errors, :as => [Errors::Error]
-    xml_accessor :splitTenderPayments
-    xml_accessor :userFields
-    xml_accessor :shipTo
-    xml_accessor :secureAcceptance
+    xml_accessor :prePaidCard, :as => PrePaidCard
+    xml_accessor :messages, :as => Messages
+    xml_accessor :errors, :as => Errors
+    xml_accessor :splitTenderPayments, :as => SplitTenderPayments
+    xml_accessor :userFields, :as => UserFields
+    xml_accessor :shipTo, :as => NameAndAddressType
+    xml_accessor :secureAcceptance, :as => SecureAcceptance
   
     def initialize(responseCode = nil, rawResponseCode = nil, authCode = nil, avsResultCode = nil, cvvResultCode = nil, cavvResultCode = nil, transId = nil, refTransID = nil, transHash = nil, testRequest = nil, accountNumber = nil, accountType = nil, splitTenderId = nil, prePaidCard = nil, messages = nil, errors = nil, splitTenderPayments = nil, userFields = nil, shipTo = nil, secureAcceptance = nil)
       @responseCode = responseCode
@@ -2085,8 +2099,8 @@ module AuthorizeNet::API
       end
     end
   
-    xml_accessor :resultCode#, :as => MessageTypeEnum
-    xml_accessor :message, :as => [MessagesType::Message]
+    xml_accessor :resultCode
+    xml_accessor :messages, :as => [MessagesType::Message]
   
     def initialize(resultCode = nil, message = [])
       @resultCode = resultCode
@@ -3936,7 +3950,7 @@ module AuthorizeNet::API
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :transactionResponse, :as => TransactionResponse
-    xml_accessor :profileResponse
+    xml_accessor :profileResponse, :as => CreateProfileResponse
   
     def initialize(refId = nil, messages = nil, sessionToken = nil, transactionResponse = nil, profileResponse = nil)
       @refId = refId

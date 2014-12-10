@@ -27,6 +27,12 @@ namespace "spec" do
     spec.rspec_opts = ['--options', 'spec/spec.opts']
   end
   
+  desc "Run the API spec"
+  RSpec::Core::RakeTask.new('api') do |spec|
+    spec.pattern = FileList['spec/api_spec.rb']
+    spec.rspec_opts = ['--options', 'spec/spec.opts']
+  end
+  
   desc "Run the SIM spec"
   RSpec::Core::RakeTask.new('sim') do |spec|
     spec.pattern = FileList['spec/sim_spec.rb']
