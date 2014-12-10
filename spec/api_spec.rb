@@ -152,7 +152,7 @@ describe Transaction do
        
     #serialize response object to xml
     xmlText = transaction.serialize(@createTransactionResponse,"createTransactionResponse")
-   
+  
     actResponse = CreateTransactionResponse.from_xml(xmlText)
     
     actual = actResponse.transactionResponse
@@ -179,34 +179,65 @@ describe Transaction do
     expected.accountNumber.should == actual.accountNumber
     expected.accountType.should == actual.accountType
     expected.splitTenderId.should == actual.splitTenderId
-=begin    
-    tResp.prePaidCard = TransactionResponse::PrePaidCard.new("123.33","123.33","123.33")
-    tResp.messages = TransactionResponse::Messages.new
-    tResp.messages.messages = [TransactionResponse::Messages::Message.new("code1","descr1"),
-                               TransactionResponse::Messages::Message.new("code1","descr1")]
-        
-    tResp.errors = TransactionResponse::Errors.new
-    tResp.errors.errors = [TransactionResponse::Errors::Error.new("code1","descr1"),
-                           TransactionResponse::Errors::Error.new("errorCode1","errorDescr1")]
-                           
-    tResp.splitTenderPayments = TransactionResponse::SplitTenderPayments.new
-    tResp.splitTenderPayments.splitTenderPayments = 
-          [
-             TransactionResponse::SplitTenderPayments::SplitTenderPayment.new("transId1","responseCode1","responseToCustomer1",
-               "authCode1", "accountNumber1", "accountType1", "requestedAmount1", "approvedAmount1", "balanceOnCard1"),
-            TransactionResponse::SplitTenderPayments::SplitTenderPayment.new("transId12","responseCode12","responseToCustomer12",
-                           "authCode12", "accountNumber12", "accountType12", "requestedAmount12", "approvedAmount12", 
-                           "balanceOnCard12") ]
-    
-    tResp.userFields = UserFields.new([UserField.new("field1","fieldValue1"),UserField.new("field2","fieldValue2")])
-    
-    tResp.shipTo = shipTo = NameAndAddressType.new("firstNameST","lastNameST","companyST","addressST","New York","NY",
-                                                                      "10010","USA")
-    tResp.secureAcceptance = TransactionResponse::SecureAcceptance.new("secureAcceptanceUrl1","payerID1")
+   
+    expected.prePaidCard.requestedAmount.should == actual.prePaidCard.requestedAmount
+    expected.prePaidCard.approvedAmount.should == actual.prePaidCard.approvedAmount
+    expected.prePaidCard.balanceOnCard.should == actual.prePaidCard.balanceOnCard
 
-    #@createTransactionResponse.profileResponse
-=end
-     
+    expected.messages.messages.each_with_index do |item,index|
+      item.code.should == actual.messages.messages[index].code
+      item.description.should == actual.messages.messages[index].description
+    end
+  
+    expected.errors.errors.each_with_index do |item,index|
+      item.errorCode.should == actual.errors.errors[index].errorCode
+      item.errorText.should == actual.errors.errors[index].errorText
+    end
+                           
+    expected.splitTenderPayments.splitTenderPayments.each_with_index do |item,index|
+      item.transId.should == actual.splitTenderPayments.splitTenderPayments[index].transId
+      item.responseCode.should == actual.splitTenderPayments.splitTenderPayments[index].responseCode
+      item.responseToCustomer.should == actual.splitTenderPayments.splitTenderPayments[index].responseToCustomer
+      item.authCode.should == actual.splitTenderPayments.splitTenderPayments[index].authCode
+      item.accountNumber.should == actual.splitTenderPayments.splitTenderPayments[index].accountNumber
+      item.accountType.should == actual.splitTenderPayments.splitTenderPayments[index].accountType
+      item.requestedAmount.should == actual.splitTenderPayments.splitTenderPayments[index].requestedAmount
+      item.approvedAmount.should == actual.splitTenderPayments.splitTenderPayments[index].approvedAmount
+      item.balanceOnCard.should == actual.splitTenderPayments.splitTenderPayments[index].balanceOnCard
+    end
+    
+    expected.userFields.userFields.each_with_index do |item,index|
+      item.name.should == actual.userFields.userFields[index].name
+      item.value.should == actual.userFields.userFields[index].value
+    end
+                                                                  
+    expected.shipTo.firstName.should == actual.shipTo.firstName
+    expected.shipTo.lastName.should == actual.shipTo.lastName
+    expected.shipTo.company.should == actual.shipTo.company
+    expected.shipTo.address.should == actual.shipTo.address
+    expected.shipTo.city.should == actual.shipTo.city
+    expected.shipTo.state.should == actual.shipTo.state
+    expected.shipTo.zip.should == actual.shipTo.zip
+    expected.shipTo.country.should == actual.shipTo.country
+    
+    expected.secureAcceptance.secureAcceptanceUrl.should == actual.secureAcceptance.secureAcceptanceUrl
+    expected.secureAcceptance.payerID.should == actual.secureAcceptance.payerID
+
+    @createTransactionResponse.profileResponse.messages.resultCode.should == actResponse.profileResponse.messages.resultCode
+    @createTransactionResponse.profileResponse.messages.messages.each_with_index do |item,index|
+      item.code.should == actResponse.profileResponse.messages.messages[index].code
+      item.text.should == actResponse.profileResponse.messages.messages[index].text
+    end
+    
+    @createTransactionResponse.profileResponse.customerProfileId.should == actResponse.profileResponse.customerProfileId
+
+    @createTransactionResponse.profileResponse.customerPaymentProfileIdList.numericStrings.each_with_index do |item,index|
+      item.should == actResponse.profileResponse.customerPaymentProfileIdList.numericStrings[index]
+    end
+    
+    @createTransactionResponse.profileResponse.customerShippingAddressIdList.numericStrings.each_with_index do |item,index|
+      item.should == actResponse.profileResponse.customerShippingAddressIdList.numericStrings[index]
+    end
   end
   
   def create_transaction_request
@@ -281,10 +312,7 @@ describe Transaction do
     @createTransactionResponse = CreateTransactionResponse.new
     @createTransactionResponse.refId = "someRefId123"
     @createTransactionResponse.sessionToken = "some session token"
-    @createTransactionResponse.messages = MessagesType.new
-    @createTransactionResponse.messages.resultCode = MessageTypeEnum::Ok
-    @createTransactionResponse.messages.messages = [MessagesType::Message.new("code1","text1"),
-                                                    MessagesType::Message.new("code2","text2") ]
+    @createTransactionResponse.messages = MessagesType.new(MessageTypeEnum::Ok,[MessagesType::Message.new("code1","text1"),MessagesType::Message.new("code2","text2")])
     
     @createTransactionResponse.transactionResponse = TransactionResponse.new
     tResp = @createTransactionResponse.transactionResponse
@@ -303,14 +331,8 @@ describe Transaction do
     tResp.splitTenderId = "123"
     
     tResp.prePaidCard = TransactionResponse::PrePaidCard.new("123.33","123.33","123.33")
-    tResp.messages = TransactionResponse::Messages.new
-    tResp.messages.messages = [TransactionResponse::Messages::Message.new("code1","descr1"),
-                               TransactionResponse::Messages::Message.new("code1","descr1")]
-        
-    tResp.errors = TransactionResponse::Errors.new
-    tResp.errors.errors = [TransactionResponse::Errors::Error.new("code1","descr1"),
-                           TransactionResponse::Errors::Error.new("errorCode1","errorDescr1")]
-                           
+    tResp.messages = TransactionResponse::Messages.new([TransactionResponse::Messages::Message.new("code1","descr1"),TransactionResponse::Messages::Message.new("code1","descr1")])     
+    tResp.errors = TransactionResponse::Errors.new([TransactionResponse::Errors::Error.new("code1","descr1"),TransactionResponse::Errors::Error.new("errorCode1","errorDescr1")])                          
     tResp.splitTenderPayments = TransactionResponse::SplitTenderPayments.new
     tResp.splitTenderPayments.splitTenderPayments = 
           [
@@ -326,6 +348,10 @@ describe Transaction do
                                                                       "10010","USA")
     tResp.secureAcceptance = TransactionResponse::SecureAcceptance.new("secureAcceptanceUrl1","payerID1")
 
-    #@createTransactionResponse.profileResponse
+    @createTransactionResponse.profileResponse = CreateProfileResponse.new
+    @createTransactionResponse.profileResponse.messages = MessagesType.new(MessageTypeEnum::Ok,[MessagesType::Message.new("pRespCode1","pRespText1"),MessagesType::Message.new("pRespCode2","pRespText2")])
+    @createTransactionResponse.profileResponse.customerProfileId = "3154654646546"
+    @createTransactionResponse.profileResponse.customerPaymentProfileIdList = ArrayOfNumericString.new([546654656465,5665656565656565])
+    @createTransactionResponse.profileResponse.customerShippingAddressIdList = ArrayOfNumericString.new([66232546654656465,566565656565787876565])
   end
 end

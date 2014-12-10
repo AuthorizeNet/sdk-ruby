@@ -27,7 +27,7 @@ module AuthorizeNet::API
             x.name @api_login_id
             x.transactionKey @api_transaction_key
             }
-         x.send:insert, doc.root.element_children #first_element_child
+         x.send:insert, doc.root.element_children
       }
       end
       builder.to_xml 

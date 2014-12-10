@@ -7,7 +7,12 @@ module AuthorizeNet::API
   end
   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfNumericString
-  class ArrayOfNumericString < ::Array
+  class ArrayOfNumericString
+    include ROXML
+    xml_accessor :numericStrings, :as => [Fixnum]
+    def initialize(numericStrings = [])
+        @numericStrings = numericStrings
+    end   
   end
   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfString
@@ -2102,9 +2107,9 @@ module AuthorizeNet::API
     xml_accessor :resultCode
     xml_accessor :messages, :as => [MessagesType::Message]
   
-    def initialize(resultCode = nil, message = [])
+    def initialize(resultCode = nil, messages = [])
       @resultCode = resultCode
-      @message = message
+      @messages = messages
     end
   end
   
@@ -2132,10 +2137,10 @@ module AuthorizeNet::API
   #   customerShippingAddressIdList - ArrayOfNumericString
   class CreateProfileResponse
     include ROXML
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :customerProfileId
-    xml_accessor :customerPaymentProfileIdList
-    xml_accessor :customerShippingAddressIdList
+    xml_accessor :customerPaymentProfileIdList, :as => ArrayOfNumericString
+    xml_accessor :customerShippingAddressIdList, :as => ArrayOfNumericString
   
     def initialize(messages = nil, customerProfileId = nil, customerPaymentProfileIdList = nil, customerShippingAddressIdList = nil)
       @messages = messages
