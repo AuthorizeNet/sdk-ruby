@@ -21,6 +21,38 @@ describe Transaction do
     create_transaction_request
     create_transaction_response
   end
+  
+  it "should be able to run test credit card transaction" do
+    @createTransactionRequest = CreateTransactionRequest.new
+    @createTransactionRequest.transactionRequest = TransactionRequestType.new
+    @createTransactionRequest.transactionRequest.amount = 37.55
+    @createTransactionRequest.transactionRequest.payment = PaymentType.new
+    @createTransactionRequest.transactionRequest.payment.creditCard = CreditCardType.new('4111111111111111','0515',"true",'123') 
+    @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+
+    response = @transaction.create_transaction(@createTransactionRequest)
+     
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil)     
+    expect(response.messages.resultCode).not_to eq(nil)
+    expect(response.transactionResponse).not_to eq(nil)     
+  end
+
+  it "should be able to run test echeck transaction" do
+    @createTransactionRequest = CreateTransactionRequest.new
+    @createTransactionRequest.transactionRequest = TransactionRequestType.new
+    @createTransactionRequest.transactionRequest.amount = 37.55
+    @createTransactionRequest.transactionRequest.payment = PaymentType.new
+    @createTransactionRequest.transactionRequest.payment.bankAccount = BankAccountType.new("checking","125000024","123456789","name",EcheckTypeEnum::WEB,"123","123")
+    @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+    
+    response = @transaction.create_transaction(@createTransactionRequest)
+    
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil) 
+    expect(response.messages.resultCode).not_to eq(nil)
+    expect(response.transactionResponse).not_to eq(nil)     
+  end
    
   it "should serialize and deserialize CreateTransactionRequest" do
     expected = @createTransactionRequest.transactionRequest
@@ -291,39 +323,6 @@ describe Transaction do
     expected.formOfPayment.value.scheme.dUKPT.mode.data.should == actual.formOfPayment.value.scheme.dUKPT.mode.data
     expected.formOfPayment.value.scheme.dUKPT.deviceInfo.description.should == actual.formOfPayment.value.scheme.dUKPT.deviceInfo.description
     expected.formOfPayment.value.scheme.dUKPT.encryptedData.value.should == actual.formOfPayment.value.scheme.dUKPT.encryptedData.value
-  end
-  
-  #todo: return errors
-  it "should be able to run test credit card transaction" do
-    @createTransactionRequest = CreateTransactionRequest.new
-    @createTransactionRequest.transactionRequest = TransactionRequestType.new
-    @createTransactionRequest.transactionRequest.amount = 37.55
-    @createTransactionRequest.transactionRequest.payment = PaymentType.new
-    @createTransactionRequest.transactionRequest.payment.creditCard = CreditCardType.new('4111111111111111','0515',"true",'123') 
-    @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
-
-    response = @transaction.create_transaction(@createTransactionRequest)
-     
-    expect(response).not_to eq(nil)
-    expect(response.messages).not_to eq(nil)     
-    expect(response.messages.resultCode).not_to eq(nil)
-    expect(response.transactionResponse).not_to eq(nil)     
-  end
-
-  it "should be able to run test echeck transaction" do
-    @createTransactionRequest = CreateTransactionRequest.new
-    @createTransactionRequest.transactionRequest = TransactionRequestType.new
-    @createTransactionRequest.transactionRequest.amount = 37.55
-    @createTransactionRequest.transactionRequest.payment = PaymentType.new
-    @createTransactionRequest.transactionRequest.payment.bankAccount = BankAccountType.new("checking","125000024","123456789","name",EcheckTypeEnum::WEB,"123","123")
-    @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
-    
-    response = @transaction.create_transaction(@createTransactionRequest)
-    
-    expect(response).not_to eq(nil)
-    expect(response.messages).not_to eq(nil) 
-    expect(response.messages.resultCode).not_to eq(nil)
-    expect(response.transactionResponse).not_to eq(nil)     
   end
 
   def get_actual(expected, className, topElement)
