@@ -22,7 +22,7 @@ describe Transaction do
     create_transaction_response
   end
   
-  it "should be able to run test credit card transaction" do
+  it "should be able to run credit card transaction" do
     @createTransactionRequest = CreateTransactionRequest.new
     @createTransactionRequest.transactionRequest = TransactionRequestType.new
     @createTransactionRequest.transactionRequest.amount = 37.55
@@ -38,7 +38,7 @@ describe Transaction do
     expect(response.transactionResponse).not_to eq(nil)     
   end
 
-  it "should be able to run test echeck transaction" do
+  it "should be able to run echeck transaction" do
     @createTransactionRequest = CreateTransactionRequest.new
     @createTransactionRequest.transactionRequest = TransactionRequestType.new
     @createTransactionRequest.transactionRequest.amount = 37.55
@@ -52,6 +52,37 @@ describe Transaction do
     expect(response.messages).not_to eq(nil) 
     expect(response.messages.resultCode).not_to eq(nil)
     expect(response.transactionResponse).not_to eq(nil)     
+  end
+  
+  it "should be able to run apple pay transaction" do
+    @createTransactionRequest = CreateTransactionRequest.new
+    @createTransactionRequest.transactionRequest = TransactionRequestType.new
+    @createTransactionRequest.transactionRequest.amount = 37.55
+    @createTransactionRequest.transactionRequest.payment = PaymentType.new
+    @createTransactionRequest.transactionRequest.payment.opaqueData = OpaqueDataType.new("dataDescriptor","dataValue")
+    @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+    
+    response = @transaction.create_transaction(@createTransactionRequest)
+
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil) 
+    expect(response.messages.resultCode).not_to eq(nil)
+    expect(response.transactionResponse).not_to eq(nil)    
+  end
+  
+  it "should be able to run paypal transaction" do
+    @createTransactionRequest = CreateTransactionRequest.new
+    @createTransactionRequest.transactionRequest = TransactionRequestType.new
+    @createTransactionRequest.transactionRequest.amount = 37.55
+    @createTransactionRequest.transactionRequest.payment = PaymentType.new
+    @createTransactionRequest.transactionRequest.payment.payPal = PayPalType.new("123","123","123","123","123","123")
+    @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+    
+    response = @transaction.create_transaction(@createTransactionRequest)
+    
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil) 
+    expect(response.messages.resultCode).not_to eq(nil) 
   end
   
   it "should return error when connection is not available" do
