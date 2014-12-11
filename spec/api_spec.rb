@@ -9,7 +9,6 @@ describe Transaction do
       @api_key = creds['api_transaction_key']
       @api_login = creds['api_login_id']
       @gateway = :sandbox
-      @transaction = Transaction.new(@api_login, @api_key, :gateway => @gateway)
     rescue Errno::ENOENT => e
       @api_key = "TEST"
       @api_login = "TEST"
@@ -18,6 +17,7 @@ describe Transaction do
   end
 
   before do
+    @transaction = Transaction.new(@api_login, @api_key, :gateway => @gateway)
     create_transaction_request
     create_transaction_response
   end
@@ -52,6 +52,14 @@ describe Transaction do
     expect(response.messages).not_to eq(nil) 
     expect(response.messages.resultCode).not_to eq(nil)
     expect(response.transactionResponse).not_to eq(nil)     
+  end
+  
+  it "should return error when connection is not available" do
+    @transaction = Transaction.new(@api_login, @api_key, :gateway => "wrong gateway")
+    response = @transaction.create_transaction(@createTransactionRequest)
+    expect(response).not_to eq(nil)
+    expect(response).is_a? Exception
+    expect(response.message).not_to eq(nil)
   end
    
   it "should serialize and deserialize CreateTransactionRequest" do

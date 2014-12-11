@@ -11,8 +11,8 @@ module AuthorizeNet::API
         @xml = serialize(request,type)
         respXml = send_request(@xml)
         @response = deserialize(respXml.body,responseClass) 
-       rescue Exception => msg  
-          puts msg  
+       rescue Exception => ex  
+          ex  
        end 
      end
     end
