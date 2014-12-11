@@ -23,7 +23,7 @@
 ````
   > bundle install
   > rake gem
-  > sudo gem install ./authorizenet-1.8.2.gem
+  > sudo gem install ./authorizenet-1.8.3.gem
 ````
 ## Registration & Configuration
 
