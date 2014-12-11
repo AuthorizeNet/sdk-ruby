@@ -2270,7 +2270,7 @@ module AuthorizeNet::API
   #   cardCode - (any)
   class PaymentProfile
     include ROXML
-    xml_accessor :paymentProfileId
+    xml_accessor :paymentProfileId, :as => Fixnum
     xml_accessor :cardCode
   
     def initialize(paymentProfileId = nil, cardCode = nil)
@@ -2287,9 +2287,9 @@ module AuthorizeNet::API
   class CustomerProfilePaymentType
     include ROXML
     xml_accessor :createProfile
-    xml_accessor :customerProfileId
+    xml_accessor :customerProfileId, :as => Fixnum
     xml_accessor :paymentProfile, :as => PaymentProfile
-    xml_accessor :shippingProfileId
+    xml_accessor :shippingProfileId, :as => Fixnum
   
     def initialize(createProfile = nil, customerProfileId = nil, paymentProfile = nil, shippingProfileId = nil)
       @createProfile = createProfile

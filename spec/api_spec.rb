@@ -33,7 +33,7 @@ describe Transaction do
     expected.authCode.should == actual.authCode
     expected.refTransId.should == actual.refTransId
     expected.splitTenderId.should == actual.splitTenderId
-    #expected.taxExempt.should == actual.taxExempt
+    expect(expected.taxExempt).to eq(actual.taxExempt)
     expected.poNumber.should == actual.poNumber
     expected.customerIP.should == actual.customerIP
     expected.transactionType.should == actual.transactionType
@@ -45,7 +45,7 @@ describe Transaction do
     expected.payment.creditCard.cardCode.should == actual.payment.creditCard.cardCode
     
     #CustomerProfilePaymentType
-    #expected.profile.createProfile.should == actual.profile.createProfile
+    expect(expected.profile.createProfile).to eq(actual.profile.createProfile)
     expected.profile.customerProfileId.should == actual.profile.customerProfileId
     expected.profile.shippingProfileId.should == actual.profile.shippingProfileId
     expected.profile.paymentProfile.paymentProfileId.should == actual.profile.paymentProfile.paymentProfileId
@@ -67,7 +67,7 @@ describe Transaction do
       item.description.should == actual.lineItems.lineItems[index].description
       item.quantity.should == actual.lineItems.lineItems[index].quantity
       item.unitPrice.should == actual.lineItems.lineItems[index].unitPrice
-      #item.taxable.should == actual.lineItems.lineItems[index].taxable
+      expect(item.taxable).to eq(actual.lineItems.lineItems[index].taxable)
     end
 
     #Tax                                        
@@ -266,7 +266,6 @@ describe Transaction do
     
     expected.dataDescriptor.should == actual.dataDescriptor
     expected.dataValue.should == actual.dataValue
-    
   end
   
   it "should serialize and deserialize EncryptedTrackDataType" do
@@ -293,6 +292,36 @@ describe Transaction do
     expected.formOfPayment.value.scheme.dUKPT.deviceInfo.description.should == actual.formOfPayment.value.scheme.dUKPT.deviceInfo.description
     expected.formOfPayment.value.scheme.dUKPT.encryptedData.value.should == actual.formOfPayment.value.scheme.dUKPT.encryptedData.value
   end
+  
+  #todo: return errors
+  it "should be able to run test credit card transaction" do
+    #remove data that is not valid for this request
+    @createTransactionRequest.transactionRequest.profile = nil
+    @createTransactionRequest.transactionRequest.cardholderAuthentication = nil
+    @createTransactionRequest.transactionRequest.splitTenderId = nil
+    response = @transaction.create_transaction(@createTransactionRequest)
+     
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil)     
+    expect(response.messages.resultCode).not_to eq(nil)
+    expect(response.transactionResponse).not_to eq(nil)     
+  end
+
+  it "should be able to run test echeck transaction" do
+    @createTransactionRequest.transactionRequest.profile = nil
+    @createTransactionRequest.transactionRequest.cardholderAuthentication = nil
+    @createTransactionRequest.transactionRequest.splitTenderId = nil
+    
+    @createTransactionRequest.transactionRequest.payment.creditCard = nil
+    @createTransactionRequest.transactionRequest.payment.bankAccount = BankAccountType.new("checking","125000024","123456789","name",EcheckTypeEnum::WEB,"123","123")
+    
+    response = @transaction.create_transaction(@createTransactionRequest)
+    
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil) 
+    expect(response.messages.resultCode).not_to eq(nil)
+    expect(response.transactionResponse).not_to eq(nil)     
+  end
 
   def get_actual(expected, className, topElement)
     xmlText = @transaction.serialize(expected,topElement)
@@ -311,31 +340,32 @@ describe Transaction do
     tReq.authCode = "1546"
     tReq.refTransId = "123"
     tReq.splitTenderId = "123"
-    tReq.taxExempt = true
+    tReq.taxExempt = "true"
     tReq.poNumber = "12345"
     tReq.customerIP = "12345"
     
     tReq.payment = PaymentType.new
-    tReq.payment.creditCard = CreditCardType.new('4111111111111111','0515','123','123') 
+    tReq.payment.creditCard = CreditCardType.new('4111111111111111','0515',"true",'123') 
     
     tReq.transactionType = TransactionTypeEnum::AuthCaptureTransaction
     
     #CustomerProfilePaymentType
     tReq.profile = CustomerProfilePaymentType.new
-    tReq.profile.createProfile = true
-    tReq.profile.customerProfileId = '123abc'
-    tReq.profile.shippingProfileId = '123abc'
-    tReq.profile.paymentProfile = PaymentProfile.new("12345rr","456da")
+    tReq.profile.createProfile = "true"
+    tReq.profile.customerProfileId = 123
+    tReq.profile.shippingProfileId = 123
+    tReq.profile.paymentProfile = PaymentProfile.new(1234556565656565656565656,"056")
     
     #Solution Type
-    tReq.solution = SolutionType.new("id123","name123")
+    #TODO: check usage
+    tReq.solution = SolutionType.new("A1000005","somesolution")
     
     #OrderType
     tReq.order = OrderType.new("invoiceNumber123","description123")
     
     #LineItemType
-    tReq.lineItems = LineItems.new([LineItemType.new("itemId123","name123","description123",123,45.67,true),
-                                            LineItemType.new("itemId456","name456","description456",456,35.67,false)])
+    tReq.lineItems = LineItems.new([LineItemType.new("itemId123","name123","description123",123,45.67,"true"),
+                                            LineItemType.new("itemId456","name456","description456",456,35.67,"false")])
     #ExtendedAmountType                                        
     tReq.tax = ExtendedAmountType.new(11.32,"taxName","taxDescription")
     tReq.duty = ExtendedAmountType.new(12.35,"dutyName","dutyDescription")
@@ -343,8 +373,7 @@ describe Transaction do
     
     #CustomerDataType
     driversLicense = DriversLicenseType.new("DrivLicenseNumber123","WA","05/05/1990")
-    tReq.customer = CustomerDataType.new(CustomerTypeEnum::Individual,"custId1",
-                                                  "a@a.com",driversLicense,"1234567")
+    tReq.customer = CustomerDataType.new(CustomerTypeEnum::Individual,"custId1","a@a.com",driversLicense,"123456789")
     
     #BillTo                                              
     tReq.billTo = CustomerAddressType.new("firstNameBT","lastNameBT","companyBT","addressBT","New York","NY",
@@ -356,12 +385,14 @@ describe Transaction do
     #CardHolderAuthentication
     tReq.cardholderAuthentication = CcAuthenticationType.new("authenticationIndicator1","cardholderAuthenticationValue1")
     
+    #TODO: add enums
     #Retail
-    tReq.retail  = TransRetailInfoType.new("some market type","some device type")
-    
+    tReq.retail  = TransRetailInfoType.new("2","1")
+  
+    #TODO: add enums  
     #TransactionSettings
-    tReq.transactionSettings = Settings.new([SettingType.new("setting1","value1"),
-                                                                   SettingType.new("setting2","value2")])
+    tReq.transactionSettings = Settings.new([SettingType.new("testRequest","1"),
+                                                                   SettingType.new("duplicateWindow","0")])
     
     #UserFields
     tReq.userFields = UserFields.new([UserField.new("field1","fieldValue1"),UserField.new("field2","fieldValue2")])
