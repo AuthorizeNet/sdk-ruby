@@ -295,10 +295,13 @@ describe Transaction do
   
   #todo: return errors
   it "should be able to run test credit card transaction" do
-    #remove data that is not valid for this request
-    @createTransactionRequest.transactionRequest.profile = nil
-    @createTransactionRequest.transactionRequest.cardholderAuthentication = nil
-    @createTransactionRequest.transactionRequest.splitTenderId = nil
+    @createTransactionRequest = CreateTransactionRequest.new
+    @createTransactionRequest.transactionRequest = TransactionRequestType.new
+    @createTransactionRequest.transactionRequest.amount = 37.55
+    @createTransactionRequest.transactionRequest.payment = PaymentType.new
+    @createTransactionRequest.transactionRequest.payment.creditCard = CreditCardType.new('4111111111111111','0515',"true",'123') 
+    @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+
     response = @transaction.create_transaction(@createTransactionRequest)
      
     expect(response).not_to eq(nil)
@@ -308,12 +311,12 @@ describe Transaction do
   end
 
   it "should be able to run test echeck transaction" do
-    @createTransactionRequest.transactionRequest.profile = nil
-    @createTransactionRequest.transactionRequest.cardholderAuthentication = nil
-    @createTransactionRequest.transactionRequest.splitTenderId = nil
-    
-    @createTransactionRequest.transactionRequest.payment.creditCard = nil
+    @createTransactionRequest = CreateTransactionRequest.new
+    @createTransactionRequest.transactionRequest = TransactionRequestType.new
+    @createTransactionRequest.transactionRequest.amount = 37.55
+    @createTransactionRequest.transactionRequest.payment = PaymentType.new
     @createTransactionRequest.transactionRequest.payment.bankAccount = BankAccountType.new("checking","125000024","123456789","name",EcheckTypeEnum::WEB,"123","123")
+    @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
     
     response = @transaction.create_transaction(@createTransactionRequest)
     
