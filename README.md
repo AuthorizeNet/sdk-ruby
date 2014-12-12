@@ -41,9 +41,7 @@ To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ unde
 
 ### XML Api Integration
 ````ruby
-  require 'rubygems'
   require 'authorizenet'
-  require 'roxml'
   
   include AuthorizeNet::API
   
