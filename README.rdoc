@@ -39,6 +39,34 @@ md5_value: {md5_value}
 To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ under Account tab->Transaction Details API and enable it.
 ## Usage
 
+### XML Api Integration
+````ruby
+  require 'rubygems'
+  require 'authorizenet'
+  require 'roxml'
+  
+  include AuthorizeNet::API
+  
+  transaction = Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
+  request = CreateTransactionRequest.new
+  request.transactionRequest = TransactionRequestType.new
+  request.transactionRequest.amount = 39.55
+  
+  request.transactionRequest.payment = PaymentType.new
+  request.transactionRequest.payment.creditCard = CreditCardType.new('4111111111111111','0515') 
+  
+  request.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+  
+  response = transaction.create_transaction(request)
+  
+  if response.messages.resultCode == MessageTypeEnum::Ok
+    puts "Successfully made a purchase (authorization code: #{response.transactionResponse.authCode})"
+  else
+    raise "Failed to make purchase."
+  end
+  
+````
+
 ### Advanced Merchant Integration (AIM)
 
 ````ruby
