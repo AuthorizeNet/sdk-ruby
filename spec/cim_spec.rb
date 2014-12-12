@@ -170,7 +170,7 @@ describe AuthorizeNet::CIM::Transaction do
     it "should be able to create payment profiles" do
       # handled by our before/after filters
     end
-
+    
     it "should be able to delete payment profiles" do
       # delete the payment profile
       transaction = AuthorizeNet::CIM::Transaction.new(@api_login, @api_key, :gateway => :sandbox)

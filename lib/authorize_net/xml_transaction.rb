@@ -251,6 +251,7 @@ module AuthorizeNet
         }
       end
       @xml = builder.to_xml 
+
       url = URI.parse(@gateway)
       
       request = Net::HTTP::Post.new(url.path)

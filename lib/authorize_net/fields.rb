@@ -111,7 +111,7 @@ module AuthorizeNet
       ]
     end
   end
-
+   
   module SIM
     # Contains the various lists of fields needed by the SIM API.
     module Fields
@@ -283,7 +283,7 @@ module AuthorizeNet
     module Fields
       
       REFID_FIELDS = {:refId => :reference_id}
-      
+             
       VALIDATION_MODE_FIELDS = {:validationMode => :validation_mode}
       
       CUSTOMER_PROFILE_ID_FIELDS = {:customerProfileId => :customer_profile_id}

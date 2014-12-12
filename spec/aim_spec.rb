@@ -7,17 +7,11 @@ describe AuthorizeNet::AIM::Transaction do
       creds = YAML.load_file(File.dirname(__FILE__) + "/credentials.yml")
       @api_key = creds['api_transaction_key']
       @api_login = creds['api_login_id']
-      @cp_api_key = creds['cp_api_transaction_key']
-      @cp_api_login = creds['cp_api_login_id']
       @md5_value = creds['md5_value']
-      @cp_md5_value = creds['cp_md5_value']
     rescue Errno::ENOENT => e
       @api_key = "TEST"
       @api_login = "TEST"
-      @cp_api_key = "TEST"
-      @cp_api_login = "TEST"
       @md5_value = "TEST"
-      @cp_md5_value = "TEST"
       warn "WARNING: Running w/o valid AuthorizeNet sandbox credentials. Create spec/credentials.yml."
     end
   end
@@ -221,42 +215,42 @@ describe AuthorizeNet::AIM::Transaction do
   
   it "should be able to run a card present purchase with track 1 data" do
     @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_1 => '%B4111111111111111^DOE/JOHN^1803101000000000020000831000000?')
-    purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
+    purchase = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :gateway => :card_present_test, :test => false)
     response = purchase.purchase(@amount, @credit_card)
     response.success?.should be_truthy
   end
   
   it "should be able to run a card present purchase with LRC codes in the track 1 data" do
-    @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_1 => "%B4111111111111111^DOE/JOHN^1803101000000000020000831000000?\xAA")
-    purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
+    @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_1 => '%B4111111111111111^DOE/JOHN^1803101000000000020000831000000?\xAA')
+    purchase = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :gateway => :card_present_test, :test => false)
     response = purchase.purchase(@amount, @credit_card)
     response.success?.should be_truthy
   end
   
   it "should be able to run a card present purchase with no LRC or Start/End Sentinels in track 1 data" do
     @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_1 => "B4111111111111111^DOE/JOHN^1803101000000000020000831000000")
-    purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
+    purchase = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :gateway => :card_present_test, :test => false)
     response = purchase.purchase(@amount, @credit_card)
     response.success?.should be_truthy
   end
   
   it "should be able to run a card present purchase with track 2 data" do
      @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_2 => ';4111111111111111=1803101000020000831?')
-     purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
+     purchase = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :gateway => :card_present_test, :test => false)
      response = purchase.purchase(@amount, @credit_card)
      response.success?.should be_truthy
    end
 
    it "should be able to run a card present purchase with LRC codes in the track 2 data" do
      @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_2 => ";4111111111111111=1803101000020000831?\x33")
-     purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
+     purchase = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :gateway => :card_present_test, :test => false)
      response = purchase.purchase(@amount, @credit_card)
      response.success?.should be_truthy
    end
    
    it "should be able to run a card present purchase with no LRC or Start/End Sentinels in track 2 data" do
       @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_2 => "4111111111111111=1803101000020000831")
-      purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
+      purchase = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :gateway => :card_present_test, :test => false)
       response = purchase.purchase(@amount, @credit_card)
       response.success?.should be_truthy
     end
@@ -270,10 +264,10 @@ describe AuthorizeNet::AIM::Transaction do
   
   it "should be able to validate the passed MD5 hash for card present transactions" do
     @credit_card = AuthorizeNet::CreditCard.new(nil, nil, :track_1 => '%B4111111111111111^DOE/JOHN^1803101000000000020000831000000?')
-    purchase = AuthorizeNet::AIM::Transaction.new(@cp_api_login, @cp_api_key, :gateway => :card_present_test, :test => false)
+    purchase = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :gateway => :card_present_test, :test => false)
     response = purchase.purchase(@amount, @credit_card)
     response.success?.should be_truthy
-    response.valid_md5?(@cp_api_login, @cp_md5_value).should be_truthy
+    response.valid_md5?(@api_login, @md5_value).should be_truthy
   end
 end
 
