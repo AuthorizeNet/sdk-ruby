@@ -18,16 +18,19 @@ describe Transaction do
 
   before do
     @transaction = Transaction.new(@api_login, @api_key, :gateway => @gateway)
+    @amount = (rand(10000) + 100) / 100.0
+    @expDate = '01' + (Time.now + (3600 * 24 * 365)).strftime('%y')
+    @validCcNum = '4111111111111111'
     create_transaction_request
     create_transaction_response
   end
-  
+
   it "should be able to run credit card transaction" do
     @createTransactionRequest = CreateTransactionRequest.new
     @createTransactionRequest.transactionRequest = TransactionRequestType.new
-    @createTransactionRequest.transactionRequest.amount = 37.55
+    @createTransactionRequest.transactionRequest.amount = @amount
     @createTransactionRequest.transactionRequest.payment = PaymentType.new
-    @createTransactionRequest.transactionRequest.payment.creditCard = CreditCardType.new('4111111111111111','0515',"true",'123') 
+    @createTransactionRequest.transactionRequest.payment.creditCard = CreditCardType.new(@validCcNum,@expDate,"true",'123') 
     @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
 
     response = @transaction.create_transaction(@createTransactionRequest)
@@ -41,7 +44,7 @@ describe Transaction do
   it "should be able to run echeck transaction" do
     @createTransactionRequest = CreateTransactionRequest.new
     @createTransactionRequest.transactionRequest = TransactionRequestType.new
-    @createTransactionRequest.transactionRequest.amount = 37.55
+    @createTransactionRequest.transactionRequest.amount = @amount
     @createTransactionRequest.transactionRequest.payment = PaymentType.new
     @createTransactionRequest.transactionRequest.payment.bankAccount = BankAccountType.new("checking","125000024","123456789","name",EcheckTypeEnum::WEB,"123","123")
     @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
@@ -57,7 +60,7 @@ describe Transaction do
   it "should be able to run apple pay transaction" do
     @createTransactionRequest = CreateTransactionRequest.new
     @createTransactionRequest.transactionRequest = TransactionRequestType.new
-    @createTransactionRequest.transactionRequest.amount = 37.55
+    @createTransactionRequest.transactionRequest.amount = @amount
     @createTransactionRequest.transactionRequest.payment = PaymentType.new
     @createTransactionRequest.transactionRequest.payment.opaqueData = OpaqueDataType.new("dataDescriptor","dataValue")
     @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
@@ -73,7 +76,7 @@ describe Transaction do
   it "should be able to run paypal transaction" do
     @createTransactionRequest = CreateTransactionRequest.new
     @createTransactionRequest.transactionRequest = TransactionRequestType.new
-    @createTransactionRequest.transactionRequest.amount = 37.55
+    @createTransactionRequest.transactionRequest.amount = @amount
     @createTransactionRequest.transactionRequest.payment = PaymentType.new
     @createTransactionRequest.transactionRequest.payment.payPal = PayPalType.new("123","123","123","123","123","123")
     @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
@@ -91,6 +94,87 @@ describe Transaction do
     expect(response).not_to eq(nil)
     expect(response).is_a? Exception
     expect(response.message).not_to eq(nil)
+  end
+
+  it "should be able to create a customer profile from existing transaction" do
+    #create a transaction
+    createTranReq = CreateTransactionRequest.new
+    createTranReq.transactionRequest = TransactionRequestType.new
+    createTranReq.transactionRequest.amount = @amount
+    createTranReq.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+    
+    createTranReq.transactionRequest.payment = PaymentType.new
+    createTranReq.transactionRequest.payment.creditCard = CreditCardType.new(@validCcNum,@expDate,"true",'123')
+     
+    #customer info needed for profile
+    createTranReq.transactionRequest.customer = CustomerDataType.new
+    createTranReq.transactionRequest.customer.email = "joe@somedomain.ddd"
+    
+    #send the request and get response
+    createTranResp = @transaction.create_transaction(createTranReq)
+     
+    #validate the transaction was created
+    expect(createTranResp.transactionResponse.transId).not_to eq("0")  
+    
+    #create profile from this transaction
+    createProfReq = CreateCustomerProfileFromTransactionRequest.new
+    createProfReq.transId = createTranResp.transactionResponse.transId
+    createProfResp = @transaction.create_customer_profile_from_transaction(createProfReq)
+
+    expect(createProfResp).not_to eq(nil)
+    unless createProfResp.messages.resultCode == MessageTypeEnum::Ok 
+      puts createProfResp.messages.messages[0].text
+    end
+    expect(createProfResp.messages.resultCode).to eq(MessageTypeEnum::Ok)
+    expect(createProfResp.customerProfileId).not_to eq(nil)
+    expect(createProfResp.customerPaymentProfileIdList).not_to eq(nil)
+    
+    #delete the profile for the test repeatability
+    deleteProfReq = DeleteCustomerProfileRequest.new
+    deleteProfReq.customerProfileId = createProfResp.customerProfileId
+    @transaction.delete_customer_profile(deleteProfReq)
+  end
+  
+  it "should be able to create a customer profile with a new transaction" do
+    #create a transaction
+    createTranReq = CreateTransactionRequest.new
+    createTranReq.transactionRequest = TransactionRequestType.new
+    createTranReq.transactionRequest.amount = @amount
+    createTranReq.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+    
+    createTranReq.transactionRequest.payment = PaymentType.new
+    createTranReq.transactionRequest.payment.creditCard = CreditCardType.new(@validCcNum,@expDate,"true",'123')
+     
+    #customer info needed for profile
+    createTranReq.transactionRequest.customer = CustomerDataType.new
+    createTranReq.transactionRequest.customer.email = "joe@somedomain.ddd"
+    
+    #set the "createProfile" flag to true
+    createTranReq.transactionRequest.profile = CustomerProfilePaymentType.new
+    createTranReq.transactionRequest.profile.createProfile = "true"
+    
+    #send the request and get response
+    createTranResp = @transaction.create_transaction(createTranReq)
+    
+    #validate transaction was successful
+    unless createTranResp.messages.resultCode == MessageTypeEnum::Ok
+      puts createTranResp.messages.messages[0].text
+    end
+    expect(createTranResp.messages.resultCode).to eq(MessageTypeEnum::Ok)
+    expect(createTranResp.transactionResponse.transId).not_to eq("0") 
+    
+    #validate customer profile was created
+    expect(createTranResp.profileResponse).not_to eq(nil)
+    unless createTranResp.profileResponse.messages.resultCode == MessageTypeEnum::Ok
+      puts createTranResp.profileResponse.messages.messages[0].text
+    end
+    expect(createTranResp.profileResponse.messages.resultCode).to eq(MessageTypeEnum::Ok)
+    expect(createTranResp.profileResponse.customerProfileId).not_to eq("0")
+    
+    #delete customer profile for repeatability
+    deleteProfReq = DeleteCustomerProfileRequest.new
+    deleteProfReq.customerProfileId = createTranResp.profileResponse.customerProfileId
+    @transaction.delete_customer_profile(deleteProfReq)
   end
    
   it "should serialize and deserialize CreateTransactionRequest" do
@@ -398,7 +482,6 @@ describe Transaction do
     tReq.profile.paymentProfile = PaymentProfile.new(1234556565656565656565656,"056")
     
     #Solution Type
-    #TODO: check usage
     tReq.solution = SolutionType.new("A1000005","somesolution")
     
     #OrderType

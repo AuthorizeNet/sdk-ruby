@@ -111,35 +111,7 @@ module AuthorizeNet
       ]
     end
   end
-  
-=begin
-  module API
-    module Fields
-      CREDIT_CARD_FIELDS = 
-      {:creditCard => 
-        [
-          {:cardNumber => :cardNumber},
-          {:expirationDate => :expirationDate},
-          {:cardCode => :cardCode}
-        ]
-      }
-    
-      CREATE_TRANSACTION_FIELDS = 
-      [{:transactionRequest =>
-        [ 
-          {:transactionType => :transactionType},
-          {:amount  => :amount},
-          {:payment => [CREDIT_CARD_FIELDS]}
-        ]
-      }]
-      
-      FIELDS = {
-        AuthorizeNet::XmlTransaction::Type::API_CREATE_TRANSACTION => CREATE_TRANSACTION_FIELDS
-      }
-    end
-  end
-=end
-  
+   
   module SIM
     # Contains the various lists of fields needed by the SIM API.
     module Fields
@@ -566,7 +538,6 @@ module AuthorizeNet
       
       FIELDS = {
         AuthorizeNet::XmlTransaction::Type::CIM_CREATE_PROFILE => CREATE_PROFILE_FIELDS,
-        AuthorizeNet::XmlTransaction::Type::CIM_CREATE_PROFILE_FROM_TRANSACTION => TRANSACTION_FIELDS,
         AuthorizeNet::XmlTransaction::Type::CIM_CREATE_PAYMENT => CREATE_PAYMENT_FIELDS,
         AuthorizeNet::XmlTransaction::Type::CIM_CREATE_ADDRESS => CREATE_ADDRESS_FIELDS,
         AuthorizeNet::XmlTransaction::Type::CIM_CREATE_TRANSACTION => CREATE_TRANSACTION_FIELDS,

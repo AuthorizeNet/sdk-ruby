@@ -2836,7 +2836,7 @@ module AuthorizeNet::API
   #   transId - (any)
   class CreateCustomerProfileFromTransactionRequest 
     include ROXML
-    xml_accessor :merchantAuthentication
+    xml_accessor :merchantAuthentication, :as => MerchantAuthenticationType
     xml_accessor :refId
     xml_accessor :transId
   
@@ -3084,7 +3084,7 @@ module AuthorizeNet::API
   #   customerProfileId - (any)
   class DeleteCustomerProfileRequest 
     include ROXML
-    xml_accessor :merchantAuthentication
+    xml_accessor :merchantAuthentication, :as => MerchantAuthenticationType
     xml_accessor :refId
     xml_accessor :customerProfileId
   
@@ -3102,7 +3102,7 @@ module AuthorizeNet::API
   class DeleteCustomerProfileResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)

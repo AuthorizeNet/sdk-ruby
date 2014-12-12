@@ -96,24 +96,6 @@ module AuthorizeNet::CIM
       make_request
     end
     
-    # This request enables you to create a CIM profile, payment profile,
-    # and shipping profile from an existing successful transaction. 
-    # NOTE: Tokenized transactions (e.g. Apple Pay) should not be used to 
-    # create payment profiles.
-    # 
-    # Typical usage:
-    # 
-    #   @transaction_id = 123456789
-    #   response = transaction.create_profile_from_transaction(@transaction_id)
-    #   puts response.profile_id if response.success?
-    #   puts response.payment_profile_ids[0] if response.success?
-    #  
-    def create_profile_from_transaction(transaction_id)
-      @type = Type::CIM_CREATE_PROFILE_FROM_TRANSACTION
-      handle_transaction_id(transaction_id)
-      make_request
-    end
-    
     # Sets up and submits a getCustomerProfileRequest transaction. If this transaction has already been
     # run, this method will return nil. Otherwise it will return an AuthorizeNet::CIM::Response object. The
     # response object will have the CustomerProfile object requested available via its profile method if
