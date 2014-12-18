@@ -1,4 +1,4 @@
-require 'xsd/qname'
+#require 'xsd/qname'
 require 'roxml'
 
 module AuthorizeNet::API
@@ -40,7 +40,7 @@ module AuthorizeNet::API
   #   xmlattr_version - SOAP::SOAPInteger
   class EmailSettingsType
     include ROXML
-    AttrVersion = XSD::QName.new(nil, "version")
+    #AttrVersion = XSD::QName.new(nil, "version")
   
     xml_accessor :setting
   
