@@ -24,6 +24,7 @@ module AuthorizeNet::CIM
           @address = @root.at_css('address')
           @payment_profile = @root.at_css('paymentProfile')
           @profile = @root.at_css('profile')
+          @token = node_content_unless_nil(@root.at_css('token'))
         rescue
           @raw_response = $!
         end
@@ -61,6 +62,11 @@ module AuthorizeNet::CIM
     # Returns a list of PaymentProfile IDs if any were returned by the gateway. Returns nil otherwise.
     def payment_profile_ids
       @customer_payment_profile_id_list
+    end
+
+    # Returns hosted profile access token when requested. Returns nil otherwise.
+    def token
+      @token
     end
     
     # Returns a validation response as an AuthorizeNet::AIM::Response object if a validation response was returned

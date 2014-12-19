@@ -30,6 +30,7 @@ module AuthorizeNet
       CIM_GET_PROFILE = "getCustomerProfileRequest"
       CIM_GET_PAYMENT = "getCustomerPaymentProfileRequest"
       CIM_GET_ADDRESS = "getCustomerShippingAddressRequest"
+      CIM_GET_HOSTED_PROFILE = "getHostedProfilePageRequest"
       CIM_UPDATE_PROFILE = "updateCustomerProfileRequest"
       CIM_UPDATE_PAYMENT = "updateCustomerPaymentProfileRequest"
       CIM_UPDATE_ADDRESS = "updateCustomerShippingAddressRequest"
