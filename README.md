@@ -33,12 +33,23 @@ Get a sandbox account at https://developer.authorize.net/sandbox/
 To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained as described below.
 ````
 #obtain an API login_id and transaction_id according to instructions at https://developer.authorize.net/faqs/#gettranskey
-api_transaction_key: {transaction_key_value}
 api_login_id: {login_id_value}
+api_transaction_key: {transaction_key_value}
 #obtained md5 hash value by first setting the hash value in https://sandbox.authorize.net/ under the Account tab->MD5 Hash
 md5_value: {md5_value}
 ````
+## Running the Tests
+To run the integration tests (hitting the sandbox):
+````
+rake spec
+````
+To run the unit tests:
+````
+rake spec:ci
+````
+
 To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ under Account tab->Transaction Details API and enable it.
+
 ## Usage
 
 ### XML Api Integration
