@@ -43,6 +43,11 @@ require "authorize_net/fields"
 require "authorize_net/aim/transaction"
 require "authorize_net/aim/response"
 
+# API
+require "authorize_net/api/schema"
+require "authorize_net/api/api_transaction"
+require "authorize_net/api/transaction"
+
 # SIM
 
 require "authorize_net/sim/hosted_payment_form"

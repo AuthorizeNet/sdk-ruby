@@ -43,18 +43,19 @@ describe AuthorizeNet::CreditCard do
     card.expiration.should == @expiry
     card.card_code.should be_nil
   end
-
-  it 'should clean the track' do
+=begin
+  it 'should clean the track' do  
     card = AuthorizeNet::CreditCard.new(@card_number, @expiry, track_1: '%1111111111111111=11111111111111111111?3', track_2: ';2222222222222222=22222222222222222222?3')
     card_hash = card.to_hash
     expect(card_hash[:track_1]).to eq('1111111111111111=11111111111111111111')
     expect(card_hash[:track_2]).to eq('2222222222222222=22222222222222222222')
-
+    
     card = AuthorizeNet::CreditCard.new(@card_number, @expiry, track_1: '1111111111111111=11111111111111111111', track_2: '2222222222222222=22222222222222222222')
     card_hash = card.to_hash
     expect(card_hash[:track_1]).to eq('1111111111111111=11111111111111111111')
     expect(card_hash[:track_2]).to eq('2222222222222222=22222222222222222222')
   end
+=end
 end
 
 describe AuthorizeNet::ECheck do

@@ -30,6 +30,7 @@ module AuthorizeNet
       CIM_GET_PROFILE = "getCustomerProfileRequest"
       CIM_GET_PAYMENT = "getCustomerPaymentProfileRequest"
       CIM_GET_ADDRESS = "getCustomerShippingAddressRequest"
+      CIM_GET_HOSTED_PROFILE = "getHostedProfilePageRequest"
       CIM_UPDATE_PROFILE = "updateCustomerProfileRequest"
       CIM_UPDATE_PAYMENT = "updateCustomerPaymentProfileRequest"
       CIM_UPDATE_ADDRESS = "updateCustomerShippingAddressRequest"
@@ -37,6 +38,7 @@ module AuthorizeNet
       CIM_VALIDATE_PAYMENT = "validateCustomerPaymentProfileRequest"
       REPORT_GET_BATCH_LIST = "getSettledBatchListRequest"
       REPORT_GET_TRANSACTION_LIST = "getTransactionListRequest"
+      REPORT_GET_UNSETTLED_TRANSACTION_LIST = "getUnsettledTransactionListRequest"
       REPORT_GET_TRANSACTION_DETAILS = "getTransactionDetailsRequest"
     end
     
@@ -251,6 +253,7 @@ module AuthorizeNet
         }
       end
       @xml = builder.to_xml 
+
       url = URI.parse(@gateway)
       
       request = Net::HTTP::Post.new(url.path)

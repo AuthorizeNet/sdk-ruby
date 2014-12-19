@@ -111,7 +111,7 @@ module AuthorizeNet
       ]
     end
   end
-
+   
   module SIM
     # Contains the various lists of fields needed by the SIM API.
     module Fields
@@ -283,13 +283,13 @@ module AuthorizeNet
     module Fields
       
       REFID_FIELDS = {:refId => :reference_id}
-      
+
       VALIDATION_MODE_FIELDS = {:validationMode => :validation_mode}
-      
+
       CUSTOMER_PROFILE_ID_FIELDS = {:customerProfileId => :customer_profile_id}
-      
+
       CUSTOMER_PAYMENT_PROFILE_ID_FIELDS = {:customerPaymentProfileId => :customer_payment_profile_id}
-      
+
       BILL_TO_FIELDS = {:billTo  => [
         {:firstName => :first_name},
         {:lastName => :last_name},
@@ -487,6 +487,12 @@ module AuthorizeNet
         CUSTOMER_PROFILE_ID_FIELDS,
         {:customerAddressId => :customer_address_id}
       ]
+
+      GET_HOSTED_PROFILE_FIELDS = [
+        REFID_FIELDS,
+        CUSTOMER_PROFILE_ID_FIELDS,
+        { :hostedProfileSettings => [ { :setting => [ { :settingName => :setting_name }, { :settingValue => :setting_value } ], :_multivalue => :hosted_settings } ] }
+      ]
       
       UPDATE_PROFILE_FIELDS = [
         REFID_FIELDS,
@@ -548,6 +554,7 @@ module AuthorizeNet
         AuthorizeNet::XmlTransaction::Type::CIM_GET_PROFILE => GET_PROFILE_FIELDS,
         AuthorizeNet::XmlTransaction::Type::CIM_GET_PAYMENT => GET_PAYMENT_FIELDS,
         AuthorizeNet::XmlTransaction::Type::CIM_GET_ADDRESS => GET_ADDRESS_FIELDS,
+        AuthorizeNet::XmlTransaction::Type::CIM_GET_HOSTED_PROFILE => GET_HOSTED_PROFILE_FIELDS,
         AuthorizeNet::XmlTransaction::Type::CIM_UPDATE_PROFILE => UPDATE_PROFILE_FIELDS,
         AuthorizeNet::XmlTransaction::Type::CIM_UPDATE_PAYMENT => UPDATE_PAYMENT_FIELDS,
         AuthorizeNet::XmlTransaction::Type::CIM_UPDATE_ADDRESS => UPDATE_ADDRESS_FIELDS,
@@ -633,6 +640,9 @@ module AuthorizeNet
       
       GET_TRANSACTION_LIST = [
         {:batchId => :batch_id}
+      ]
+      
+      GET_UNSETTLED_TRANSACTION_LIST = [
       ]
       
       GET_TRANSACTION_DETAILS = [
@@ -760,6 +770,7 @@ module AuthorizeNet
       FIELDS = {
         AuthorizeNet::XmlTransaction::Type::REPORT_GET_BATCH_LIST => GET_BATCH_LIST,
         AuthorizeNet::XmlTransaction::Type::REPORT_GET_TRANSACTION_LIST => GET_TRANSACTION_LIST,
+        AuthorizeNet::XmlTransaction::Type::REPORT_GET_UNSETTLED_TRANSACTION_LIST => GET_UNSETTLED_TRANSACTION_LIST,
         AuthorizeNet::XmlTransaction::Type::REPORT_GET_TRANSACTION_DETAILS => GET_TRANSACTION_DETAILS
       }
     end

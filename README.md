@@ -1,10 +1,12 @@
 # Authorize.Net Ruby SDK
 
+[![Build Status](https://travis-ci.org/AuthorizeNet/sdk-ruby.png?branch=future)](https://travis-ci.org/AuthorizeNet/sdk-ruby)
+
 `gem install authorizenet`
 
 ## Prerequisites
 
-* Ruby 1.8.7 or higher
+* Ruby 1.9.3 or higher
 * RubyGem 1.3.7 or higher (to build the gem)
 * RDoc 1.0 or higher (to build documentation)
 * Rake 0.8.7 or higher (to use the rake tasks)
@@ -23,7 +25,7 @@
 ````
   > bundle install
   > rake gem
-  > sudo gem install ./authorizenet-1.8.2.gem
+  > sudo gem install ./authorizenet-1.8.3.gem
 ````
 ## Registration & Configuration
 
@@ -31,13 +33,51 @@ Get a sandbox account at https://developer.authorize.net/sandbox/
 To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained as described below.
 ````
 #obtain an API login_id and transaction_id according to instructions at https://developer.authorize.net/faqs/#gettranskey
-api_transaction_key: {transaction_key_value}
 api_login_id: {login_id_value}
+api_transaction_key: {transaction_key_value}
 #obtained md5 hash value by first setting the hash value in https://sandbox.authorize.net/ under the Account tab->MD5 Hash
 md5_value: {md5_value}
 ````
+## Running the Tests
+To run the integration tests (hitting the sandbox):
+````
+rake spec
+````
+To run the unit tests:
+````
+rake spec:ci
+````
+
 To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ under Account tab->Transaction Details API and enable it.
+
 ## Usage
+
+### XML Api Integration
+````ruby
+  require 'authorizenet'
+  
+  include AuthorizeNet::API
+  
+  transaction = Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
+  request = CreateTransactionRequest.new
+  request.transactionRequest = TransactionRequestType.new
+  request.transactionRequest.amount = 39.55
+  
+  request.transactionRequest.payment = PaymentType.new
+  request.transactionRequest.payment.creditCard = CreditCardType.new('4111111111111111','0515') 
+  
+  request.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+  
+  response = transaction.create_transaction(request)
+  
+  if response.messages.resultCode == MessageTypeEnum::Ok
+    puts "Successfully made a purchase (authorization code: #{response.transactionResponse.authCode})"
+  else
+    raise "Failed to make purchase."
+  end
+  
+````
+
 
 ### Advanced Merchant Integration (AIM)
 
