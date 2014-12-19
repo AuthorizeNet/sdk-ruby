@@ -1,6 +1,6 @@
 # Authorize.Net Ruby SDK
 
-[![Build Status](https://travis-ci.org/AuthorizeNet/sdk-ruby.png?branch=master)](https://travis-ci.org/AuthorizeNet/sdk-ruby)
+[![Build Status](https://travis-ci.org/AuthorizeNet/sdk-ruby.png?branch=future)](https://travis-ci.org/AuthorizeNet/sdk-ruby)
 
 `gem install authorizenet`
 
