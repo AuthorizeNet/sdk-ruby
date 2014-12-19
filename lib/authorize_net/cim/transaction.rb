@@ -39,7 +39,13 @@ module AuthorizeNet::CIM
     @@create_profile_option_defaults = {
       :validation_mode => :none
     }
-    
+
+    # The default options for get_hosted_profile_token.
+    @@get_hosted_profile_token_option_defaults = {
+      :border_visible => true,
+      :validation_mode => :none,
+    }
+
     # The default options for create_payment_profile.
     @@create_payment_profile_option_defaults = {
       :validation_mode => :none
@@ -146,6 +152,30 @@ module AuthorizeNet::CIM
     def delete_profile(profile_id)
       @type = Type::CIM_DELETE_PROFILE
       handle_profile_id(profile_id)
+      make_request
+    end
+
+    # Sets up and submits a getHostedProfilePageRequest transaction. If this transaction has already been
+    # run, this method will return nil. Otherwise it will return an AuthorizeNet::CIM::Response object.
+    #
+    # +profile_id+:: Takes either a String containing the ID of the CustomerProfile you want to delete, or a CustomerProfile object with the ID populated.
+    #
+    # Options:
+    # +return_url+::  Enter the URL for the page that the customer returns to when the hosted session ends. Do not pass this setting for iframes or popups.
+    # +return_url_text+:: Enter the text to display on the button that returns the customer to your web site. The value can be any text up to 200 characters.
+    #                     If you do not pass this parameter, the default button text is Continue. Do not pass this setting for iframes or popups.
+    # +heading_color+:: Enter a hex color string such as #e0e0e0. The background color of the section headers changes from gray to a custom color.
+    # +border_visible+:: Enter true or false. Must be false for iframes or popups, and must be true for redirects.
+    # +iframe_communicator_url+:: Enter the URL to a page that can communicate with the merchant’s main page using javascript.
+    #                             This parameter enables you to dynamically change the size of the popup so that there are no scroll bars.
+    #                             This parameter is required only for iframe or lightbox applications.
+    # +validation_mode+:: Set to :testMode, :liveMode or :none (the default) to set hostedProfileValidationMode mode
+
+    def get_hosted_profile_token(profile_id, options = {})
+      options = @@get_hosted_profile_token_option_defaults.merge(options)
+      @type = Type::CIM_GET_HOSTED_PROFILE
+      handle_profile_id(profile_id)
+      handle_hosted_profile_settings(options)
       make_request
     end
     
@@ -642,7 +672,26 @@ module AuthorizeNet::CIM
       @fields[:extra_options] ||= {}
       @fields[:extra_options].merge!(options)
     end
-    
+
+    def handle_hosted_profile_settings(options)
+      options_mapping = {
+        :return_url => :hostedProfileReturnUrl,
+        :return_url_text => :hostedProfileReturnUrlText,
+        :heading_color => :hostedProfileHeadingBgColor,
+        :border_visible => :hostedProfilePageBorderVisible,
+        :iframe_communicator_url => :hostedProfileIFrameCommunicatorUrl,
+        :validation_mode => :hostedProfileValidationMode,
+      }
+      set_fields(
+        :hosted_settings =>
+            options.select do |k,_|
+              options_mapping.keys.include? k
+            end.map do |k,v|
+              { :setting_name => options_mapping[k], :setting_value => v }
+            end
+      )
+    end
+
     # Handles packing up custom fields.
     def handle_custom_fields(options)
       encoded_options = []
