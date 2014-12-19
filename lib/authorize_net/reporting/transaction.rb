@@ -69,6 +69,23 @@ module AuthorizeNet::Reporting
       make_request
     end
     
+    # Sets up and submits a getUnsettledTransactionListRequest transaction. If this transaction has already been
+    # run, this method will return nil. Otherwise it will return an AuthorizeNet::Reporting::Response object. The
+    # response object will have an array of TransactionDetail objects available via its transactions method if
+    # the request was successful. These TransactionDetail objects will not be fully populated. Use get_transaction_details
+    # to get all the details.
+    # 
+    #
+    # Typical usage:
+    # 
+    #   response = transaction.get_unsettled_transaction_list
+    #   transactions = response.transactions if response.success?
+    #
+    def get_unsettled_transaction_list
+      @type = Type::REPORT_GET_UNSETTLED_TRANSACTION_LIST
+      make_request
+    end
+
     # Sets up and submits a getTransactionDetailsRequest transaction. If this transaction has already been
     # run, this method will return nil. Otherwise it will return an AuthorizeNet::Reporting::Response object. The
     # response object will have a TransactionDetail object available via its transactions method if

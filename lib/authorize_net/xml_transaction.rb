@@ -37,6 +37,7 @@ module AuthorizeNet
       CIM_VALIDATE_PAYMENT = "validateCustomerPaymentProfileRequest"
       REPORT_GET_BATCH_LIST = "getSettledBatchListRequest"
       REPORT_GET_TRANSACTION_LIST = "getTransactionListRequest"
+      REPORT_GET_UNSETTLED_TRANSACTION_LIST = "getUnsettledTransactionListRequest"
       REPORT_GET_TRANSACTION_DETAILS = "getTransactionDetailsRequest"
     end
     
