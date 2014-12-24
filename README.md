@@ -164,7 +164,7 @@ the CCV code.
 
 ## New Model
 
-We’re exploring a new model of maintaining the SDKs which allows us to be more responsive to API changes.  This model is consistent across the different SDK languages, which is great for us, however we do not want to sacrifice your productivity by losing the inherent efficiencies in the Ruby language.  To this end we’re introducing the new model as purely “experimental” at this time and we would real appreciate your feedback.  Let us know what you really think!  Here’s an example of a server side call with ApplePay data in the new model.
+We’re exploring a new model of maintaining the SDKs which allows us to be more responsive to API changes.  This model is consistent across the different SDK languages, which is great for us, however we do not want to sacrifice your productivity by losing the inherent efficiencies in the Ruby language.  To this end we’re introducing the new model as purely “experimental” at this time and we would appreciate your feedback.  Let us know what you really think!  Here’s an example of a server side call with ApplePay data in the new model.
 
 ### Apple Pay Example
 ````ruby
