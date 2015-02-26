@@ -21,12 +21,7 @@ module AuthorizeNet::Reporting
       end
     end
 
-    def add_returned_item(id = nil, date_utc = nil, date_local = nil, code = nil, description = nil)
-      if id.kind_of?(AuthorizeNet::Reporting::ReturnedItem)
-        returned_item = id
-      else
-        returned_item = AuthorizeNet::Reporting::ReturnedItem.new({:return_item_id => id, :return_item_date_utc => date_utc, :return_item_date_utc => date_local, :return_item_code => code, :line_item_description => description})
-      end
+    def add_returned_item(returned_item)
       @returned_items = @returned_items.to_a << returned_item
     end
 
