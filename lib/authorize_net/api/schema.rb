@@ -258,37 +258,37 @@ module AuthorizeNet::API
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}creditCardSimpleType
   #   cardNumber - SOAP::SOAPString
   #   expirationDate - SOAP::SOAPString
-  #   paymentToken - SOAP::SOAPBoolean
   class CreditCardSimpleType
     include ROXML
     xml_accessor :cardNumber
     xml_accessor :expirationDate
-    xml_accessor :paymentToken
   
-    def initialize(cardNumber = nil, expirationDate = nil, paymentToken = nil)
+    def initialize(cardNumber = nil, expirationDate = nil)
       @cardNumber = cardNumber
       @expirationDate = expirationDate
-      @paymentToken = paymentToken
     end
   end
   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}creditCardType
   #   cardNumber - SOAP::SOAPString
   #   expirationDate - SOAP::SOAPString
-  #   paymentToken - SOAP::SOAPBoolean
   #   cardCode - (any)
+  #   isPaymentToken - SOAP::SOAPBoolean
+  #   cryptogram - SOAP::SOAPString  
   class CreditCardType
     include ROXML
     xml_accessor :cardNumber
     xml_accessor :expirationDate
-    xml_accessor :paymentToken
     xml_accessor :cardCode
+    xml_accessor :isPaymentToken
+    xml_accessor :cryptogram
   
-    def initialize(cardNumber = nil, expirationDate = nil, paymentToken = nil, cardCode = nil)
+    def initialize(cardNumber = nil, expirationDate = nil, cardCode = nil, isPaymentToken = nil, cryptogram = nil)
       @cardNumber = cardNumber
       @expirationDate = expirationDate
-      @paymentToken = paymentToken
       @cardCode = cardCode
+      @isPaymentToken = isPaymentToken
+      @cryptogram = cryptogram
     end
   end
   
@@ -443,8 +443,8 @@ module AuthorizeNet::API
       #   data - SOAP::SOAPString
       class Mode
         include ROXML
-        xml_accessor :pIN
-        xml_accessor :data
+        xml_accessor :PIN
+        xml_accessor :Data
   
         def initialize(pIN = nil, data = nil)
           @pIN = pIN
@@ -457,7 +457,7 @@ module AuthorizeNet::API
       #   description - SOAP::SOAPString
       class DeviceInfo
         include ROXML
-        xml_accessor :description
+        xml_accessor :Description
   
         def initialize(description = nil)
           @description = description
@@ -469,17 +469,17 @@ module AuthorizeNet::API
       #   value - SOAP::SOAPString
       class EncryptedData
         include ROXML
-        xml_accessor :value
+        xml_accessor :Value
   
         def initialize(value = nil)
           @value = value
         end
       end
   
-      xml_accessor :operation#, :as => OperationType
-      xml_accessor :mode, :as => Mode
-      xml_accessor :deviceInfo, :as => DeviceInfo
-      xml_accessor :encryptedData, :as => EncryptedData
+      xml_accessor :Operation
+      xml_accessor :Mode, :as => Mode
+      xml_accessor :DeviceInfo, :as => DeviceInfo
+      xml_accessor :EncryptedData, :as => EncryptedData
   
       def initialize(operation = nil, mode = nil, deviceInfo = nil, encryptedData = nil)
         @operation = operation
@@ -489,7 +489,7 @@ module AuthorizeNet::API
       end
     end
   
-    xml_accessor :dUKPT, :as => DUKPT
+    xml_accessor :DUKPT, :as => DUKPT
   
     def initialize(dUKPT = nil)
       @dUKPT = dUKPT
@@ -515,9 +515,9 @@ module AuthorizeNet::API
   #   scheme - KeyManagementScheme
   class KeyValue
     include ROXML
-    xml_accessor :encoding#, :as => EncodingType
-    xml_accessor :encryptionAlgorithm#, :as => EncryptionAlgorithmType
-    xml_accessor :scheme, :as => KeyManagementScheme
+    xml_accessor :Encoding
+    xml_accessor :EncryptionAlgorithm
+    xml_accessor :Scheme, :as => KeyManagementScheme
   
     def initialize(encoding = nil, encryptionAlgorithm = nil, scheme = nil)
       @encoding = encoding
@@ -530,7 +530,7 @@ module AuthorizeNet::API
   #   value - KeyValue
   class KeyBlock
     include ROXML
-    xml_accessor :value, :as => KeyValue
+    xml_accessor :Value, :as => KeyValue
   
     def initialize(value = nil)
       @value = value
@@ -541,7 +541,7 @@ module AuthorizeNet::API
   #   formOfPayment - KeyBlock
   class EncryptedTrackDataType
     include ROXML
-    xml_accessor :formOfPayment, :as => KeyBlock
+    xml_accessor :FormOfPayment, :as => KeyBlock
   
     def initialize(formOfPayment = nil)
       @formOfPayment = formOfPayment

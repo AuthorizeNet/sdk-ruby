@@ -30,7 +30,7 @@ describe Transaction do
     @createTransactionRequest.transactionRequest = TransactionRequestType.new
     @createTransactionRequest.transactionRequest.amount = @amount
     @createTransactionRequest.transactionRequest.payment = PaymentType.new
-    @createTransactionRequest.transactionRequest.payment.creditCard = CreditCardType.new(@validCcNum,@expDate,"true",'123') 
+    @createTransactionRequest.transactionRequest.payment.creditCard = CreditCardType.new(@validCcNum,@expDate,'123') 
     @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
 
     response = @transaction.create_transaction(@createTransactionRequest)
@@ -104,7 +104,7 @@ describe Transaction do
     createTranReq.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
     
     createTranReq.transactionRequest.payment = PaymentType.new
-    createTranReq.transactionRequest.payment.creditCard = CreditCardType.new(@validCcNum,@expDate,"true",'123')
+    createTranReq.transactionRequest.payment.creditCard = CreditCardType.new(@validCcNum,@expDate,'123')
      
     #customer info needed for profile
     createTranReq.transactionRequest.customer = CustomerDataType.new
@@ -143,7 +143,7 @@ describe Transaction do
     createTranReq.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
     
     createTranReq.transactionRequest.payment = PaymentType.new
-    createTranReq.transactionRequest.payment.creditCard = CreditCardType.new(@validCcNum,@expDate,"true",'123')
+    createTranReq.transactionRequest.payment.creditCard = CreditCardType.new(@validCcNum,@expDate,'123')
      
     #customer info needed for profile
     createTranReq.transactionRequest.customer = CustomerDataType.new
@@ -196,7 +196,7 @@ describe Transaction do
     #payment
     expected.payment.creditCard.cardNumber.should == actual.payment.creditCard.cardNumber
     expected.payment.creditCard.expirationDate.should == actual.payment.creditCard.expirationDate
-    expected.payment.creditCard.paymentToken.should == actual.payment.creditCard.paymentToken
+    expected.payment.creditCard.isPaymentToken.should == actual.payment.creditCard.isPaymentToken
     expected.payment.creditCard.cardCode.should == actual.payment.creditCard.cardCode
     
     #CustomerProfilePaymentType
@@ -425,27 +425,27 @@ describe Transaction do
   
   it "should serialize and deserialize EncryptedTrackDataType" do
     expected = EncryptedTrackDataType.new
-    expected.formOfPayment = KeyBlock.new
-    expected.formOfPayment.value = KeyValue.new
-    expected.formOfPayment.value.encoding = EncodingType::Base64
-    expected.formOfPayment.value.encryptionAlgorithm = EncryptionAlgorithmType::TDES
-    expected.formOfPayment.value.scheme = KeyManagementScheme.new
-    expected.formOfPayment.value.scheme.dUKPT = KeyManagementScheme::DUKPT.new
+    expected.FormOfPayment = KeyBlock.new
+    expected.FormOfPayment.Value = KeyValue.new
+    expected.FormOfPayment.Value.Encoding = EncodingType::Base64
+    expected.FormOfPayment.Value.EncryptionAlgorithm = EncryptionAlgorithmType::TDES
+    expected.FormOfPayment.Value.Scheme = KeyManagementScheme.new
+    expected.FormOfPayment.Value.Scheme.DUKPT = KeyManagementScheme::DUKPT.new
     
-    expected.formOfPayment.value.scheme.dUKPT.operation = OperationType::DECRYPT
-    expected.formOfPayment.value.scheme.dUKPT.mode = KeyManagementScheme::DUKPT::Mode.new("1234","1234")
-    expected.formOfPayment.value.scheme.dUKPT.deviceInfo = KeyManagementScheme::DUKPT::DeviceInfo.new("description")
-    expected.formOfPayment.value.scheme.dUKPT.encryptedData = KeyManagementScheme::DUKPT::EncryptedData.new("bla")
+    expected.FormOfPayment.Value.Scheme.DUKPT.Operation = OperationType::DECRYPT
+    expected.FormOfPayment.Value.Scheme.DUKPT.Mode = KeyManagementScheme::DUKPT::Mode.new("1234","1234")
+    expected.FormOfPayment.Value.Scheme.DUKPT.DeviceInfo = KeyManagementScheme::DUKPT::DeviceInfo.new("description")
+    expected.FormOfPayment.Value.Scheme.DUKPT.EncryptedData = KeyManagementScheme::DUKPT::EncryptedData.new("bla")
     
     actual = get_actual(expected, EncryptedTrackDataType, "encryptedTrackDataType")
     
-    expected.formOfPayment.value.encoding.should == actual.formOfPayment.value.encoding
-    expected.formOfPayment.value.encryptionAlgorithm.should == actual.formOfPayment.value.encryptionAlgorithm
-    expected.formOfPayment.value.scheme.dUKPT.operation.should == actual.formOfPayment.value.scheme.dUKPT.operation
-    expected.formOfPayment.value.scheme.dUKPT.mode.pIN.should == actual.formOfPayment.value.scheme.dUKPT.mode.pIN
-    expected.formOfPayment.value.scheme.dUKPT.mode.data.should == actual.formOfPayment.value.scheme.dUKPT.mode.data
-    expected.formOfPayment.value.scheme.dUKPT.deviceInfo.description.should == actual.formOfPayment.value.scheme.dUKPT.deviceInfo.description
-    expected.formOfPayment.value.scheme.dUKPT.encryptedData.value.should == actual.formOfPayment.value.scheme.dUKPT.encryptedData.value
+    expected.FormOfPayment.Value.Encoding.should == actual.FormOfPayment.Value.Encoding
+    expected.FormOfPayment.Value.EncryptionAlgorithm.should == actual.FormOfPayment.Value.EncryptionAlgorithm
+    expected.FormOfPayment.Value.Scheme.DUKPT.Operation.should == actual.FormOfPayment.Value.Scheme.DUKPT.Operation
+    expected.FormOfPayment.Value.Scheme.DUKPT.Mode.PIN.should == actual.FormOfPayment.Value.Scheme.DUKPT.Mode.PIN
+    expected.FormOfPayment.Value.Scheme.DUKPT.Mode.Data.should == actual.FormOfPayment.Value.Scheme.DUKPT.Mode.Data
+    expected.FormOfPayment.Value.Scheme.DUKPT.DeviceInfo.Description.should == actual.FormOfPayment.Value.Scheme.DUKPT.DeviceInfo.Description
+    expected.FormOfPayment.Value.Scheme.DUKPT.EncryptedData.Value.should == actual.FormOfPayment.Value.Scheme.DUKPT.EncryptedData.Value
   end
 
   def get_actual(expected, className, topElement)
