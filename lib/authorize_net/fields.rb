@@ -390,7 +390,7 @@ module AuthorizeNet
         {:bankRoutingNumberMasked => :bank_aba_code_masked},
         {:bankAccountNumberMasked => :bank_acct_num_masked},
         {:order => [
-          {:invoiceNumber => :invoice_number},
+          {:invoiceNumber => :invoice_num},
           {:description => :description},
           {:purchaseOrderNumber => :po_num}
         ]},
