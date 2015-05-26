@@ -185,6 +185,7 @@ module AuthorizeNet::API
   #   country - SOAP::SOAPString
   #   phoneNumber - SOAP::SOAPString
   #   faxNumber - SOAP::SOAPString
+  #   email - SOAP::SOAPString
   #   customerAddressId - (any)
   class CustomerAddressExType
     include ROXML
@@ -198,9 +199,10 @@ module AuthorizeNet::API
     xml_accessor :country
     xml_accessor :phoneNumber
     xml_accessor :faxNumber
+    xml_accessor :email
     xml_accessor :customerAddressId
   
-    def initialize(firstName = nil, lastName = nil, company = nil, address = nil, city = nil, state = nil, zip = nil, country = nil, phoneNumber = nil, faxNumber = nil, customerAddressId = nil)
+  def initialize(firstName = nil, lastName = nil, company = nil, address = nil, city = nil, state = nil, zip = nil, country = nil, phoneNumber = nil, faxNumber = nil, email = nil, customerAddressId = nil)
       @firstName = firstName
       @lastName = lastName
       @company = company
@@ -211,6 +213,7 @@ module AuthorizeNet::API
       @country = country
       @phoneNumber = phoneNumber
       @faxNumber = faxNumber
+      @email = email
       @customerAddressId = customerAddressId
     end
   end
@@ -310,16 +313,19 @@ module AuthorizeNet::API
   #   cardNumber - SOAP::SOAPString
   #   expirationDate - SOAP::SOAPString
   #   cardType - SOAP::SOAPString
+  #   cardArt - CardArt
   class CreditCardMaskedType
     include ROXML
     xml_accessor :cardNumber
     xml_accessor :expirationDate
     xml_accessor :cardType
+    xml_accessor :cardArt
   
     def initialize(cardNumber = nil, expirationDate = nil, cardType = nil)
       @cardNumber = cardNumber
       @expirationDate = expirationDate
       @cardType = cardType
+      @cardArt = cardArt
     end
   end
   
@@ -395,31 +401,34 @@ module AuthorizeNet::API
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}opaqueDataType
   #   dataDescriptor - SOAP::SOAPString
   #   dataValue - SOAP::SOAPString
+  #   dataKey - SOAP::SOAPString
   class OpaqueDataType
     include ROXML
     xml_accessor :dataDescriptor
     xml_accessor :dataValue
+    xml_accessor :dataKey
   
-    def initialize(dataDescriptor = nil, dataValue = nil)
-      @dataDescriptor = dataDescriptor
-      @dataValue = dataValue
-    end
+  def initialize(dataDescriptor = nil, dataValue = nil, dataKey = nil)
+    @dataDescriptor = dataDescriptor
+    @dataValue = dataValue
+    @dataKey = dataKey
   end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}paymentSimpleType
-  #   creditCard - CreditCardSimpleType
-  #   bankAccount - BankAccountType
-  class PaymentSimpleType
-    include ROXML
-    xml_accessor :creditCard
-    xml_accessor :bankAccount
-  
-    def initialize(creditCard = nil, bankAccount = nil)
-      @creditCard = creditCard
-      @bankAccount = bankAccount
-    end
+end
+
+# {AnetApi/xml/v1/schema/AnetApiSchema.xsd}paymentSimpleType
+#   creditCard - CreditCardSimpleType
+#   bankAccount - BankAccountType
+class PaymentSimpleType
+  include ROXML
+  xml_accessor :creditCard
+  xml_accessor :bankAccount
+
+  def initialize(creditCard = nil, bankAccount = nil)
+    @creditCard = creditCard
+    @bankAccount = bankAccount
   end
-  
+end
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}OperationType
   class OperationType < ::String
     DECRYPT = OperationType.new("DECRYPT")
@@ -735,16 +744,22 @@ module AuthorizeNet::API
   #   hashValue - SOAP::SOAPString
   #   sequence - SOAP::SOAPString
   #   timestamp - SOAP::SOAPString
+  #   currencyCode - SOAP::SOAPString
+  #   amount - SOAP::SOAPString
   class FingerPrintType
     include ROXML
     xml_accessor :hashValue
     xml_accessor :sequence
     xml_accessor :timestamp
-  
-    def initialize(hashValue = nil, sequence = nil, timestamp = nil)
+    xml_accessor :currencyCode
+    xml_accessor :amount
+    
+    def initialize(hashValue = nil, sequence = nil, timestamp = nil, currencyCode = nil, amount = nil)
       @hashValue = hashValue
       @sequence = sequence
       @timestamp = timestamp
+      @currencyCode = currencyCode
+      @amount = amount
     end
   end
 
@@ -777,6 +792,65 @@ module AuthorizeNet::API
     end
   end
   
+# {AnetApi/xml/v1/schema/AnetApiSchema.xsd}cardArt
+#   cardBrand - SOAP::SOAPString
+#   cardImageHeight - SOAP::SOAPString
+#   cardImageUrl - SOAP::SOAPString
+#   cardImageWidth - SOAP::SOAPString
+#   cardType - SOAP::SOAPString
+class CardArt
+  include ROXML
+  xml_accessor :cardBrand
+  xml_accessor :cardImageHeight
+  xml_accessor :cardImageUrl
+  xml_accessor :cardImageWidth
+  xml_accessor :cardType
+
+  def initialize(cardBrand = nil, cardImageHeight = nil, cardImageUrl = nil, cardImageWidth = nil, cardType = nil)
+    @cardBrand = cardBrand
+    @cardImageHeight = cardImageHeight
+    @cardImageUrl = cardImageUrl
+    @cardImageWidth = cardImageWidth
+    @cardType = cardType
+  end
+end
+# {AnetApi/xml/v1/schema/AnetApiSchema.xsd}paymentDetails
+#   currency - SOAP::SOAPString
+#   promoCode - SOAP::SOAPString
+#   misc - SOAP::SOAPString
+#   giftWrap - SOAP::SOAPString
+#   discount - SOAP::SOAPString
+#   tax - SOAP::SOAPString
+#   shippingHandling - SOAP::SOAPString
+#   subTotal - SOAP::SOAPString
+#   orderID - SOAP::SOAPString
+#   amount - SOAP::SOAPString
+class PaymentDetails
+  include ROXML
+  xml_accessor :currency
+  xml_accessor :promoCode
+  xml_accessor :misc
+  xml_accessor :giftWrap
+  xml_accessor :discount
+  xml_accessor :tax
+  xml_accessor :shippingHandling
+  xml_accessor :subTotal
+  xml_accessor :orderID
+  xml_accessor :amount
+
+  def initialize(currency = nil, promoCode = nil, misc = nil, giftWrap = nil, discount = nil, tax = nil, shippingHandling = nil, subTotal = nil, orderID = nil, amount = nil)
+    @currency = currency
+    @promoCode = promoCode
+    @misc = misc
+    @giftWrap = giftWrap
+    @discount = discount
+    @tax = tax
+    @shippingHandling = shippingHandling
+    @subTotal = subTotal
+    @orderID = orderID
+    @amount = amount
+  end
+end
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}paymentScheduleType
   #   interval - PaymentScheduleType::Interval
   #   startDate - SOAP::SOAPDate
@@ -885,26 +959,7 @@ module AuthorizeNet::API
     end
   end
   
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}fingerPrintSupportInformationType
-  #   amount - SOAP::SOAPDecimal
-  #   currencyCode - SOAP::SOAPString
-  #   sequence - SOAP::SOAPString
-  #   timestamp - SOAP::SOAPString
-  class FingerPrintSupportInformationType
-    include ROXML
-    xml_accessor :amount
-    xml_accessor :currencyCode
-    xml_accessor :sequence
-    xml_accessor :timestamp
-  
-    def initialize(amount = nil, currencyCode = nil, sequence = nil, timestamp = nil)
-      @amount = amount
-      @currencyCode = currencyCode
-      @sequence = sequence
-      @timestamp = timestamp
-    end
-  end
-    
+     
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}settingType
   #   settingName - SOAP::SOAPString
   #   settingValue - SOAP::SOAPString
@@ -2459,6 +2514,8 @@ module AuthorizeNet::API
     EmailCustomer = SettingNameEnum.new("emailCustomer")
     FooterEmailReceipt = SettingNameEnum.new("footerEmailReceipt")
     HeaderEmailReceipt = SettingNameEnum.new("headerEmailReceipt")
+    HostedProfileBillingAddressRequired = SettingNameEnum.new("hostedProfileBillingAddressRequired")
+    HostedProfileCardCodeRequired = SettingNameEnum.new("hostedProfileCardCodeRequired")
     HostedProfileHeadingBgColor = SettingNameEnum.new("hostedProfileHeadingBgColor")
     HostedProfileIFrameCommunicatorUrl = SettingNameEnum.new("hostedProfileIFrameCommunicatorUrl")
     HostedProfilePageBorderVisible = SettingNameEnum.new("hostedProfilePageBorderVisible")
@@ -3386,45 +3443,7 @@ module AuthorizeNet::API
     end
   end
   
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}createFingerPrintRequest
-  #   merchantAuthentication - MerchantAuthenticationType
-  #   refId - SOAP::SOAPString
-  #   supportInformation - FingerPrintSupportInformationType
-  class CreateFingerPrintRequest 
-    include ROXML
-    xml_accessor :merchantAuthentication
-    xml_accessor :refId
-    xml_accessor :supportInformation
-  
-    def initialize(merchantAuthentication = nil, refId = nil, supportInformation = nil)
-      @merchantAuthentication = merchantAuthentication
-      @refId = refId
-      @supportInformation = supportInformation
-    end
-  end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}createFingerPrintResponse
-  #   refId - SOAP::SOAPString
-  #   messages - MessagesType
-  #   sessionToken - SOAP::SOAPString
-  #   fingerPrint - FingerPrintType
-  #   supportInformation - FingerPrintSupportInformationType
-  class CreateFingerPrintResponse 
-    include ROXML
-    xml_accessor :refId
-    xml_accessor :messages
-    xml_accessor :sessionToken
-    xml_accessor :fingerPrint
-    xml_accessor :supportInformation
-  
-    def initialize(refId = nil, messages = nil, sessionToken = nil, fingerPrint = nil, supportInformation = nil)
-      @refId = refId
-      @messages = messages
-      @sessionToken = sessionToken
-      @fingerPrint = fingerPrint
-      @supportInformation = supportInformation
-    end
-  end
+ 
    
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}getBatchStatisticsRequest
   #   merchantAuthentication - MerchantAuthenticationType
