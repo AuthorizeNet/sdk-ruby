@@ -3826,6 +3826,55 @@ end
       @subscriptionDetails = subscriptionDetails
     end
   end
+
+# {AnetApi/xml/v1/schema/AnetApiSchema.xsd}decryptPaymentDataRequest
+#   merchantAuthentication - MerchantAuthenticationType
+#   refId - SOAP::SOAPString
+#   opaqueData - OpaqueDataType
+#   callId - SOAP::SOAPString
+class DecryptPaymentDataRequest
+  include ROXML
+  xml_accessor :merchantAuthentication
+  xml_accessor :refId
+  xml_accessor :opaqueData, :as => OpaqueDataType
+  xml_accessor :callId
+
+  def initialize(merchantAuthentication = nil, refId = nil, opaqueData = nil, callId = nil)
+    @merchantAuthentication = merchantAuthentication
+    @refId = refId
+    @opaqueData = opaqueData
+    @callId = callId
+  end
+end
+
+# {AnetApi/xml/v1/schema/AnetApiSchema.xsd}decryptPaymentDataResponse
+#   refId - SOAP::SOAPString
+#   messages - MessagesType
+#   sessionToken - SOAP::SOAPString
+#   shippingInfo - CustomerAddressType
+#   billingInfo - CustomerAddressType
+#   cardInfo - CreditCardMaskedType
+#   paymentDetails - PaymentDetails
+class DecryptPaymentDataResponse
+  include ROXML
+  xml_accessor :refId
+  xml_accessor :messages
+  xml_accessor :sessionToken
+  xml_accessor :shippingInfo
+  xml_accessor :billingInfo
+  xml_accessor :cardInfo
+  xml_accessor :paymentDetails
+
+  def initialize(refId = nil, messages = nil, sessionToken = nil, shippingInfo = nil, billingInfo = nil, cardInfo = nil, paymentDetails = nil)
+    @refId = refId
+    @messages = messages
+    @sessionToken = sessionToken
+    @shippingInfo = shippingInfo
+    @billingInfo = billingInfo
+    @cardInfo = cardInfo
+    @paymentDetails = paymentDetails
+  end
+end
   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}EnumCollection
   #   customerProfileSummaryType - CustomerProfileSummaryType
