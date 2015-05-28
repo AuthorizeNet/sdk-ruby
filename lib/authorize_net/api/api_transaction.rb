@@ -6,6 +6,7 @@ module AuthorizeNet::API
       API_CREATE_CUSTOMER_PROFILE_FROM_TRANSACTION = "createCustomerProfileFromTransactionRequest"
       API_DELETE_CUSTOMER_PROFILE = "deleteCustomerProfileRequest"
       API_DECRYPT_PAYMENT_DATA = "decryptPaymentDataRequest"
+      API_AUTHENTICATE_TEST_REQUEST = "authenticateTestRequest"
     end
     
     def initialize(api_login_id, api_transaction_key, options = {})

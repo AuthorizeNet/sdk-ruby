@@ -38,5 +38,12 @@ module AuthorizeNet::API
       make_request(request,DecryptPaymentDataResponse,Type::API_DECRYPT_PAYMENT_DATA)
     end
 
+    # This request enables confirm authentication values
+    # 
+    # See spec/api_spec.rb for usage examples
+    def authenticate_test_request(request)            
+      make_request(request,AuthenticateTestResponse,Type::API_AUTHENTICATE_TEST_REQUEST)
+    end
+
   end
 end

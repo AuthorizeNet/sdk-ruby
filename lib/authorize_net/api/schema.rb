@@ -2175,7 +2175,7 @@ end
   class ANetApiResponse
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -2566,7 +2566,7 @@ end
   class IsAliveResponse
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -2597,7 +2597,7 @@ end
   class AuthenticateTestResponse
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -2632,7 +2632,7 @@ end
   class ARBCreateSubscriptionResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :subscriptionId
   
@@ -2671,7 +2671,7 @@ end
   class ARBUpdateSubscriptionResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -2705,7 +2705,7 @@ end
   class ARBCancelSubscriptionResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -2740,7 +2740,7 @@ end
   class ARBGetSubscriptionStatusResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :status
   
@@ -2783,7 +2783,7 @@ end
   class CreateCustomerProfileResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :customerProfileId
     xml_accessor :customerPaymentProfileIdList
@@ -2833,7 +2833,7 @@ end
   class CreateCustomerPaymentProfileResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :customerPaymentProfileId
     xml_accessor :validationDirectResponse
@@ -2875,7 +2875,7 @@ end
   class CreateCustomerShippingAddressResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :customerAddressId
   
@@ -2929,7 +2929,7 @@ end
   class GetCustomerProfileResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :profile
   
@@ -2969,7 +2969,7 @@ end
   class GetCustomerPaymentProfileResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :paymentProfile
   
@@ -3009,7 +3009,7 @@ end
   class GetCustomerShippingAddressResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :address
   
@@ -3045,7 +3045,7 @@ end
   class UpdateCustomerProfileResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -3086,7 +3086,7 @@ end
   class UpdateCustomerPaymentProfileResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :validationDirectResponse
   
@@ -3125,7 +3125,7 @@ end
   class UpdateCustomerShippingAddressResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -3196,7 +3196,7 @@ end
   class DeleteCustomerPaymentProfileResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -3233,7 +3233,7 @@ end
   class DeleteCustomerShippingAddressResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -3272,7 +3272,7 @@ end
   class CreateCustomerProfileTransactionResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :transactionResponse
     xml_accessor :directResponse
@@ -3323,7 +3323,7 @@ end
   class ValidateCustomerPaymentProfileResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :directResponse
   
@@ -3357,7 +3357,7 @@ end
   class GetCustomerProfileIdsResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :ids
   
@@ -3396,7 +3396,7 @@ end
   class UpdateSplitTenderGroupResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -3431,7 +3431,7 @@ end
   class GetTransactionDetailsResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :transaction
   
@@ -3470,7 +3470,7 @@ end
   class GetBatchStatisticsResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :batch
   
@@ -3513,7 +3513,7 @@ end
   class GetSettledBatchListResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :batchList
   
@@ -3550,7 +3550,7 @@ end
   class GetTransactionListResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :transactions
   
@@ -3590,7 +3590,7 @@ end
   class GetHostedProfilePageResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :token
   
@@ -3624,7 +3624,7 @@ end
   class GetUnsettledTransactionListResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :transactions
   
@@ -3660,7 +3660,7 @@ end
   class MobileDeviceRegistrationResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -3694,7 +3694,7 @@ end
   class MobileDeviceLoginResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :merchantContact
     xml_accessor :userPermissions
@@ -3731,7 +3731,7 @@ end
   class LogoutResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -3771,7 +3771,7 @@ end
   class SendCustomerTransactionReceiptResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
   
     def initialize(refId = nil, messages = nil, sessionToken = nil)
@@ -3813,7 +3813,7 @@ end
   class ARBGetSubscriptionListResponse 
     include ROXML
     xml_accessor :refId
-    xml_accessor :messages
+    xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :totalNumInResultSet
     xml_accessor :subscriptionDetails

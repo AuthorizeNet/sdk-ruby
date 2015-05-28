@@ -25,6 +25,17 @@ describe Transaction do
     create_transaction_response
   end
 
+  it "should be able to run a test request" do
+    @testRequest = AuthenticateTestRequest.new
+    
+    response = @transaction.authenticate_test_request(@testRequest)
+
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil) 
+    expect(response.messages.resultCode).not_to eq(nil) 
+    expect(response.messages.resultCode).to eq(MessageTypeEnum::Ok)
+  end
+
   it "should be able to run credit card transaction" do
     @createTransactionRequest = CreateTransactionRequest.new
     @createTransactionRequest.transactionRequest = TransactionRequestType.new
@@ -56,7 +67,8 @@ describe Transaction do
     expect(response.messages.resultCode).not_to eq(nil)
     expect(response.transactionResponse).not_to eq(nil)     
   end
-  
+
+
   it "should be able to run apple pay transaction" do
     @createTransactionRequest = CreateTransactionRequest.new
     @createTransactionRequest.transactionRequest = TransactionRequestType.new
