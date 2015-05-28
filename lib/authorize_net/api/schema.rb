@@ -3858,12 +3858,12 @@ end
 class DecryptPaymentDataResponse
   include ROXML
   xml_accessor :refId
-  xml_accessor :messages
+  xml_accessor :messages, :as => MessagesType
   xml_accessor :sessionToken
-  xml_accessor :shippingInfo
-  xml_accessor :billingInfo
-  xml_accessor :cardInfo
-  xml_accessor :paymentDetails
+  xml_accessor :shippingInfo, :as => CustomerAddressType
+  xml_accessor :billingInfo, :as => CustomerAddressType
+  xml_accessor :cardInfo, :as => CreditCardMaskedType
+  xml_accessor :paymentDetails, :as => PaymentDetails
 
   def initialize(refId = nil, messages = nil, sessionToken = nil, shippingInfo = nil, billingInfo = nil, cardInfo = nil, paymentDetails = nil)
     @refId = refId

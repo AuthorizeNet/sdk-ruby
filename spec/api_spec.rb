@@ -72,6 +72,23 @@ describe Transaction do
     expect(response.messages.resultCode).not_to eq(nil)
     expect(response.transactionResponse).not_to eq(nil)    
   end
+
+  it "should be able to run a Visa Checkout transaction" do
+    @createTransactionRequest = CreateTransactionRequest.new
+    @createTransactionRequest.transactionRequest = TransactionRequestType.new
+    @createTransactionRequest.transactionRequest.amount = @amount
+    @createTransactionRequest.transactionRequest.payment = PaymentType.new
+    @createTransactionRequest.transactionRequest.payment.opaqueData = OpaqueDataType.new("dataDescriptor","dataValue","dataKey")
+    @createTransactionRequest.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+    
+    response = @transaction.create_transaction(@createTransactionRequest)
+
+    
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil) 
+    expect(response.messages.resultCode).not_to eq(nil)
+    expect(response.transactionResponse).not_to eq(nil)    
+  end
   
   it "should be able to run paypal transaction" do
     @createTransactionRequest = CreateTransactionRequest.new

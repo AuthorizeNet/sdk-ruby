@@ -30,5 +30,13 @@ module AuthorizeNet::API
     def delete_customer_profile(request)
       make_request(request,DeleteCustomerProfileResponse,Type::API_DELETE_CUSTOMER_PROFILE)
     end
+
+    # This request enables you to decrypt a payment data blob.
+    # 
+    # See spec/api_spec.rb for usage examples
+    def decrypt_payment_data(request)
+      make_request(request,DecryptPaymentDataResponse,Type::API_DECRYPT_PAYMENT_DATA)
+    end
+
   end
 end
