@@ -3921,6 +3921,7 @@ end
   #   payment - PaymentType
   #   profile - CustomerProfilePaymentType
   #   solution - SolutionType
+  #   callId - SOAP::SOAPString
   #   authCode - SOAP::SOAPString
   #   refTransId - SOAP::SOAPString
   #   splitTenderId - SOAP::SOAPString
@@ -3947,6 +3948,7 @@ end
     xml_accessor :payment, :as => PaymentType
     xml_accessor :profile, :as => CustomerProfilePaymentType
     xml_accessor :solution, :as => SolutionType
+    xml_accessor :callId
     xml_accessor :authCode
     xml_accessor :refTransId
     xml_accessor :splitTenderId
@@ -3966,13 +3968,14 @@ end
     xml_accessor :transactionSettings, :as => Settings
     xml_accessor :userFields, :as => UserFields
   
-    def initialize(transactionType = nil, amount = nil, currencyCode = nil, payment = nil, profile = nil, solution = nil, authCode = nil, refTransId = nil, splitTenderId = nil, order = nil, lineItems = nil, tax = nil, duty = nil, shipping = nil, taxExempt = nil, poNumber = nil, customer = nil, billTo = nil, shipTo = nil, customerIP = nil, cardholderAuthentication = nil, retail = nil, transactionSettings = nil, userFields = nil)
+    def initialize(transactionType = nil, amount = nil, currencyCode = nil, payment = nil, profile = nil, solution = nil, callId = nil, authCode = nil, refTransId = nil, splitTenderId = nil, order = nil, lineItems = nil, tax = nil, duty = nil, shipping = nil, taxExempt = nil, poNumber = nil, customer = nil, billTo = nil, shipTo = nil, customerIP = nil, cardholderAuthentication = nil, retail = nil, transactionSettings = nil, userFields = nil)
       @transactionType = transactionType
       @amount = amount
       @currencyCode = currencyCode
       @payment = payment
       @profile = profile
       @solution = solution
+      @callId = callId
       @authCode = authCode
       @refTransId = refTransId
       @splitTenderId = splitTenderId
