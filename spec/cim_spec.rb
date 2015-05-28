@@ -322,6 +322,20 @@ describe AuthorizeNet::CIM::Transaction do
         expect(direct_response.custom_fields[:foo]).to eq '123'
         expect(direct_response.custom_fields[:bar]).to eq '456'
       end
+
+      it "should support passing order fields including invoice number" do
+        transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => :sandbox)
+        expect(transaction).to respond_to(:create_transaction_auth_capture)
+        order = AuthorizeNet::Order.new()
+        order.invoice_num = '11111'
+        order.description =  'This order includes invoice num'
+        order.po_num = 'PO_12345'
+        response = transaction.create_transaction_auth_capture(@amount, profile, payment_profile, order)
+        expect(response.success?).to eq true
+        direct_response = response.direct_response
+        expect(direct_response).to be_instance_of(AuthorizeNet::AIM::Response)
+        expect(direct_response.success?).to eq true
+      end
       
       it "should support custom fields with custom delimeters" do
         transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => :sandbox)
