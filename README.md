@@ -190,8 +190,8 @@ We’re exploring a new model of maintaining the SDKs which allows us to be more
   else
     raise "Failed to make purchase."
   end
-
-
-  
 ````
+
+### Visa Checkout Example
+Our code samples repository has sample code for sending a transaction with Visa Checkout payment data (https://github.com/AuthorizeNet/sample-code-ruby/blob/master/VisaCheckout/visacheckout-transaction.rb) and for decrypting Visa Checkout payment data (https://github.com/AuthorizeNet/sample-code-ruby/blob/master/VisaCheckout/visacheckout-decrypt.rb).
 
