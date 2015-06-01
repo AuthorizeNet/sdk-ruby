@@ -297,6 +297,10 @@ describe AuthorizeNet::Reporting do
              <accountNumber>XXXX1111</accountNumber>
              <settleAmount>10.00</settleAmount>
              <hasReturnedItems>true</hasReturnedItems>
+             <subscription>
+               <id>2334316</id>
+               <payNum>3</payNum>
+             </subscription>
            </transaction>
         </transactions>
       </getTransactionListResponse>'
@@ -319,6 +323,7 @@ describe AuthorizeNet::Reporting do
       transactions[0].settle_amount.should == 38.37
       transactions[0].submitted_at.should == DateTime.parse('2010-12-07T23:50:02Z')
       transactions[0].status = 'voided'
+      transactions[2].subscription_id.should == '2334316'
       customer = transactions[2].customer
       customer.nil?.should be_falsey
       customer.address.nil?.should be_falsey

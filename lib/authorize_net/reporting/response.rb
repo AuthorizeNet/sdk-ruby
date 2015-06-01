@@ -52,6 +52,16 @@ module AuthorizeNet::Reporting
             unless invoice_number.nil?
               transaction.order = AuthorizeNet::Order.new(:invoice_num => invoice_number)
             end
+            subscription = child.at_css('subscription')
+            unless subscription.nil?
+                subscription_id = node_content_unless_nil(child.at_css('subscription').at_css('id'))
+                transaction.subscription_id = subscription_id unless subscription_id.nil?
+
+                pay_num = node_content_unless_nil(child.at_css('subscription').at_css('payNum'))
+                transaction.subscription_paynum = pay_num unless pay_num.nil?
+            end
+
+
             transactions <<= transaction
           end
         end
