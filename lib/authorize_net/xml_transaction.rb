@@ -8,7 +8,7 @@ module AuthorizeNet
     
     # Constants for both the various Authorize.Net subscription gateways are defined here.
     module Gateway
-      LIVE = 'https://api.authorize.net/xml/v1/request.api'
+      LIVE = 'https://api2.authorize.net/xml/v1/request.api'
       TEST = 'https://apitest.authorize.net/xml/v1/request.api'
     end
     

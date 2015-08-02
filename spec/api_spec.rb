@@ -137,7 +137,8 @@ describe Transaction do
      
     #customer info needed for profile
     createTranReq.transactionRequest.customer = CustomerDataType.new
-    createTranReq.transactionRequest.customer.email = "joe@somedomain.ddd"
+    createTranReq.transactionRequest.customer.email = rand(1000000).to_s + "joe@somedomain.ddd"
+    createTranReq.transactionRequest.customer.id = rand(1000000).to_s
     
     #send the request and get response
     createTranResp = @transaction.create_transaction(createTranReq)
@@ -176,7 +177,8 @@ describe Transaction do
      
     #customer info needed for profile
     createTranReq.transactionRequest.customer = CustomerDataType.new
-    createTranReq.transactionRequest.customer.email = "joe@somedomain.ddd"
+    createTranReq.transactionRequest.customer.email = rand(1000000).to_s + "joe@somedomain.ddd"
+    createTranReq.transactionRequest.customer.id = rand(1000000).to_s
     
     #set the "createProfile" flag to true
     createTranReq.transactionRequest.profile = CustomerProfilePaymentType.new

@@ -6,7 +6,7 @@ module AuthorizeNet
     
     # Constants for both the various Authorize.Net payment gateways are defined here.
     module Gateway
-      LIVE = 'https://secure.authorize.net/gateway/transact.dll'
+      LIVE = 'https://secure2.authorize.net/gateway/transact.dll'
       TEST = 'https://test.authorize.net/gateway/transact.dll'
       CARD_PRESENT_LIVE = 'https://cardpresent.authorize.net/gateway/transact.dll'
       CARD_PRESENT_TEST = 'https://test.authorize.net/gateway/transact.dll'
