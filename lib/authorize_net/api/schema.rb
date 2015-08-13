@@ -874,7 +874,7 @@ end
       end
     end
   
-    xml_accessor :interval
+    xml_accessor :interval, :as => Interval
     xml_accessor :startDate
     xml_accessor :totalOccurrences
     xml_accessor :trialOccurrences
@@ -900,14 +900,14 @@ end
   class ARBSubscriptionType
     include ROXML
     xml_accessor :name
-    xml_accessor :paymentSchedule
+    xml_accessor :paymentSchedule, :as => PaymentScheduleType
     xml_accessor :amount
     xml_accessor :trialAmount
-    xml_accessor :payment
-    xml_accessor :order
-    xml_accessor :customer
-    xml_accessor :billTo
-    xml_accessor :shipTo
+    xml_accessor :payment, :as => PaymentType
+    xml_accessor :order, :as => OrderType
+    xml_accessor :customer, :as => CustomerType
+    xml_accessor :billTo, :as => NameAndAddressType
+    xml_accessor :shipTo, :as => NameAndAddressType
   
     def initialize(name = nil, paymentSchedule = nil, amount = nil, trialAmount = nil, payment = nil, order = nil, customer = nil, billTo = nil, shipTo = nil)
       @name = name
@@ -1981,7 +1981,7 @@ end
         end
       end
       
-      xml_accessor :messages, :as => [Message]
+      xml_accessor :messages, :as => Messages
       
       def initialize(messages = [])
         @messages = messages
@@ -2613,9 +2613,9 @@ end
   #   subscription - ARBSubscriptionType
   class ARBCreateSubscriptionRequest
     include ROXML
-    xml_accessor :merchantAuthentication
+    xml_accessor :merchantAuthentication, :as => MerchantAuthenticationType
     xml_accessor :refId
-    xml_accessor :subscription
+    xml_accessor :subscription, :as => ARBSubscriptionType
   
     def initialize(merchantAuthentication = nil, refId = nil, subscription = nil)
       @merchantAuthentication = merchantAuthentication
@@ -2757,11 +2757,11 @@ end
   #   refId - SOAP::SOAPString
   #   profile - CustomerProfileType
   #   validationMode - ValidationModeEnum
-  class CreateCustomerProfileRequest 
+  class CreateCustomerProfileRequest
     include ROXML
-    xml_accessor :merchantAuthentication
+    xml_accessor :merchantAuthentication, :as => MerchantAuthenticationType
     xml_accessor :refId
-    xml_accessor :profile
+    xml_accessor :profile, :as => CustomerProfileType
     xml_accessor :validationMode
   
     def initialize(merchantAuthentication = nil, refId = nil, profile = nil, validationMode = nil)
