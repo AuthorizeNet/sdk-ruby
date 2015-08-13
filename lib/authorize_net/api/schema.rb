@@ -2654,7 +2654,7 @@ end
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :subscriptionId
-    xml_accessor :subscription
+    xml_accessor :subscription, :as => ARBSubscriptionType
   
     def initialize(merchantAuthentication = nil, refId = nil, subscriptionId = nil, subscription = nil)
       @merchantAuthentication = merchantAuthentication
@@ -3792,8 +3792,8 @@ end
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :searchType
-    xml_accessor :sorting
-    xml_accessor :paging
+    xml_accessor :sorting, :as => ARBGetSubscriptionListSorting
+    xml_accessor :paging, :as => Paging
   
     def initialize(merchantAuthentication = nil, refId = nil, searchType = nil, sorting = nil, paging = nil)
       @merchantAuthentication = merchantAuthentication
