@@ -63,6 +63,14 @@ module AuthorizeNet::API
       make_request(request,GetCustomerProfileResponse,Type::API_GET_CUSTOMER_PROFILE)
     end
 
+
+    # This request enables you to retrieve all customer profile ids
+    # 
+    # See spec/api_spec.rb for usage examples
+    def get_customer_profile_ids(request)
+      make_request(request,GetCustomerProfileIdsResponse,Type::API_GET_CUSTOMER_PROFILE_IDS)
+    end
+
     # This request enables you to update a customer profile
     # 
     # See spec/api_spec.rb for usage examples

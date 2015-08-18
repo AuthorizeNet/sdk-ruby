@@ -6,13 +6,11 @@ module AuthorizeNet::API
   class ArrayOfLong < ::Array
   end
   
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfNumericString
-  class ArrayOfNumericString
+  class NumericStringsType
     include ROXML
-    xml_accessor :numericStrings, :as => [Fixnum]
-    def initialize(numericStrings = [])
-        @numericStrings = numericStrings
-    end   
+    xml_reader :numericString, :as => []
   end
   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfString
@@ -2194,8 +2192,8 @@ end
     include ROXML
     xml_accessor :messages, :as => MessagesType
     xml_accessor :customerProfileId
-    xml_accessor :customerPaymentProfileIdList, :as => ArrayOfNumericString
-    xml_accessor :customerShippingAddressIdList, :as => ArrayOfNumericString
+    xml_accessor :customerPaymentProfileIdList, :as => NumericStringsType
+    xml_accessor :customerShippingAddressIdList, :as => NumericStringsType
   
     def initialize(messages = nil, customerProfileId = nil, customerPaymentProfileIdList = nil, customerShippingAddressIdList = nil)
       @messages = messages
@@ -2931,7 +2929,7 @@ end
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
-    xml_accessor :profile
+    xml_accessor :profile, :as => CustomerProfileMaskedType
   
     def initialize(refId = nil, messages = nil, sessionToken = nil, profile = nil)
       @refId = refId
@@ -3029,7 +3027,7 @@ end
     include ROXML
     xml_accessor :merchantAuthentication
     xml_accessor :refId
-    xml_accessor :profile
+    xml_accessor :profile, :as => CustomerProfileExType
   
     def initialize(merchantAuthentication = nil, refId = nil, profile = nil)
       @merchantAuthentication = merchantAuthentication
@@ -3359,7 +3357,7 @@ end
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
-    xml_accessor :ids
+    xml_accessor :ids, :as => NumericStringsType
   
     def initialize(refId = nil, messages = nil, sessionToken = nil, ids = nil)
       @refId = refId
