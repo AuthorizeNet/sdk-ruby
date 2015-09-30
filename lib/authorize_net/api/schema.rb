@@ -1037,9 +1037,9 @@ end
   class CustomerPaymentProfileType
     include ROXML
     xml_accessor :customerType
-    xml_accessor :billTo
-    xml_accessor :payment
-    xml_accessor :driversLicense
+    xml_accessor :billTo, :as => CustomerAddressType
+    xml_accessor :payment, :as => PaymentType
+    xml_accessor :driversLicense, :as => DriversLicenseType
     xml_accessor :taxId
   
     def initialize(customerType = nil, billTo = nil, payment = nil, driversLicense = nil, taxId = nil)
@@ -1061,9 +1061,9 @@ end
   class CustomerPaymentProfileExType
     include ROXML
     xml_accessor :customerType
-    xml_accessor :billTo
-    xml_accessor :payment
-    xml_accessor :driversLicense
+    xml_accessor :billTo, :as => CustomerAddressType
+    xml_accessor :payment, :as => PaymentType
+    xml_accessor :driversLicense, :as => DriversLicenseType
     xml_accessor :taxId
     xml_accessor :customerPaymentProfileId
   
@@ -2810,7 +2810,7 @@ end
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :customerProfileId
-    xml_accessor :paymentProfile
+    xml_accessor :paymentProfile, :as => CustomerPaymentProfileType
     xml_accessor :validationMode
   
     def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, paymentProfile = nil, validationMode = nil)
@@ -3064,7 +3064,7 @@ end
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :customerProfileId
-    xml_accessor :paymentProfile
+    xml_accessor :paymentProfile, :as => CustomerPaymentProfileExType
     xml_accessor :validationMode
   
     def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, paymentProfile = nil, validationMode = nil)
