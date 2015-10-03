@@ -131,14 +131,14 @@ module AuthorizeNet::API
     # 
     # See spec/api_spec.rb for usage examples
     def update_customer_shipping_profile(request)
-      make_request(request,UpdateCustomerShippingAddressResponse,Type::API_UPDATE_CUSTOMER_SHIPPING_PPROFILE)
+      make_request(request,UpdateCustomerShippingAddressResponse,Type::API_UPDATE_CUSTOMER_SHIPPING_PROFILE)
     end
 
     # This request enables you to delete a customer shipping profile
     # 
     # See spec/api_spec.rb for usage examples
     def delete_customer_shipping_profile(request)
-      make_request(request,DeleteCustomerShippingAddressResponse,Type::API_DELETE_CUSTOMER_SHIPPING_PPROFILE)
+      make_request(request,DeleteCustomerShippingAddressResponse,Type::API_DELETE_CUSTOMER_SHIPPING_PROFILE)
     end
    
 

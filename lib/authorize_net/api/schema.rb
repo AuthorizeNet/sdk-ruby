@@ -2855,7 +2855,7 @@ end
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :customerProfileId
-    xml_accessor :address
+    xml_accessor :address, :as => CustomerAddressType
   
     def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, address = nil)
       @merchantAuthentication = merchantAuthentication
@@ -3106,7 +3106,7 @@ end
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :customerProfileId
-    xml_accessor :address
+    xml_accessor :address, :as => CustomerAddressExType
   
     def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, address = nil)
       @merchantAuthentication = merchantAuthentication
