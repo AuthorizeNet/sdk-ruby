@@ -1817,37 +1817,6 @@ end
     end
   end
   
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}batchDetailsType
-  #   batchId - (any)
-  #   settlementTimeUTC - SOAP::SOAPDateTime
-  #   settlementTimeLocal - SOAP::SOAPDateTime
-  #   settlementState - SOAP::SOAPString
-  #   paymentMethod - SOAP::SOAPString
-  #   marketType - SOAP::SOAPString
-  #   product - SOAP::SOAPString
-  #   statistics - ArrayOfBatchStatisticType
-  class BatchDetailsType
-    include ROXML
-    xml_accessor :batchId
-    xml_accessor :settlementTimeUTC
-    xml_accessor :settlementTimeLocal
-    xml_accessor :settlementState
-    xml_accessor :paymentMethod
-    xml_accessor :marketType
-    xml_accessor :product
-    xml_accessor :statistics
-  
-    def initialize(batchId = nil, settlementTimeUTC = nil, settlementTimeLocal = nil, settlementState = nil, paymentMethod = nil, marketType = nil, product = nil, statistics = nil)
-      @batchId = batchId
-      @settlementTimeUTC = settlementTimeUTC
-      @settlementTimeLocal = settlementTimeLocal
-      @settlementState = settlementState
-      @paymentMethod = paymentMethod
-      @marketType = marketType
-      @product = product
-      @statistics = statistics
-    end
-  end
   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}batchStatisticType
   #   accountType - SOAP::SOAPString
@@ -1920,6 +1889,40 @@ end
     end
   end
   
+  
+# {AnetApi/xml/v1/schema/AnetApiSchema.xsd}batchDetailsType
+  #   batchId - (any)
+  #   settlementTimeUTC - SOAP::SOAPDateTime
+  #   settlementTimeLocal - SOAP::SOAPDateTime
+  #   settlementState - SOAP::SOAPString
+  #   paymentMethod - SOAP::SOAPString
+  #   marketType - SOAP::SOAPString
+  #   product - SOAP::SOAPString
+  #   statistics - ArrayOfBatchStatisticType
+  class BatchDetailsType
+    include ROXML
+    xml_accessor :batchId
+    xml_accessor :settlementTimeUTC
+    xml_accessor :settlementTimeLocal
+    xml_accessor :settlementState
+    xml_accessor :paymentMethod
+    xml_accessor :marketType
+    xml_accessor :product
+    xml_accessor :statistics, :as => [BatchStatisticType]
+  
+    def initialize(batchId = nil, settlementTimeUTC = nil, settlementTimeLocal = nil, settlementState = nil, paymentMethod = nil, marketType = nil, product = nil, statistics = nil)
+      @batchId = batchId
+      @settlementTimeUTC = settlementTimeUTC
+      @settlementTimeLocal = settlementTimeLocal
+      @settlementState = settlementState
+      @paymentMethod = paymentMethod
+      @marketType = marketType
+      @product = product
+      @statistics = statistics
+    end
+  end
+  
+  
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}transactionResponse
   #   responseCode - SOAP::SOAPString
   #   rawResponseCode - SOAP::SOAPString
@@ -1979,7 +1982,7 @@ end
         end
       end
       
-      xml_accessor :messages, :as => Messages
+      xml_accessor :messages, :as => [Messages::Message]
       
       def initialize(messages = [])
         @messages = messages
@@ -3470,7 +3473,7 @@ end
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
-    xml_accessor :batch
+    xml_accessor :batch, :as=> BatchDetailsType
   
     def initialize(refId = nil, messages = nil, sessionToken = nil, batch = nil)
       @refId = refId
