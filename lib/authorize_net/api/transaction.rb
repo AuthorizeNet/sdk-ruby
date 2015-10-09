@@ -172,6 +172,14 @@ module AuthorizeNet::API
     def authenticate_test_request(request)            
       make_request(request,AuthenticateTestResponse,Type::API_AUTHENTICATE_TEST_REQUEST)
     end
+	
+	# This request enables confirm authentication values
+    # 
+    # See spec/api_spec.rb for usage examples
+    def get_hosted_profile_page(request)            
+      make_request(request,GetHostedProfilePageResponse,Type::API_GET_HOSTED_PROFILE_PAGE)
+    end
+	
 
   end
 end
