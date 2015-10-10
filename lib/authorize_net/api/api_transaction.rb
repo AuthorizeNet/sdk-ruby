@@ -76,7 +76,7 @@ module AuthorizeNet::API
     
     def send_request(xml)
       url = URI.parse(@gateway)
-      puts xml 
+
       httpRequest = Net::HTTP::Post.new(url.path)
       httpRequest.content_type = 'text/xml'
       httpRequest.body = xml
@@ -92,7 +92,6 @@ module AuthorizeNet::API
     end
     
     def deserialize(xml,responseClass)
-      puts xml
       responseClass.from_xml(xml)
     end
   end
