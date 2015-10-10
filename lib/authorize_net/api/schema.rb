@@ -3573,7 +3573,7 @@ end
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :customerProfileId
-    xml_accessor :hostedProfileSettings
+    xml_accessor :hostedProfileSettings, :as => Settings
   
     def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, hostedProfileSettings = nil)
       @merchantAuthentication = merchantAuthentication
