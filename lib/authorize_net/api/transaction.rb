@@ -172,6 +172,12 @@ module AuthorizeNet::API
     def authenticate_test_request(request)            
       make_request(request,AuthenticateTestResponse,Type::API_AUTHENTICATE_TEST_REQUEST)
     end
-
+    
+    # This request enables you to get batch statistics details
+    # 
+    # See spec/api_spec.rb for usage examples
+    def get_batch_statistics(request)            
+      make_request(request,GetBatchStatisticsResponse,Type::API_GET_BATCH_STATISTICS)
+    end
   end
 end
