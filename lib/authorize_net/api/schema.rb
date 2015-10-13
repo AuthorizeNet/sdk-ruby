@@ -2066,12 +2066,12 @@ end
     #   payerID - SOAP::SOAPString
     class SecureAcceptance
       include ROXML
-      xml_accessor :secureAcceptanceUrl
-      xml_accessor :payerID
+      xml_accessor :SecureAcceptanceUrl
+      xml_accessor :PayerID
   
       def initialize(secureAcceptanceUrl = nil, payerID = nil)
-        @secureAcceptanceUrl = secureAcceptanceUrl
-        @payerID = payerID
+        @SecureAcceptanceUrl = secureAcceptanceUrl
+        @PayerID = payerID
       end
     end
   

@@ -393,8 +393,8 @@ describe Transaction do
     expected.shipTo.zip.should == actual.shipTo.zip
     expected.shipTo.country.should == actual.shipTo.country
     
-    expected.secureAcceptance.secureAcceptanceUrl.should == actual.secureAcceptance.secureAcceptanceUrl
-    expected.secureAcceptance.payerID.should == actual.secureAcceptance.payerID
+    expected.secureAcceptance.SecureAcceptanceUrl.should == actual.secureAcceptance.SecureAcceptanceUrl
+    expected.secureAcceptance.PayerID.should == actual.secureAcceptance.PayerID
 
     @createTransactionResponse.profileResponse.messages.resultCode.should == actResponse.profileResponse.messages.resultCode
     @createTransactionResponse.profileResponse.messages.messages.each_with_index do |item,index|
