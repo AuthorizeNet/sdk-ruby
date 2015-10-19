@@ -128,25 +128,41 @@ There is also a default layout generated, <tt>app/views/layouts/authorize_net.er
   require 'authorizenet'
   
   transaction = AuthorizeNet::ARB::Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
-  subscription = AuthorizeNet::ARB::Subscription.new(
-    :name => "Monthly Gift Basket",
-    :length => 1,
-    :unit => :month,
-    :start_date => Date.today,
-    :total_occurrences => :unlimited,
-    :amount => 100.00,
-    :invoice_number => '1234567',
-    :description => "John Doe's Monthly Gift Basket",
-    :credit_card => AuthorizeNet::CreditCard.new('4111111111111111', '1120'),
-    :billing_address => AuthorizeNet::Address.new(:first_name => 'John', :last_name => 'Doe')
-  )
-  response = transaction.create(subscription)
   
-  if response.success?
-    puts "Successfully created a subscription (subscription id: #{response.subscription_id})"
+request = ARBCreateSubscriptionRequest.new
+    request.refId = '2238251169'
+    request.subscription = ARBSubscriptionType.new
+    request.subscription.name = "Jane Doe"
+    request.subscription.paymentSchedule = PaymentScheduleType.new
+    request.subscription.paymentSchedule.interval = PaymentScheduleType::Interval.new("3","months")
+    request.subscription.paymentSchedule.startDate = '2017-08-30'
+    request.subscription.paymentSchedule.totalOccurrences ='12'
+    request.subscription.paymentSchedule.trialOccurrences ='1'
+
+    request.subscription.amount = 0.09
+    request.subscription.trialAmount = 0.00
+    request.subscription.payment = PaymentType.new
+    request.subscription.payment.creditCard = CreditCardType.new('4111111111111111','0120','123')
+
+    request.subscription.order = OrderType.new('invoiceNumber123','description123')
+    request.subscription.customer =  CustomerDataType.new(CustomerTypeEnum::Individual,'custId1','a@a.com')
+    request.subscription.billTo = NameAndAddressType.new('John','Doe','xyt','10800 Blue St','New York','NY','10010','USA')
+    request.subscription.shipTo = NameAndAddressType.new('John','Doe','xyt','10800 Blue St','New York','NY','10010','USA')
+
+  response = transaction.create_subscription(request)
+    
+
+
+if response != nil
+  if response.messages.resultCode == MessageTypeEnum::Ok
+    puts "Successfully created a subscription #{response.subscriptionId}"
+
   else
-    raise "Failed to create a subscription."
+    puts response.messages.messages[0].code
+    puts response.messages.messages[0].text
+    raise "Failed to create a subscription"
   end
+end
 ````
 ### Card Present (CP)
 ````ruby
