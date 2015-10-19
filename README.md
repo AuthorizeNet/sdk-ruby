@@ -60,7 +60,7 @@ require 'rubygems'
 
   include AuthorizeNet::API
 
-  transaction = AuthorizeNet::AIM::Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
+  transaction = Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
 
   request = CreateTransactionRequest.new
 
