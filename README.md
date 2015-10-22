@@ -55,17 +55,31 @@ To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ unde
 ### Advanced Merchant Integration (AIM)
 
 ````ruby
-  require 'rubygems'
+require 'rubygems'
   require 'authorizenet'
+
+  include AuthorizeNet::API
+
+  transaction = Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
+
+  request = CreateTransactionRequest.new
+
+  request.transactionRequest = TransactionRequestType.new()
+  request.transactionRequest.amount = 16.00
+  request.transactionRequest.payment = PaymentType.new
+  request.transactionRequest.payment.creditCard = CreditCardType.new('4242424242424242','0220','123') 
+  request.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
   
-  transaction = AuthorizeNet::AIM::Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
-  credit_card = AuthorizeNet::CreditCard.new('4111111111111111', '1120')
-  response = transaction.purchase('10.00', credit_card)
-  
-  if response.success?
-    puts "Successfully made a purchase (authorization code: #{response.authorization_code})"
+  response = transaction.create_transaction(request)
+
+  if response.messages.resultCode == MessageTypeEnum::Ok
+    puts "Successful charge (auth + capture) (authorization code: #{response.transactionResponse.authCode})"
+
   else
-    raise "Failed to make purchase."
+    puts response.messages.messages[0].text
+    puts response.transactionResponse.errors.errors[0].errorCode
+    puts response.transactionResponse.errors.errors[0].errorText
+    raise "Failed to charge card."
   end
 ````
 
@@ -113,25 +127,43 @@ There is also a default layout generated, <tt>app/views/layouts/authorize_net.er
   require 'rubygems'
   require 'authorizenet'
   
-  transaction = AuthorizeNet::ARB::Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
-  subscription = AuthorizeNet::ARB::Subscription.new(
-    :name => "Monthly Gift Basket",
-    :length => 1,
-    :unit => :month,
-    :start_date => Date.today,
-    :total_occurrences => :unlimited,
-    :amount => 100.00,
-    :invoice_number => '1234567',
-    :description => "John Doe's Monthly Gift Basket",
-    :credit_card => AuthorizeNet::CreditCard.new('4111111111111111', '1120'),
-    :billing_address => AuthorizeNet::Address.new(:first_name => 'John', :last_name => 'Doe')
-  )
-  response = transaction.create(subscription)
+  include AuthorizeNet::API
   
-  if response.success?
-    puts "Successfully created a subscription (subscription id: #{response.subscription_id})"
-  else
-    raise "Failed to create a subscription."
+  transaction = Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
+  
+  request = ARBCreateSubscriptionRequest.new
+  request.refId = '2238251169'
+  request.subscription = ARBSubscriptionType.new
+  request.subscription.name = "Jane Doe"
+  request.subscription.paymentSchedule = PaymentScheduleType.new
+  request.subscription.paymentSchedule.interval = PaymentScheduleType::Interval.new("3","months")
+  request.subscription.paymentSchedule.startDate = '2017-08-30'
+  request.subscription.paymentSchedule.totalOccurrences ='12'
+  request.subscription.paymentSchedule.trialOccurrences ='1'
+  
+  request.subscription.amount = 0.09
+  request.subscription.trialAmount = 0.00
+  request.subscription.payment = PaymentType.new
+  request.subscription.payment.creditCard = CreditCardType.new('4111111111111111','0120','123')
+  
+  request.subscription.order = OrderType.new('invoiceNumber123','description123')
+  request.subscription.customer =  CustomerDataType.new(CustomerTypeEnum::Individual,'custId1','a@a.com')
+  request.subscription.billTo = NameAndAddressType.new('John','Doe','xyt','10800 Blue St','New York','NY','10010','USA')
+  request.subscription.shipTo = NameAndAddressType.new('John','Doe','xyt','10800 Blue St','New York','NY','10010','USA')
+  
+  response = transaction.create_subscription(request)
+    
+
+
+  if response != nil
+    if response.messages.resultCode == MessageTypeEnum::Ok
+      puts "Successfully created a subscription #{response.subscriptionId}"
+  
+    else
+      puts response.messages.messages[0].code
+      puts response.messages.messages[0].text
+      raise "Failed to create a subscription"
+    end
   end
 ````
 ### Card Present (CP)
