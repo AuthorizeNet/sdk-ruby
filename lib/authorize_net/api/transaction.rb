@@ -186,6 +186,12 @@ module AuthorizeNet::API
     def get_hosted_profile_page(request)            
       make_request(request,GetHostedProfilePageResponse,Type::API_GET_HOSTED_PROFILE_PAGE)
     end
-	
+    
+    # This request enables you to update split tender group
+    # 
+    # See spec/api_spec.rb for usage examples
+    def update_split_tender_group(request)  
+      make_request(request,UpdateSplitTenderGroupResponse,Type::API_UPDATE_SPLIT_TENDER_GROUP)
+    end
   end
 end

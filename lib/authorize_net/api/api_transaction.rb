@@ -3,6 +3,7 @@ module AuthorizeNet::API
     
     module Type
       API_CREATE_TRANSACTION = "createTransactionRequest"
+      API_UPDATE_SPLIT_TENDER_GROUP = "updateSplitTenderGroupRequest"
 
       API_CREATE_SUBSCRIPTION = "ARBCreateSubscriptionRequest"
       API_UPDATE_SUBSCRIPTION = "ARBUpdateSubscriptionRequest"
@@ -35,7 +36,7 @@ module AuthorizeNet::API
       API_GET_UNSETTLED_TRANSACTION_LIST = "getUnsettledTransactionListRequest"
       API_GET_BATCH_STATISTICS = "getBatchStatisticsRequest"
 	  
-	  API_GET_HOSTED_PROFILE_PAGE = "getHostedProfilePageRequest"
+      API_GET_HOSTED_PROFILE_PAGE = "getHostedProfilePageRequest"
 
 
       API_DECRYPT_PAYMENT_DATA = "decryptPaymentDataRequest"
