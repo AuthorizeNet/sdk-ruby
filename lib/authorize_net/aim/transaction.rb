@@ -12,7 +12,7 @@ module AuthorizeNet::AIM
       :allow_split => false,
       :delimiter => ',',
       :encapsulation_character => nil,
-      :verify_ssl => false,
+      :verify_ssl => true,
       :device_type => DeviceType::UNKNOWN,
       :market_type => MarketType::RETAIL
     }
@@ -38,7 +38,7 @@ module AuthorizeNet::AIM
     # +allow_split+:: A boolean indicating if split transactions should be allowed (defaults to false).
     # +delimiter+:: A single character (as a string) that will be used to delimit the response from the gateway. Defaults to ','.
     # +encapsulation_character+:: A single character (as a string) that will be used to encapsulate each field in the response from the gateway. Defaults to nil.
-    # +verify_ssl+:: A boolean indicating if the SSL certificate of the +gateway+ should be verified. Defaults to false.
+    # +verify_ssl+:: A boolean indicating if the SSL certificate of the +gateway+ should be verified. Defaults to true.
     # +device_type+:: A constant from DeviceType indicating the type of POS device used in a card present transaction. Defaults to DeviceType::UNKNOWN.
     # +market_type+:: A constant from MarketType indicating your industry. Used for card present transactions. Defaults to MarketType::RETAIL.
     #
