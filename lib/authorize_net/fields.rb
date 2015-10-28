@@ -49,6 +49,7 @@ module AuthorizeNet
         :md5_hash,
         :card_code_response,
         :cardholder_authentication_verification_response,
+        :solution_id,
         nil,
         nil,
         nil,

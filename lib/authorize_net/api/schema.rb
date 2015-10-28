@@ -1176,8 +1176,8 @@ end
     xml_accessor :description
     xml_accessor :email
     xml_accessor :customerProfileId
-    xml_accessor :paymentProfiles
-    xml_accessor :shipToList
+    xml_accessor :paymentProfiles, :from => 'paymentProfiles' , :as => [CustomerPaymentProfileMaskedType]
+    xml_accessor :shipToList, :from => 'shipToList' , :as => [CustomerAddressExType]
   
     def initialize(merchantCustomerId = nil, description = nil, email = nil, customerProfileId = nil, paymentProfiles = [], shipToList = [])
       @merchantCustomerId = merchantCustomerId

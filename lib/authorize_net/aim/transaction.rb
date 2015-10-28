@@ -71,6 +71,7 @@ module AuthorizeNet::AIM
       @verify_ssl = options[:verify_ssl]
       @market_type = options[:market_type]
       @device_type = options[:device_type]
+      @solution_id = options[:solution_id]
     end
     
     # Checks if the transaction has been configured for test mode or not. Return TRUE if the
@@ -127,6 +128,10 @@ module AuthorizeNet::AIM
     def cp_version
       @cp_version
     end
+
+    def solution_id
+      @solution_id
+    end
     
     #:enddoc:
     protected
@@ -147,6 +152,7 @@ module AuthorizeNet::AIM
       fields[:test_request] = boolean_to_value(@test_mode)
       fields[:allow_partial_auth] = 'TRUE' if @allow_split_transaction
       fields[:encap_char] = @encapsulation_character unless @encapsulation_character.nil?
+      fields[:solution_id] = @solution_id unless @solution_id.nil?
       fields.each do |k, v|
         if @@boolean_fields.include?(k)
           fields[k] = boolean_to_value(v)

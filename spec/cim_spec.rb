@@ -453,6 +453,17 @@ describe AuthorizeNet::CIM::Transaction do
     expect(response.success?).to eq true
     expect(response.profile_ids).not_to eq nil
   end
+  
+  it "should be able to get zero profile ids when a merchant has zero customer profiles" do
+    #Using specific credentials for a Merchant which has zero customer profiles
+    #NOTE: These credentials are specific to this test
+    transaction = AuthorizeNet::CIM::Transaction.new("3qkNY3db6jB", "7s8B76QvsPet82HH", :gateway => :sandbox)
+    expect(transaction).to respond_to(:get_profile_ids)
+    response = transaction.get_profile_ids
+    expect(response).to be_kind_of(AuthorizeNet::CIM::Response)
+    expect(response.success?).to eq true
+    expect(response.profile_ids).to eq nil
+  end
 end
 
 describe AuthorizeNet::CIM::Response do
