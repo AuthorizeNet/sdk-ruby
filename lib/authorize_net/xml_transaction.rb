@@ -60,7 +60,7 @@ module AuthorizeNet
     # The default options for the constructor.
     @@option_defaults = {
       :gateway => :production,
-      :verify_ssl => false,
+      :verify_ssl => true,
       :reference_id => nil
     }
     

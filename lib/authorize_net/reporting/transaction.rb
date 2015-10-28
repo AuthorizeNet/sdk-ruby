@@ -21,7 +21,7 @@ module AuthorizeNet::Reporting
     # 
     # Options
     # +gateway+:: The gateway to submit the transaction to. Can be a URL string, an AuthorizeNet::Reporting::Transaction::Gateway constant, or one of the convenience symbols :sandbox, :test, :production, or :live (:test is an alias for :sandbox, and :live is an alias for :production). 
-    # +verify_ssl+:: A boolean indicating if the SSL certificate of the +gateway+ should be verified. Defaults to false.
+    # +verify_ssl+:: A boolean indicating if the SSL certificate of the +gateway+ should be verified. Defaults to true.
     # +reference_id+:: A string that can be used to identify a particular transaction with its response. Will be echo'd in the response, only if it was provided in the transaction. Defaults to nil.
     #
     def initialize(api_login_id, api_transaction_key, options = {})
