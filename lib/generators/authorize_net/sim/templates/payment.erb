@@ -1,0 +1,6 @@
+<% form_for :sim_transaction, :url => AuthorizeNet::SIM::Transaction::Gateway::TEST do |f| %>
+  <%= sim_fields(@sim_transaction) %>
+  <%= label_tag 'x_amount', "Total: #{number_to_currency(@amount)}" %>
+  <br />
+  <%= f.submit 'Purchase'%>
+<% end %>

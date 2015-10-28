@@ -1,0 +1,21 @@
+class <%= class_name %>Controller < ApplicationController
+
+  layout 'authorize_net'
+  helper :authorize_net
+  protect_from_forgery :except => :relay_response
+
+  # GET
+  # Displays a payment form.
+  def payment
+    @amount = 10.00
+    @sim_transaction = AuthorizeNet::SIM::Transaction.new(AUTHORIZE_NET_CONFIG['api_login_id'], AUTHORIZE_NET_CONFIG['api_transaction_key'], @amount, :hosted_payment_form => true)
+    @sim_transaction.set_hosted_payment_receipt(AuthorizeNet::SIM::HostedReceiptPage.new(:link_method => AuthorizeNet::SIM::HostedReceiptPage::LinkMethod::GET, :link_text => 'Continue', :link_url => <%= singular_name %>_thank_you_url(:only_path => false)))
+  end
+  
+  # GET
+  # Displays a thank you page.
+  def thank_you
+    @auth_code = params[:x_auth_code]
+  end
+
+end

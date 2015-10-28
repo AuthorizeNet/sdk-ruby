@@ -1,0 +1,10 @@
+<%= form_for :sim_transaction, :url => AuthorizeNet::SIM::Transaction::Gateway::TEST do |f| %>
+  <%= sim_fields(@sim_transaction) %>
+  <%= label_tag 'x_amount', "Total: #{number_to_currency(@amount)}" %>
+  <%= label_tag 'x_card_num', 'Credit Card Number'%>
+  <%= text_field_tag 'x_card_num' %>
+  <%= label_tag 'x_exp_date', 'Expiration Date (MMYY)'%>
+  <%= text_field_tag 'x_exp_date' %>
+  <br />
+  <%= f.submit 'Purchase'%>
+<% end %>
