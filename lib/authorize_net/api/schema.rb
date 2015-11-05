@@ -11,6 +11,9 @@ module AuthorizeNet::API
   class NumericStringsType
     include ROXML
     xml_reader :numericString, :as => []
+    def initialize(numericString = [])
+     @numericString = numericString
+    end
   end
   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfString
