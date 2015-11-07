@@ -404,12 +404,12 @@ describe Transaction do
     
     @createTransactionResponse.profileResponse.customerProfileId.should == actResponse.profileResponse.customerProfileId
 
-    @createTransactionResponse.profileResponse.customerPaymentProfileIdList.numericStrings.each_with_index do |item,index|
-      item.should == actResponse.profileResponse.customerPaymentProfileIdList.numericStrings[index]
+    @createTransactionResponse.profileResponse.customerPaymentProfileIdList.numericString.each_with_index do |item,index|
+      item.should == actResponse.profileResponse.customerPaymentProfileIdList.numericString[index]
     end
     
-    @createTransactionResponse.profileResponse.customerShippingAddressIdList.numericStrings.each_with_index do |item,index|
-      item.should == actResponse.profileResponse.customerShippingAddressIdList.numericStrings[index]
+    @createTransactionResponse.profileResponse.customerShippingAddressIdList.numericString.each_with_index do |item,index|
+      item.should == actResponse.profileResponse.customerShippingAddressIdList.numericString[index]
     end
   end
   
@@ -596,7 +596,7 @@ describe Transaction do
     @createTransactionResponse.profileResponse = CreateProfileResponse.new
     @createTransactionResponse.profileResponse.messages = MessagesType.new(MessageTypeEnum::Ok,[MessagesType::Message.new("pRespCode1","pRespText1"),MessagesType::Message.new("pRespCode2","pRespText2")])
     @createTransactionResponse.profileResponse.customerProfileId = "3154654646546"
-    @createTransactionResponse.profileResponse.customerPaymentProfileIdList = ArrayOfNumericString.new([546654656465,5665656565656565])
-    @createTransactionResponse.profileResponse.customerShippingAddressIdList = ArrayOfNumericString.new([66232546654656465,566565656565787876565])
+    @createTransactionResponse.profileResponse.customerPaymentProfileIdList = NumericStringsType.new(["546654656465","5665656565656565"])
+    @createTransactionResponse.profileResponse.customerShippingAddressIdList = NumericStringsType.new(["66232546654656465","566565656565787876565"])
   end
 end

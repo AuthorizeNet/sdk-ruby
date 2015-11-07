@@ -568,7 +568,7 @@ module AuthorizeNet
           {:firstName => :first_name},
           {:lastName => :last_name},
           {:company => :company},
-          {:address => :address},
+          {:address => :street_address},
           {:city => :city},
           {:state => :state},
           {:zip => :zip},
