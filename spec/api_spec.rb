@@ -478,7 +478,62 @@ describe Transaction do
     expected.FormOfPayment.Value.Scheme.DUKPT.DeviceInfo.Description.should == actual.FormOfPayment.Value.Scheme.DUKPT.DeviceInfo.Description
     expected.FormOfPayment.Value.Scheme.DUKPT.EncryptedData.Value.should == actual.FormOfPayment.Value.Scheme.DUKPT.EncryptedData.Value
   end
+  
+  it "should be able to get subscription" do
+    transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, :gateway => @gateway)
+    @createTransactionRequest = ARBGetSubscriptionRequest.new
+  
+    @createTransactionRequest.refId = 'Sample'
+    @createTransactionRequest.subscriptionId = '2930242'
 
+    transaction.should respond_to(:arb_get_subscription_request)
+    response = transaction.arb_get_subscription_request(@createTransactionRequest)
+     
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil)     
+    expect(response.messages.resultCode).not_to eq(nil)
+    expect(response.messages.resultCode).to eq(MessageTypeEnum::Ok)
+    expect(response.subscription.name).not_to eq(nil)  
+    expect(response.subscription.paymentSchedule).not_to eq(nil)  
+    expect(response.subscription.profile).not_to eq(nil)  
+    expect(response.subscription.profile.paymentProfile).not_to eq(nil) 
+    expect(response.subscription.profile.paymentProfile.billTo).not_to eq(nil)     
+  end
+
+  it "should be able to get Customer Payment Profile List Request" do
+    transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, :gateway => @gateway)
+    
+    searchTypeEnum = CustomerPaymentProfileSearchTypeEnum::CardsExpiringInMonth
+    sorting = CustomerPaymentProfileSorting.new
+    orderByEnum = CustomerPaymentProfileOrderFieldEnum::Id
+    sorting.orderBy = orderByEnum
+    sorting.orderDescending = false
+    
+    paging = Paging.new
+    paging.limit = 1000
+    paging.offset = 1
+    
+    @createTransactionRequest = GetCustomerPaymentProfileListRequest.new
+  
+    @createTransactionRequest.searchType = searchTypeEnum
+    @createTransactionRequest.month = "2020-12"
+    @createTransactionRequest.sorting = sorting
+    @createTransactionRequest.paging = paging
+    
+    transaction.should respond_to(:get_customer_payment_profile_list)
+    response = transaction.get_customer_payment_profile_list(@createTransactionRequest)
+     
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil)     
+    expect(response.messages.resultCode).not_to eq(nil)
+    expect(response.messages.resultCode).to eq(MessageTypeEnum::Ok)
+    expect(response.totalNumInResultSet).not_to eq(nil)
+    expect(response.paymentProfiles.paymentProfile.length).not_to eq(0)  
+    expect(response.paymentProfiles.paymentProfile[0].billTo.firstName).not_to eq(nil)
+    expect(response.paymentProfiles.paymentProfile[0].payment.creditCard.cardNumber).not_to eq(nil) 
+        
+  end
+  
   def get_actual(expected, className, topElement)
     xmlText = @transaction.serialize(expected,topElement)
     className.from_xml(xmlText)

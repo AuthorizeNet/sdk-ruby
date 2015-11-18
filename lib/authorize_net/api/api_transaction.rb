@@ -41,6 +41,10 @@ module AuthorizeNet::API
 
       API_DECRYPT_PAYMENT_DATA = "decryptPaymentDataRequest"
       API_AUTHENTICATE_TEST_REQUEST = "authenticateTestRequest"
+      
+      API_GET_CUSTOMER_PAYMENT_PROFILE_LIST = "getCustomerPaymentProfileListRequest"
+      
+      API_ARB_GET_SUBSCRIPTION_REQUEST = "ARBGetSubscriptionRequest"
     end
     
     def initialize(api_login_id, api_transaction_key, options = {})
