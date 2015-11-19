@@ -45,7 +45,11 @@ describe AuthorizeNet::CIM::Transaction do
   it "should know if its running against the sandbox or not" do
     transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => :sandbox)
     expect(transaction.test?).to eq true
+    transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => 'sandbox')
+    expect(transaction.test?).to eq true
     transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => :live)
+    expect(transaction.test?).to eq false
+    transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => 'live')
     expect(transaction.test?).to eq false
     transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => 'moose')
     expect(transaction.test?).to eq true
