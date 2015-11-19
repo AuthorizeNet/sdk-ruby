@@ -11,7 +11,7 @@ module AuthorizeNet
       if id.kind_of?(AuthorizeNet::LineItem)
         line_item = id
       else
-        line_item = AuthorizeNet::LineItem.new({:line_item_id => id, :line_item_name => name, :line_item_description => description, :line_item_quantity => quantity, :line_item_price => price, :line_item_taxable => taxable})
+        line_item = AuthorizeNet::LineItem.new({:id => id, :name => name, :description => description, :quantity => quantity, :price => price, :taxable => taxable})
       end
       @line_items = @line_items.to_a << line_item
     end
