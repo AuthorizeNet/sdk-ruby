@@ -34,6 +34,15 @@ describe Transaction do
     expect(response.messages).not_to eq(nil) 
     expect(response.messages.resultCode).not_to eq(nil) 
     expect(response.messages.resultCode).to eq(MessageTypeEnum::Ok)
+    
+    transaction = Transaction.new(@api_login, @api_key, :gateway => 'sandbox')
+    response = transaction.authenticate_test_request(@testRequest)
+    
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil) 
+    expect(response.messages.resultCode).not_to eq(nil) 
+    expect(response.messages.resultCode).to eq(MessageTypeEnum::Ok)
+        
   end
 
   it "should be able to run credit card transaction" do

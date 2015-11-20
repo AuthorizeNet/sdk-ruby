@@ -45,7 +45,11 @@ describe AuthorizeNet::CIM::Transaction do
   it "should know if its running against the sandbox or not" do
     transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => :sandbox)
     expect(transaction.test?).to eq true
+    transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => 'sandbox')
+    expect(transaction.test?).to eq true
     transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => :live)
+    expect(transaction.test?).to eq false
+    transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => 'live')
     expect(transaction.test?).to eq false
     transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => 'moose')
     expect(transaction.test?).to eq true
@@ -146,7 +150,18 @@ describe AuthorizeNet::CIM::Transaction do
     expect(response.success?).to eq true
     expect(response.token).not_to be_empty
   end
-  
+  it "should be able to add line items to the order" do
+    transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, :gateway => :sandbox)
+    #build a order with line item
+    order = AuthorizeNet::Order.new().add_line_item(101,'Abc','Xyz',2,25.2,1)
+    expect(order[0].id).to eq 101
+    expect(order[0].name).to eq 'Abc'
+    expect(order[0].description).to eq 'Xyz'
+    expect(order[0].quantity).to eq 2
+    expect(order[0].price).to eq 25.2
+    expect(order[0].taxable).to eq 1
+    
+  end
   describe "performing actions on payment profiles" do
     
     def create_payment_profile(payment_profile, profile, validation_mode = :none)
@@ -457,7 +472,7 @@ describe AuthorizeNet::CIM::Transaction do
   it "should be able to get zero profile ids when a merchant has zero customer profiles" do
     #Using specific credentials for a Merchant which has zero customer profiles
     #NOTE: These credentials are specific to this test
-    transaction = AuthorizeNet::CIM::Transaction.new("3qkNY3db6jB", "7s8B76QvsPet82HH", :gateway => :sandbox)
+    transaction = AuthorizeNet::CIM::Transaction.new("982fNqW7sZ", "3k2549N82e53gKHa", :gateway => :sandbox)
     expect(transaction).to respond_to(:get_profile_ids)
     response = transaction.get_profile_ids
     expect(response).to be_kind_of(AuthorizeNet::CIM::Response)
