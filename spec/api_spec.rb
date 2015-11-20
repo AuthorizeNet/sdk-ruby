@@ -34,6 +34,15 @@ describe Transaction do
     expect(response.messages).not_to eq(nil) 
     expect(response.messages.resultCode).not_to eq(nil) 
     expect(response.messages.resultCode).to eq(MessageTypeEnum::Ok)
+    
+    transaction = Transaction.new(@api_login, @api_key, :gateway => 'sandbox')
+    response = transaction.authenticate_test_request(@testRequest)
+    
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil) 
+    expect(response.messages.resultCode).not_to eq(nil) 
+    expect(response.messages.resultCode).to eq(MessageTypeEnum::Ok)
+        
   end
 
   it "should be able to run credit card transaction" do
@@ -404,12 +413,12 @@ describe Transaction do
     
     @createTransactionResponse.profileResponse.customerProfileId.should == actResponse.profileResponse.customerProfileId
 
-    @createTransactionResponse.profileResponse.customerPaymentProfileIdList.numericStrings.each_with_index do |item,index|
-      item.should == actResponse.profileResponse.customerPaymentProfileIdList.numericStrings[index]
+    @createTransactionResponse.profileResponse.customerPaymentProfileIdList.numericString.each_with_index do |item,index|
+      item.should == actResponse.profileResponse.customerPaymentProfileIdList.numericString[index]
     end
     
-    @createTransactionResponse.profileResponse.customerShippingAddressIdList.numericStrings.each_with_index do |item,index|
-      item.should == actResponse.profileResponse.customerShippingAddressIdList.numericStrings[index]
+    @createTransactionResponse.profileResponse.customerShippingAddressIdList.numericString.each_with_index do |item,index|
+      item.should == actResponse.profileResponse.customerShippingAddressIdList.numericString[index]
     end
   end
   
@@ -478,7 +487,62 @@ describe Transaction do
     expected.FormOfPayment.Value.Scheme.DUKPT.DeviceInfo.Description.should == actual.FormOfPayment.Value.Scheme.DUKPT.DeviceInfo.Description
     expected.FormOfPayment.Value.Scheme.DUKPT.EncryptedData.Value.should == actual.FormOfPayment.Value.Scheme.DUKPT.EncryptedData.Value
   end
+  
+  it "should be able to get subscription" do
+    transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, :gateway => @gateway)
+    @createTransactionRequest = ARBGetSubscriptionRequest.new
+  
+    @createTransactionRequest.refId = 'Sample'
+    @createTransactionRequest.subscriptionId = '2930242'
 
+    transaction.should respond_to(:arb_get_subscription_request)
+    response = transaction.arb_get_subscription_request(@createTransactionRequest)
+     
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil)     
+    expect(response.messages.resultCode).not_to eq(nil)
+    expect(response.messages.resultCode).to eq(MessageTypeEnum::Ok)
+    expect(response.subscription.name).not_to eq(nil)  
+    expect(response.subscription.paymentSchedule).not_to eq(nil)  
+    expect(response.subscription.profile).not_to eq(nil)  
+    expect(response.subscription.profile.paymentProfile).not_to eq(nil) 
+    expect(response.subscription.profile.paymentProfile.billTo).not_to eq(nil)     
+  end
+
+  it "should be able to get Customer Payment Profile List Request" do
+    transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, :gateway => @gateway)
+    
+    searchTypeEnum = CustomerPaymentProfileSearchTypeEnum::CardsExpiringInMonth
+    sorting = CustomerPaymentProfileSorting.new
+    orderByEnum = CustomerPaymentProfileOrderFieldEnum::Id
+    sorting.orderBy = orderByEnum
+    sorting.orderDescending = false
+    
+    paging = Paging.new
+    paging.limit = 1000
+    paging.offset = 1
+    
+    @createTransactionRequest = GetCustomerPaymentProfileListRequest.new
+  
+    @createTransactionRequest.searchType = searchTypeEnum
+    @createTransactionRequest.month = "2020-12"
+    @createTransactionRequest.sorting = sorting
+    @createTransactionRequest.paging = paging
+    
+    transaction.should respond_to(:get_customer_payment_profile_list)
+    response = transaction.get_customer_payment_profile_list(@createTransactionRequest)
+     
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil)     
+    expect(response.messages.resultCode).not_to eq(nil)
+    expect(response.messages.resultCode).to eq(MessageTypeEnum::Ok)
+    expect(response.totalNumInResultSet).not_to eq(nil)
+    expect(response.paymentProfiles.paymentProfile.length).not_to eq(0)  
+    expect(response.paymentProfiles.paymentProfile[0].billTo.firstName).not_to eq(nil)
+    expect(response.paymentProfiles.paymentProfile[0].payment.creditCard.cardNumber).not_to eq(nil) 
+        
+  end
+  
   def get_actual(expected, className, topElement)
     xmlText = @transaction.serialize(expected,topElement)
     className.from_xml(xmlText)
@@ -596,7 +660,7 @@ describe Transaction do
     @createTransactionResponse.profileResponse = CreateProfileResponse.new
     @createTransactionResponse.profileResponse.messages = MessagesType.new(MessageTypeEnum::Ok,[MessagesType::Message.new("pRespCode1","pRespText1"),MessagesType::Message.new("pRespCode2","pRespText2")])
     @createTransactionResponse.profileResponse.customerProfileId = "3154654646546"
-    @createTransactionResponse.profileResponse.customerPaymentProfileIdList = ArrayOfNumericString.new([546654656465,5665656565656565])
-    @createTransactionResponse.profileResponse.customerShippingAddressIdList = ArrayOfNumericString.new([66232546654656465,566565656565787876565])
+    @createTransactionResponse.profileResponse.customerPaymentProfileIdList = NumericStringsType.new(["546654656465","5665656565656565"])
+    @createTransactionResponse.profileResponse.customerShippingAddressIdList = NumericStringsType.new(["66232546654656465","566565656565787876565"])
   end
 end

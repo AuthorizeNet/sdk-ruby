@@ -51,7 +51,11 @@ describe AuthorizeNet::ARB::Transaction do
   it "should know if its running against the sandbox or not" do
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
     transaction.test?.should be_truthy
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => 'sandbox')
+    transaction.test?.should be_truthy
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :live)
+    transaction.test?.should be_falsey
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => 'live')
     transaction.test?.should be_falsey
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => 'moose')
     transaction.test?.should be_truthy

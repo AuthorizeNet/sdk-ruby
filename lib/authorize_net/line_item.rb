@@ -13,7 +13,7 @@ module AuthorizeNet
         :line_item_name => @name,
         :line_item_description => @description,
         :line_item_quantity => @quantity,
-        :line_item_price => @price,
+        :line_item_unit_price => @price,
         :line_item_taxable => @taxable
       }
       hash.delete_if {|k, v| v.nil?}

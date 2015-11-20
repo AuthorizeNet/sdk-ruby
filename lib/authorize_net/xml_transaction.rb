@@ -60,7 +60,7 @@ module AuthorizeNet
     # The default options for the constructor.
     @@option_defaults = {
       :gateway => :production,
-      :verify_ssl => false,
+      :verify_ssl => true,
       :reference_id => nil
     }
     
@@ -76,13 +76,14 @@ module AuthorizeNet
       options = @@option_defaults.merge(options)
       @verify_ssl = options[:verify_ssl]
       @reference_id = options[:reference_id]
-      case options[:gateway]
-      when :sandbox, :test
-        @gateway = Gateway::TEST
-      when :production, :live
-        @gateway = Gateway::LIVE
+      @gateway = case options[:gateway].to_s
+      when 'sandbox', 'test'
+        Gateway::TEST
+      when 'production', 'live'
+        Gateway::LIVE
       else
         @gateway = options[:gateway]
+        options[:gateway]
       end
     end
     
