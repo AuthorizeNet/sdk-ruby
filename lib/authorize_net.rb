@@ -2,6 +2,10 @@
 # the current runtime to see if Rails is present. If it is, we inject our helper into
 # ActiveSupport.
 
+#coverall
+require 'coveralls'
+Coveralls.wear!
+
 require "cgi"
 require "net/https"
 require "uri"
