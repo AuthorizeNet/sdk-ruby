@@ -151,13 +151,6 @@ module AuthorizeNet::API
     def create_customer_profile_from_transaction(request)
       make_request(request,CreateProfileResponse,Type::API_CREATE_CUSTOMER_PROFILE_FROM_TRANSACTION)
     end
-    
-    # This request enables you to delete a customer profile.
-    # 
-    # See spec/api_spec.rb for usage examples
-    def delete_customer_profile(request)
-      make_request(request,DeleteCustomerProfileResponse,Type::API_DELETE_CUSTOMER_PROFILE)
-    end
 
     # This request enables you to decrypt a payment data blob.
     # 
