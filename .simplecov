@@ -8,4 +8,5 @@ SimpleCov.start do
    add_filter 'lib/authorize_net/cim'
    add_filter 'lib/authorize_net/sim'
    add_filter 'lib/authorize_net/reporting'
+   add_filter 'lib/authorize_net/payment_methods'
 end
