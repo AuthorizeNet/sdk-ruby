@@ -7,4 +7,8 @@ rvm:
 before_script:
   - git submodule update --remote --recursive
 
-script: bundle exec rake spec:ci
+script: 
+  - bundle exec rake spec:ci
+  - cd sample-code-ruby
+  - for i in `ls */*.rb`;do ruby $i;done
+  
