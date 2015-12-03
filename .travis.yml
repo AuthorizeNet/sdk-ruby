@@ -1,4 +1,8 @@
 language: ruby
+
+sudo:
+    false
+    
 rvm:
   - 1.9.3
   - 2.0.0
@@ -9,6 +13,9 @@ before_script:
 
 script: 
   - bundle exec rake spec:ci
+  - bundle install
+  - rake gem
+  - gem install ./authorizenet-1.8.6.gem
   - cd sample-code-ruby
   - for i in `ls */*.rb`;do ruby $i;done
   

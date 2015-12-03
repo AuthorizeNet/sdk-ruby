@@ -28,6 +28,7 @@ describe AuthorizeNet::ARB::Transaction do
       :invoice_number => rand(),
       :description => "a test subscription",
       :subscription_id => nil,
+      :customer => AuthorizeNet::Customer.new(:email => rand(10000000).to_s+'pb@mail.com', :id => rand(10000000).to_s),
       :credit_card => AuthorizeNet::CreditCard.new('4111111111111111', '01' + (Time.now + (3600 * 24 * 365)).strftime('%y')),
       :billing_address => AuthorizeNet::Address.new(:first_name => 'John', :last_name => 'Doe')
     )
@@ -50,7 +51,11 @@ describe AuthorizeNet::ARB::Transaction do
   it "should know if its running against the sandbox or not" do
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
     transaction.test?.should be_truthy
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => 'sandbox')
+    transaction.test?.should be_truthy
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => :live)
+    transaction.test?.should be_falsey
+    transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => 'live')
     transaction.test?.should be_falsey
     transaction = AuthorizeNet::ARB::Transaction.new(@api_login, @api_key, :gateway => 'moose')
     transaction.test?.should be_truthy

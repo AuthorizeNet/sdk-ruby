@@ -8,6 +8,7 @@ describe AuthorizeNet::AIM::Transaction do
       @api_key = creds['api_transaction_key']
       @api_login = creds['api_login_id']
       @md5_value = creds['md5_value']
+      @solution_id = "AAA100302"
     rescue Errno::ENOENT => e
       @api_key = "TEST"
       @api_login = "TEST"
@@ -183,6 +184,14 @@ describe AuthorizeNet::AIM::Transaction do
     transaction.set_shipping_address(address)
     transaction.purchase(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
     transaction.response.success?.should be_truthy
+  end
+
+  it "should support setting solution id" do
+    transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :transaction_type => @type, :gateway => @gateway, :test => @test_mode, :solution_id => @solution_id)
+    transaction.purchase(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
+    transaction.response.success?.should be_truthy
+    fields = transaction.response.transaction
+    (defined?(fields.solution_id) and fields.solution_id == 'AAA100302').should be_truthy
   end
   
   it "should support adding an email receipt" do

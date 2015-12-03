@@ -3,10 +3,48 @@ module AuthorizeNet::API
     
     module Type
       API_CREATE_TRANSACTION = "createTransactionRequest"
-      API_CREATE_CUSTOMER_PROFILE_FROM_TRANSACTION = "createCustomerProfileFromTransactionRequest"
+      API_UPDATE_SPLIT_TENDER_GROUP = "updateSplitTenderGroupRequest"
+
+      API_CREATE_SUBSCRIPTION = "ARBCreateSubscriptionRequest"
+      API_UPDATE_SUBSCRIPTION = "ARBUpdateSubscriptionRequest"
+      API_CANCEL_SUBSCRIPTION = "ARBCancelSubscriptionRequest"
+      API_GET_SUBSCRIPTION_STATUS = "ARBGetSubscriptionStatusRequest"
+      API_GET_SUBSCRIPTION_LIST = "ARBGetSubscriptionListRequest"
+
+      API_GET_CUSTOMER_PROFILE_IDS = "getCustomerProfileIdsRequest"
+
+      API_CREATE_CUSTOMER_PROFILE = "createCustomerProfileRequest"
+      API_GET_CUSTOMER_PROFILE = "getCustomerProfileRequest"
+      API_UPDATE_CUSTOMER_PROFILE = "updateCustomerProfileRequest"
       API_DELETE_CUSTOMER_PROFILE = "deleteCustomerProfileRequest"
+
+      API_CREATE_CUSTOMER_PAYMENT_PROFILE = "createCustomerPaymentProfileRequest"
+      API_GET_CUSTOMER_PAYMENT_PROFILE = "getCustomerPaymentProfileRequest"
+      API_UPDATE_CUSTOMER_PAYMENT_PROFILE = "updateCustomerPaymentProfileRequest"
+      API_DELETE_CUSTOMER_PAYMENT_PROFILE = "deleteCustomerPaymentProfileRequest"
+
+      API_CREATE_CUSTOMER_SHIPPING_PROFILE = "createCustomerShippingAddressRequest"
+      API_GET_CUSTOMER_SHIPPING_PROFILE = "getCustomerShippingAddressRequest"
+      API_UPDATE_CUSTOMER_SHIPPING_PROFILE = "updateCustomerShippingAddressRequest"
+      API_DELETE_CUSTOMER_SHIPPING_PROFILE = "deleteCustomerShippingAddressRequest"
+
+      API_CREATE_CUSTOMER_PROFILE_FROM_TRANSACTION = "createCustomerProfileFromTransactionRequest"
+
+      API_GET_SETTLED_BATCH_LIST = "getSettledBatchListRequest"
+      API_GET_TRANSACTION_LIST = "getTransactionListRequest"
+      API_GET_TRANSACTION_DETAILS = "getTransactionDetailsRequest"
+      API_GET_UNSETTLED_TRANSACTION_LIST = "getUnsettledTransactionListRequest"
+      API_GET_BATCH_STATISTICS = "getBatchStatisticsRequest"
+	  
+      API_GET_HOSTED_PROFILE_PAGE = "getHostedProfilePageRequest"
+
+
       API_DECRYPT_PAYMENT_DATA = "decryptPaymentDataRequest"
       API_AUTHENTICATE_TEST_REQUEST = "authenticateTestRequest"
+      
+      API_GET_CUSTOMER_PAYMENT_PROFILE_LIST = "getCustomerPaymentProfileListRequest"
+      
+      API_ARB_GET_SUBSCRIPTION_REQUEST = "ARBGetSubscriptionRequest"
     end
     
     def initialize(api_login_id, api_transaction_key, options = {})
@@ -43,7 +81,7 @@ module AuthorizeNet::API
     
     def send_request(xml)
       url = URI.parse(@gateway)
-             
+
       httpRequest = Net::HTTP::Post.new(url.path)
       httpRequest.content_type = 'text/xml'
       httpRequest.body = xml
