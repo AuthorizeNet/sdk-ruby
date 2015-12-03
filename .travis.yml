@@ -9,7 +9,7 @@ before_script:
 
 script: 
   - bundle exec rake spec:ci
-  - sudo gem install ./authorizenet-1.8.6.gem
+  - gem install ./authorizenet-1.8.6.gem
   - cd sample-code-ruby
   - for i in `ls */*.rb`;do ruby $i;done
   
