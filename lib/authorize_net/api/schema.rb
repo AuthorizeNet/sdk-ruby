@@ -24,10 +24,6 @@ module AuthorizeNet::API
   class ArrayOfBatchStatisticType < ::Array
   end
   
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfTransactionSummaryType
-  class ArrayOfTransactionSummaryType < ::Array
-  end
-  
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfSetting
   class ArrayOfSetting < ::Array
   end
@@ -1638,6 +1634,17 @@ end
       @hasReturnedItems = hasReturnedItems
     end
   end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfTransactionSummaryType
+  class ArrayOfTransactionSummaryType < ::Array
+    include ROXML
+    xml_accessor :transaction, :as => [TransactionSummaryType]
+
+    def initialize(transaction = [])
+     @transaction = transaction
+    end
+  end
+  
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}batchStatisticType
   #   accountType - SOAP::SOAPString
@@ -3666,7 +3673,7 @@ end
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
-    xml_accessor :transactions
+    xml_accessor :transactions, :as => ArrayOfTransactionSummaryType
   
     def initialize(refId = nil, messages = nil, sessionToken = nil, transactions = nil)
       @refId = refId

@@ -193,6 +193,13 @@ module AuthorizeNet::API
     def get_settled_batch_list(request)            
       make_request(request,GetSettledBatchListResponse,Type::API_GET_SETTLED_BATCH_LIST)
     end
+
+    # This request enables you to get batch unsettled transaction details
+    # 
+    # See spec/api_spec.rb for usage examples
+    def get_unsettled_transaction_list(request)            
+      make_request(request,GetUnsettledTransactionListResponse,Type::API_GET_UNSETTLED_TRANSACTION_LIST)
+    end
   
   # This request enables confirm authentication values
     # 
