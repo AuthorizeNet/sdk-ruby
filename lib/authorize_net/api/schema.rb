@@ -2241,11 +2241,7 @@ end
       @orderDescending = orderDescending
     end
   end
-  
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfSubscription
-  class ArrayOfSubscription < ::Array
-  end
-  
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}SubscriptionDetail
   #   id - SOAP::SOAPInt
   #   name - SOAP::SOAPString
@@ -2301,6 +2297,18 @@ end
       @customerShippingProfileId = customerShippingProfileId
     end
   end
+  
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfSubscription
+  class ArrayOfSubscription < ::Array
+    include ROXML
+    xml_accessor :subscriptionDetail, :as => [SubscriptionDetail]
+
+    def initialize(subscriptionDetail = [])
+     @subscriptionDetail = subscriptionDetail
+    end
+  end
+  
+  
   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}searchCriteriaCustomerProfileType
   #   merchantCustomerId - SOAP::SOAPString
@@ -3646,7 +3654,7 @@ end
   #   messages - MessagesType
   #   sessionToken - SOAP::SOAPString
   #   transactions - ArrayOfTransactionSummaryType
-  class GetUnsettledTransactionListResponse 
+  class GetUnsettledTransactionListResponse
     include ROXML
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
@@ -3841,7 +3849,7 @@ end
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :totalNumInResultSet
-    xml_accessor :subscriptionDetails
+    xml_accessor :subscriptionDetails, :as => ArrayOfSubscription
   
     def initialize(refId = nil, messages = nil, sessionToken = nil, totalNumInResultSet = nil, subscriptionDetails = nil)
       @refId = refId
