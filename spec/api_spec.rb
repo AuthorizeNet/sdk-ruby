@@ -542,6 +542,25 @@ describe Transaction do
     expect(response.paymentProfiles.paymentProfile[0].payment.creditCard.cardNumber).not_to eq(nil) 
         
   end
+
+  it "should be able to get transaction List Request" do
+    transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, :gateway => @gateway)
+
+    batchId = "4551107"
+
+    @getTransactionListRequest = GetTransactionListRequest.new
+    @getTransactionListRequest.batchId = batchId
+
+    transaction.should respond_to(:get_transaction_list)
+    response = transaction.get_transaction_list(@getTransactionListRequest)
+
+    expect(response).not_to eq(nil)
+    expect(response.messages).not_to eq(nil)
+    expect(response.messages.resultCode).not_to eq(nil)
+    expect(response.messages.resultCode).to eq(MessageTypeEnum::Ok)
+    expect(response.transactions).not_to eq (nil)
+
+  end
   
   def get_actual(expected, className, topElement)
     xmlText = @transaction.serialize(expected,topElement)
