@@ -1086,8 +1086,8 @@ end
     xml_accessor :billTo, :as => CustomerAddressType
     xml_accessor :customerProfileId
     xml_accessor :customerPaymentProfileId
-    xml_accessor :payment
-    xml_accessor :driversLicense
+    xml_accessor :payment, :as => PaymentMaskedType
+    xml_accessor :driversLicense, :as => DriversLicenseMaskedType
     xml_accessor :taxId
   
     def initialize(customerType = nil, billTo = nil, customerProfileId = nil, customerPaymentProfileId = nil, payment = nil, driversLicense = nil, taxId = nil)
@@ -3018,7 +3018,7 @@ end
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
-    xml_accessor :paymentProfile
+    xml_accessor :paymentProfile, :as => CustomerPaymentProfileMaskedType
   
     def initialize(refId = nil, messages = nil, sessionToken = nil, paymentProfile = nil)
       @refId = refId
