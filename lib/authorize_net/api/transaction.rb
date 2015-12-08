@@ -179,8 +179,29 @@ module AuthorizeNet::API
     def get_batch_statistics(request)            
       make_request(request,GetBatchStatisticsResponse,Type::API_GET_BATCH_STATISTICS)
     end
-	
-	# This request enables confirm authentication values
+
+    # This request enables you to get batch transaction details
+    # 
+    # See spec/api_spec.rb for usage examples
+    def get_transaction_details(request)            
+      make_request(request,GetTransactionDetailsResponse,Type::API_GET_TRANSACTION_DETAILS)
+    end
+
+    # This request enables you to get batch settled transaction details
+    # 
+    # See spec/api_spec.rb for usage examples
+    def get_settled_batch_list(request)            
+      make_request(request,GetSettledBatchListResponse,Type::API_GET_SETTLED_BATCH_LIST)
+    end
+
+    # This request enables you to get batch unsettled transaction details
+    # 
+    # See spec/api_spec.rb for usage examples
+    def get_unsettled_transaction_list(request)            
+      make_request(request,GetUnsettledTransactionListResponse,Type::API_GET_UNSETTLED_TRANSACTION_LIST)
+    end
+  
+  # This request enables confirm authentication values
     # 
     # See spec/api_spec.rb for usage examples
     def get_hosted_profile_page(request)            
