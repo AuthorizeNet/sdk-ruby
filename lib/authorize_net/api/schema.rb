@@ -3018,7 +3018,7 @@ end
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
-    xml_accessor :paymentProfile, :as => CustomerPaymentProfileMaskedType
+    xml_accessor :paymentProfile, :as => PaymentType
   
     def initialize(refId = nil, messages = nil, sessionToken = nil, paymentProfile = nil)
       @refId = refId
