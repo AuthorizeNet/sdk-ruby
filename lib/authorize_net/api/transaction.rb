@@ -228,5 +228,13 @@ module AuthorizeNet::API
     def arb_get_subscription_request(request)  
       make_request(request,ARBGetSubscriptionResponse,Type::API_ARB_GET_SUBSCRIPTION_REQUEST)
     end
+
+    # This request enables you to get transaction list
+    #
+    # See spec/api_spec.rb for usage examples
+    def get_transaction_list(request)
+      make_request(request,GetTransactionListResponse,Type::API_GET_TRANSACTION_LIST)
+    end
+
   end
 end
