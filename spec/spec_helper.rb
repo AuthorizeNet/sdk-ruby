@@ -1,4 +1,4 @@
-require "authorize_net"
+require "authorizenet"
 require "yaml"
 
 Dir['./spec/support/**/*.rb'].each{ |f| require f }

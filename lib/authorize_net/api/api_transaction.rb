@@ -21,6 +21,7 @@ module AuthorizeNet::API
       API_CREATE_CUSTOMER_PAYMENT_PROFILE = "createCustomerPaymentProfileRequest"
       API_GET_CUSTOMER_PAYMENT_PROFILE = "getCustomerPaymentProfileRequest"
       API_UPDATE_CUSTOMER_PAYMENT_PROFILE = "updateCustomerPaymentProfileRequest"
+      API_VALIDATE_CUSTOMER_PAYMENT_PROFILE = "validateCustomerPaymentProfileRequest"
       API_DELETE_CUSTOMER_PAYMENT_PROFILE = "deleteCustomerPaymentProfileRequest"
 
       API_CREATE_CUSTOMER_SHIPPING_PROFILE = "createCustomerShippingAddressRequest"

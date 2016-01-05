@@ -3599,7 +3599,7 @@ end
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
-    xml_accessor :transactions
+    xml_accessor :transactions, :as => ArrayOfTransactionSummaryType
   
     def initialize(refId = nil, messages = nil, sessionToken = nil, transactions = nil)
       @refId = refId
