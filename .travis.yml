@@ -7,14 +7,6 @@ rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.0
-
-before_script:
-  - git submodule update --remote --recursive
-
-script: 
+script:
   - bundle exec rake spec:ci
-  - rake gem
-  - gem install ./authorizenet-1.8.7.gem
-  - cd sample-code-ruby
-  - for i in `ls */*.rb`;do ruby $i;done
-  
+  - bundle exec rake spec:api
