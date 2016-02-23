@@ -16,5 +16,4 @@ script:
   - rake gem
   - gem install ./authorizenet-1.8.7.gem
   - cd sample-code-ruby
-  - for i in `ls */*.rb`;do ruby $i;done
-  
+  - bundle exec rspec spec/sample_code_spec.rb
