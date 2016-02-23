@@ -228,6 +228,13 @@ module AuthorizeNet::API
     def get_transaction_list(request)
       make_request(request,GetTransactionListResponse,Type::API_GET_TRANSACTION_LIST)
     end
+    
+    # This request enables you to validate customer payment profile
+    # 
+    # See spec/api_spec.rb for usage examples
+    def validate_customer_payment_profile(request)  
+      make_request(request,ValidateCustomerPaymentProfileResponse,Type::API_VALIDATE_CUSTOMER_PAYMENT_PROFILE)
+    end
 
   end
 end
