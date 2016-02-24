@@ -3,8 +3,8 @@
 # ActiveSupport.
 
 #coverall
-require 'coveralls'
-Coveralls.wear!
+# require 'coveralls'
+# Coveralls.wear!
 
 require "cgi"
 require "net/https"
