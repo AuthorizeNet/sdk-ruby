@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/AuthorizeNet/sdk-ruby.png?branch=master)](https://travis-ci.org/AuthorizeNet/sdk-ruby)
 [![Coverage Status](https://coveralls.io/repos/namanbansal/sdk-ruby/badge.svg?branch=master&service=github)](https://coveralls.io/github/namanbansal/sdk-ruby?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/namanbansal/sdk-ruby/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/namanbansal/sdk-ruby/?branch=master)
+[![Gem Version](https://badge.fury.io/rb/authorizenet.svg)](https://badge.fury.io/rb/authorizenet)
 
 `gem install authorizenet`
 
