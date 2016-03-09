@@ -879,7 +879,24 @@ end
       @trialOccurrences = trialOccurrences
     end
   end
-  
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerProfileIdType
+  #   customerProfileId - SOAP::SOAPString
+  #   customerPaymentProfileId - SOAP::SOAPString
+  #   customerAddressId - SOAP::SOAPString
+  class CustomerProfileIdType
+    include ROXML
+    xml_accessor :customerProfileId
+    xml_accessor :customerPaymentProfileId
+    xml_accessor :customerAddressId
+
+    def initialize(customerProfileId = nil, customerPaymentProfileId = nil, customerAddressId = nil)
+      @customerProfileId = customerProfileId
+      @customerPaymentProfileId = customerPaymentProfileId
+      @customerAddressId = customerAddressId
+    end
+  end
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ARBSubscriptionType
   #   name - SOAP::SOAPString
   #   paymentSchedule - PaymentScheduleType
@@ -890,6 +907,7 @@ end
   #   customer - CustomerType
   #   billTo - NameAndAddressType
   #   shipTo - NameAndAddressType
+  #   profile - CustomerProfileIdType
   class ARBSubscriptionType
     include ROXML
     xml_accessor :name
@@ -901,8 +919,9 @@ end
     xml_accessor :customer, :as => CustomerType
     xml_accessor :billTo, :as => NameAndAddressType
     xml_accessor :shipTo, :as => NameAndAddressType
+    xml_accessor :profile, :as => CustomerProfileIdType
   
-    def initialize(name = nil, paymentSchedule = nil, amount = nil, trialAmount = nil, payment = nil, order = nil, customer = nil, billTo = nil, shipTo = nil)
+    def initialize(name = nil, paymentSchedule = nil, amount = nil, trialAmount = nil, payment = nil, order = nil, customer = nil, billTo = nil, shipTo = nil, profile = nil)
       @name = name
       @paymentSchedule = paymentSchedule
       @amount = amount
@@ -912,6 +931,7 @@ end
       @customer = customer
       @billTo = billTo
       @shipTo = shipTo
+      @profile = profile
     end
   end
   
@@ -1071,7 +1091,18 @@ end
       @customerPaymentProfileId = customerPaymentProfileId
     end
   end
+   
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}SubscriptionIdList
+  #   subscriptionId - SubscriptionIdList
+  class SubscriptionIdList
+    include ROXML
+    xml_accessor :subscriptionId, :as => NumericStringsType
   
+    def initialize(subscriptionId = nil)
+      @subscriptionId = subscriptionId
+    end
+  end
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerPaymentProfileMaskedType
   #   customerType - CustomerTypeEnum
   #   billTo - CustomerAddressType
@@ -1080,6 +1111,7 @@ end
   #   payment - PaymentMaskedType
   #   driversLicense - DriversLicenseMaskedType
   #   taxId - SOAP::SOAPString
+  #   subscriptionIds - SubscriptionIdList
   class CustomerPaymentProfileMaskedType
     include ROXML
     xml_accessor :customerType
@@ -1089,8 +1121,9 @@ end
     xml_accessor :payment, :as => PaymentMaskedType
     xml_accessor :driversLicense, :as => DriversLicenseMaskedType
     xml_accessor :taxId
+    xml_accessor :subscriptionIds, :as => SubscriptionIdList
   
-    def initialize(customerType = nil, billTo = nil, customerProfileId = nil, customerPaymentProfileId = nil, payment = nil, driversLicense = nil, taxId = nil)
+    def initialize(customerType = nil, billTo = nil, customerProfileId = nil, customerPaymentProfileId = nil, payment = nil, driversLicense = nil, taxId = nil, subscriptionIds = nil)
       @customerType = customerType
       @billTo = billTo
       @customerProfileId = customerProfileId
@@ -1098,9 +1131,10 @@ end
       @payment = payment
       @driversLicense = driversLicense
       @taxId = taxId
+      @subscriptionIds = subscriptionIds
     end
   end
-  
+ 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerProfileBaseType
   #   merchantCustomerId - SOAP::SOAPString
   #   description - SOAP::SOAPString
@@ -2667,18 +2701,21 @@ end
   #   messages - MessagesType
   #   sessionToken - SOAP::SOAPString
   #   subscriptionId - (any)
+  #   profile - CustomerProfileIdType
   class ARBCreateSubscriptionResponse 
     include ROXML
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :subscriptionId
+    xml_accessor :profile, :as => CustomerProfileIdType
   
-    def initialize(refId = nil, messages = nil, sessionToken = nil, subscriptionId = nil)
+    def initialize(refId = nil, messages = nil, sessionToken = nil, subscriptionId = nil, profile = nil)
       @refId = refId
       @messages = messages
       @sessionToken = sessionToken
       @subscriptionId = subscriptionId
+      @profile = profile
     end
   end
   
@@ -2706,16 +2743,19 @@ end
   #   refId - SOAP::SOAPString
   #   messages - MessagesType
   #   sessionToken - SOAP::SOAPString
+  #   profile - CustomerProfileIdType
   class ARBUpdateSubscriptionResponse 
     include ROXML
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
+    xml_accessor :profile, :as => CustomerProfileIdType
   
-    def initialize(refId = nil, messages = nil, sessionToken = nil)
+    def initialize(refId = nil, messages = nil, sessionToken = nil, profile = nil)
       @refId = refId
       @messages = messages
       @sessionToken = sessionToken
+      @profile = profile
     end
   end
   
@@ -2935,16 +2975,22 @@ end
   #   merchantAuthentication - MerchantAuthenticationType
   #   refId - SOAP::SOAPString
   #   transId - (any)
+  #   customer - CustomerProfileBaseType
+  #   customerProfileId - NumericStringsType
   class CreateCustomerProfileFromTransactionRequest 
     include ROXML
     xml_accessor :merchantAuthentication, :as => MerchantAuthenticationType
     xml_accessor :refId
     xml_accessor :transId
+    xml_accessor :customer, :as => CustomerProfileBaseType
+    xml_accessor :customerProfileId, :as => NumericStringsType
   
-    def initialize(merchantAuthentication = nil, refId = nil, transId = nil)
+    def initialize(merchantAuthentication = nil, refId = nil, transId = nil, customer = nil, customerProfileId = nil)
       @merchantAuthentication = merchantAuthentication
       @refId = refId
       @transId = transId
+      @customer = customer
+      @customerProfileId = customerProfileId
     end
   end
   
@@ -2970,18 +3016,21 @@ end
   #   messages - MessagesType
   #   sessionToken - SOAP::SOAPString
   #   profile - CustomerProfileMaskedType
+  #   subscriptionIds - SubscriptionIdList
   class GetCustomerProfileResponse 
     include ROXML
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :profile, :as => CustomerProfileMaskedType
+    xml_accessor :subscriptionIds, :as => SubscriptionIdList
   
-    def initialize(refId = nil, messages = nil, sessionToken = nil, profile = nil)
+    def initialize(refId = nil, messages = nil, sessionToken = nil, profile = nil, subscriptionIds = nil)
       @refId = refId
       @messages = messages
       @sessionToken = sessionToken
       @profile = profile
+      @subscriptionIds = subscriptionIds
     end
   end
   
@@ -3053,18 +3102,21 @@ end
   #   messages - MessagesType
   #   sessionToken - SOAP::SOAPString
   #   address - CustomerAddressExType
+  #   subscriptionIds - SubscriptionIdList
   class GetCustomerShippingAddressResponse 
     include ROXML
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :address
+    xml_accessor :subscriptionIds, :as => SubscriptionIdList
   
-    def initialize(refId = nil, messages = nil, sessionToken = nil, address = nil)
+    def initialize(refId = nil, messages = nil, sessionToken = nil, address = nil, subscriptionIds = nil)
       @refId = refId
       @messages = messages
       @sessionToken = sessionToken
       @address = address
+      @subscriptionIds = subscriptionIds
     end
   end
   
