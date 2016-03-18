@@ -15,6 +15,6 @@ script:
   - bundle exec rake spec:ci
   - bundle exec rake spec:api
   - rake gem
-  - gem install ./authorizenet-1.8.8.1.gem
+  - gem install ./authorizenet-1.8.9.gem
   - cd sample-code-ruby
   - bundle exec rspec spec/sample_code_spec.rb
