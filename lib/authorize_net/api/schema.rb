@@ -1096,7 +1096,7 @@ end
   #   subscriptionId - SubscriptionIdList
   class SubscriptionIdList
     include ROXML
-    xml_accessor :subscriptionId, :as => NumericStringsType
+    xml_accessor :subscriptionId, :as => []
   
     def initialize(subscriptionId = nil)
       @subscriptionId = subscriptionId
