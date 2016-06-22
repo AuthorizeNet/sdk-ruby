@@ -1,7 +1,7 @@
 # Authorize.Net Ruby SDK
 
 [![Build Status](https://travis-ci.org/AuthorizeNet/sdk-ruby.png?branch=master)](https://travis-ci.org/AuthorizeNet/sdk-ruby)
-[![Coverage Status](https://coveralls.io/repos/namanbansal/sdk-ruby/badge.svg?branch=master&service=github)](https://coveralls.io/github/namanbansal/sdk-ruby?branch=master)
+[![Coverage Status](https://coveralls.io/repos/AuthorizeNet/sdk-ruby/badge.svg?branch=master&service=github)](https://coveralls.io/github/AuthorizeNet/sdk-ruby?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/?branch=master)
 [![Gem Version](https://img.shields.io/gem/v/authorizenet.svg)](https://rubygems.org/gems/authorizenet)
 
