@@ -1,7 +1,8 @@
-require "authorizenet"
-require "yaml"
 require 'coveralls'
 Coveralls.wear!
+require "authorizenet"
+require "yaml"
+
 
 Dir['./spec/support/**/*.rb'].each{ |f| require f }
 
