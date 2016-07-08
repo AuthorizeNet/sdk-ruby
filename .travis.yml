@@ -14,7 +14,8 @@ before_script:
 script: 
   - bundle exec rake spec:ci
   - bundle exec rake spec:api
+  - bundle exec rake spec:testrunner
   #- rake gem
   #- gem install ./authorizenet-1.8.9.1.gem
   #- cd sample-code-ruby
-  - bundle exec rspec sample-code-ruby/spec/sample_code_spec.rb
+  #- bundle exec rspec sample-code-ruby/spec/sample_code_spec.rb
