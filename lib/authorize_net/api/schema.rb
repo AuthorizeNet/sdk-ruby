@@ -408,6 +408,23 @@ module AuthorizeNet::API
   end
 end
 
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}paymentEmvType
+  #   emvData - SOAP::SOAPString
+  #   emvDescriptor - SOAP::SOAPString
+  #   emvVersion - SOAP::SOAPString
+  class PaymentEmvType
+    include ROXML
+    xml_accessor :emvData
+    xml_accessor :emvDescriptor
+    xml_accessor :emvVersion
+  
+  def initialize(emvData = nil, emvDescriptor = nil, emvVersion = nil)
+    @emvData = emvData
+    @emvDescriptor = emvDescriptor
+    @emvVersion = emvVersion
+  end
+end
+
 # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}paymentSimpleType
 #   creditCard - CreditCardSimpleType
 #   bankAccount - BankAccountType
@@ -583,6 +600,7 @@ end
   #   encryptedTrackData - EncryptedTrackDataType
   #   payPal - PayPalType
   #   opaqueData - OpaqueDataType
+  #   emv - PaymentEmvType
   class PaymentType
     include ROXML
     xml_accessor :creditCard, :as => CreditCardType
@@ -591,14 +609,16 @@ end
     xml_accessor :encryptedTrackData, :as => EncryptedTrackDataType
     xml_accessor :payPal, :as => PayPalType
     xml_accessor :opaqueData, :as => OpaqueDataType
+    xml_accessor :emv, :as => PaymentEmvType
   
-    def initialize(creditCard = nil, bankAccount = nil, trackData = nil, encryptedTrackData = nil, payPal = nil, opaqueData = nil)
+    def initialize(creditCard = nil, bankAccount = nil, trackData = nil, encryptedTrackData = nil, payPal = nil, opaqueData = nil, emv = nil)
       @creditCard = creditCard
       @bankAccount = bankAccount
       @trackData = trackData
       @encryptedTrackData = encryptedTrackData
       @payPal = payPal
       @opaqueData = opaqueData
+      @emv = emv
     end
   end
   
@@ -1877,8 +1897,31 @@ end
   #   mobileDeviceId - SOAP::SOAPString
   #   returnedItems - ArrayOfReturnedItem
   #   solution - SolutionType
+  #   emvDetails - TransactionDetailsType::EmvDetails
   class TransactionDetailsType
     include ROXML
+    # inner class for member: EmvDetails
+    # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}emvDetails
+    #   tagId - SOAP::SOAPString
+    #   data - SOAP::SOAPString
+    class EmvDetails
+      include ROXML
+      class Tag
+        include ROXML
+        xml_accessor :tagId
+        xml_accessor :data
+    
+        def initialize(tagId = nil, data = nil)
+          @tagId = tagId
+          @data = data
+        end
+      end
+      xml_accessor :tag, :as => Tag
+  
+      def initialize(tag = nil)
+        @tag = tag
+      end
+    end
     xml_accessor :transId
     xml_accessor :refTransId
     xml_accessor :splitTenderId
@@ -1918,8 +1961,9 @@ end
     xml_accessor :mobileDeviceId
     xml_accessor :returnedItems, :as => ArrayOfReturnedItem
     xml_accessor :solution
+    xml_accessor :emvDetails, :as => EmvDetails
   
-    def initialize(transId = nil, refTransId = nil, splitTenderId = nil, submitTimeUTC = nil, submitTimeLocal = nil, transactionType = nil, transactionStatus = nil, responseCode = nil, responseReasonCode = nil, subscription = nil, responseReasonDescription = nil, authCode = nil, aVSResponse = nil, cardCodeResponse = nil, cAVVResponse = nil, fDSFilterAction = nil, fDSFilters = nil, batch = nil, order = nil, requestedAmount = nil, authAmount = nil, settleAmount = nil, tax = nil, shipping = nil, duty = nil, lineItems = nil, prepaidBalanceRemaining = nil, taxExempt = nil, payment = nil, customer = nil, billTo = nil, shipTo = nil, recurringBilling = nil, customerIP = nil, product = nil, marketType = nil, mobileDeviceId = nil, returnedItems = nil, solution = nil)
+    def initialize(transId = nil, refTransId = nil, splitTenderId = nil, submitTimeUTC = nil, submitTimeLocal = nil, transactionType = nil, transactionStatus = nil, responseCode = nil, responseReasonCode = nil, subscription = nil, responseReasonDescription = nil, authCode = nil, aVSResponse = nil, cardCodeResponse = nil, cAVVResponse = nil, fDSFilterAction = nil, fDSFilters = nil, batch = nil, order = nil, requestedAmount = nil, authAmount = nil, settleAmount = nil, tax = nil, shipping = nil, duty = nil, lineItems = nil, prepaidBalanceRemaining = nil, taxExempt = nil, payment = nil, customer = nil, billTo = nil, shipTo = nil, recurringBilling = nil, customerIP = nil, product = nil, marketType = nil, mobileDeviceId = nil, returnedItems = nil, solution = nil, emvDetails = nil)
       @transId = transId
       @refTransId = refTransId
       @splitTenderId = splitTenderId
@@ -1959,6 +2003,7 @@ end
       @mobileDeviceId = mobileDeviceId
       @returnedItems = returnedItems
       @solution = solution
+      @emvDetails = emvDetails
     end
   end
   
@@ -1973,6 +2018,23 @@ end
     def initialize(id = nil, name = nil)
       @id = id
       @name = name
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}emvTag
+  #   id - SOAP::SOAPString
+  #   value - SOAP::SOAPString
+  #   formatted - SOAP::SOAPString
+  class EmvTag
+    include ROXML
+    xml_accessor :name
+    xml_accessor :value
+    xml_accessor :formatted
+  
+    def initialize(id = nil, value = nil, formatted = nil)
+      @id = id
+      @value = value
+      @formatted = formatted
     end
   end
 
@@ -1997,7 +2059,9 @@ end
   #   splitTenderPayments - TransactionResponse::SplitTenderPayments
   #   userFields - TransactionResponse::UserFields
   #   shipTo - NameAndAddressType
-  #   secureAcceptance - TransactionResponse::SecureAcceptance
+  #   secureAcceptance - TransactionResponse::secureAcceptance
+  #   emvResponse - TransactionResponse::emvResponse
+  #   transHashSha2 - SOAP::SOAPString
   class TransactionResponse
     include ROXML
     # inner class for member: prePaidCard
@@ -2118,14 +2182,40 @@ end
     # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}secureAcceptance
     #   secureAcceptanceUrl - SOAP::SOAPString
     #   payerID - SOAP::SOAPString
+    #   payerEmail - SOAP::SOAPString
     class SecureAcceptance
       include ROXML
       xml_accessor :SecureAcceptanceUrl
       xml_accessor :PayerID
+      xml_accessor :PayerEmail
   
-      def initialize(secureAcceptanceUrl = nil, payerID = nil)
+      def initialize(secureAcceptanceUrl = nil, payerID = nil, payerEmail = nil)
         @SecureAcceptanceUrl = secureAcceptanceUrl
         @PayerID = payerID
+        @PayerEmail = payerEmail
+      end
+    end
+
+    # inner class for member: emvResponse
+    # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}emvResponse
+    class EmvResponse
+      include ROXML
+      
+      class Tags
+        include ROXML
+        xml_accessor :tag, :as => [EmvTag]
+    
+        def initialize(tag = nil)
+          @tag = tag
+        end
+      end
+
+      xml_accessor :tlvData
+      xml_accessor :tags, :as => [Tags]
+  
+      def initialize(tlvData = nil, tags = nil)
+        @tlvData = tlvData
+        @tags = tags
       end
     end
   
@@ -2149,8 +2239,10 @@ end
     xml_accessor :userFields, :as => UserFields
     xml_accessor :shipTo, :as => NameAndAddressType
     xml_accessor :secureAcceptance, :as => SecureAcceptance
+    xml_accessor :emvResponse, :as => EmvResponse
+    xml_accessor :transHashSha2
   
-    def initialize(responseCode = nil, rawResponseCode = nil, authCode = nil, avsResultCode = nil, cvvResultCode = nil, cavvResultCode = nil, transId = nil, refTransID = nil, transHash = nil, testRequest = nil, accountNumber = nil, accountType = nil, splitTenderId = nil, prePaidCard = nil, messages = nil, errors = nil, splitTenderPayments = nil, userFields = nil, shipTo = nil, secureAcceptance = nil)
+    def initialize(responseCode = nil, rawResponseCode = nil, authCode = nil, avsResultCode = nil, cvvResultCode = nil, cavvResultCode = nil, transId = nil, refTransID = nil, transHash = nil, testRequest = nil, accountNumber = nil, accountType = nil, splitTenderId = nil, prePaidCard = nil, messages = nil, errors = nil, splitTenderPayments = nil, userFields = nil, shipTo = nil, secureAcceptance = nil, emvResponse = nil, transHashSha2 = nil)
       @responseCode = responseCode
       @rawResponseCode = rawResponseCode
       @authCode = authCode
@@ -2171,19 +2263,23 @@ end
       @userFields = userFields
       @shipTo = shipTo
       @secureAcceptance = secureAcceptance
+      @emvResponse = emvResponse
+      @transHashSha2 = transHashSha2
     end
   end
   
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ANetApiRequest
   #   merchantAuthentication - MerchantAuthenticationType
+  #   clientId - SOAP::SOAPString
   #   refId - SOAP::SOAPString
   class ANetApiRequest
     include ROXML
     xml_accessor :merchantAuthentication
     xml_accessor :refId
   
-    def initialize(merchantAuthentication = nil, refId = nil)
+    def initialize(merchantAuthentication = nil, clientId = nil, refId = nil)
       @merchantAuthentication = merchantAuthentication
+      @clientId = clientId
       @refId = refId
     end
   end
@@ -2998,16 +3094,19 @@ end
   #   merchantAuthentication - MerchantAuthenticationType
   #   refId - SOAP::SOAPString
   #   customerProfileId - (any)
+  #   unmaskExpirationDate - SOAP::SOAPBoolean
   class GetCustomerProfileRequest 
     include ROXML
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :customerProfileId
+    xml_accessor :unmaskExpirationDate
   
-    def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil)
+    def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, unmaskExpirationDate = nil)
       @merchantAuthentication = merchantAuthentication
       @refId = refId
       @customerProfileId = customerProfileId
+      @unmaskExpirationDate = unmaskExpirationDate
     end
   end
   
@@ -4329,6 +4428,206 @@ end
       @messages = messages
       @sessionToken = sessionToken
       @subscription = subscription
+    end
+  end
+
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}AUResponseType
+  class AUResponseType
+    include ROXML
+    xml_accessor :auReasonCode
+    xml_accessor :profileCount
+    xml_accessor :reasonDescription
+    
+    def initialize(auReasonCode = nil, profileCount = nil, reasonDescription = nil)
+      @auReasonCode = auReasonCode
+      @profileCount = profileCount
+      @reasonDescription = reasonDescription
+    end
+  end
+  
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfAUResponseType
+  class ArrayOfAUResponseType < ::Array
+    include ROXML
+    xml_accessor :auResponse, :as => [AUResponseType]
+
+    def initialize(auResponse = [])
+     @auResponse = auResponse
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}AUUpdateType
+  class AUUpdateType
+    include ROXML
+    xml_accessor :customerProfileID
+    xml_accessor :customerPaymentProfileID
+    xml_accessor :firstName
+    xml_accessor :lastName
+    xml_accessor :updateTimeUTC
+    xml_accessor :auReasonCode
+    xml_accessor :reasonDescription
+    xml_accessor :newCreditCard, :as => CreditCardMaskedType
+    xml_accessor :oldCreditCard, :as => CreditCardMaskedType
+
+    def initialize(customerProfileID = nil, customerPaymentProfileID = nil, firstName = nil, lastName = nil, updateTimeUTC = nil, auReasonCode = nil, reasonDescription = nil, newCreditCard = nil, oldCreditCard = nil)
+     @customerProfileID = customerProfileID
+     @customerPaymentProfileID = customerPaymentProfileID
+     @firstName = firstName
+     @lastName = lastName
+     @updateTimeUTC = updateTimeUTC
+     @auReasonCode = auReasonCode
+     @reasonDescription = reasonDescription
+     @newCreditCard = newCreditCard
+     @oldCreditCard = oldCreditCard
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}AUDeleteType
+  class AUDeleteType
+    include ROXML
+    xml_accessor :customerProfileID
+    xml_accessor :customerPaymentProfileID
+    xml_accessor :firstName
+    xml_accessor :lastName
+    xml_accessor :updateTimeUTC
+    xml_accessor :auReasonCode
+    xml_accessor :reasonDescription
+    xml_accessor :creditCard, :as => CreditCardMaskedType
+
+    def initialize(customerProfileID = nil, customerPaymentProfileID = nil, firstName = nil, lastName = nil, updateTimeUTC = nil, auReasonCode = nil, reasonDescription = nil, creditCard = nil)
+     @customerProfileID = customerProfileID
+     @customerPaymentProfileID = customerPaymentProfileID
+     @firstName = firstName
+     @lastName = lastName
+     @updateTimeUTC = updateTimeUTC
+     @auReasonCode = auReasonCode
+     @reasonDescription = reasonDescription
+     @creditCard = creditCard
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}AUDetailsType
+  class AUDetailsType
+    include ROXML
+    xml_accessor :customerProfileID
+    xml_accessor :customerPaymentProfileID
+    xml_accessor :firstName
+    xml_accessor :lastName
+    xml_accessor :updateTimeUTC
+    xml_accessor :auReasonCode
+    xml_accessor :reasonDescription
+
+    def initialize(customerProfileID = nil, customerPaymentProfileID = nil, firstName = nil, lastName = nil, updateTimeUTC = nil, auReasonCode = nil, reasonDescription = nil)
+     @customerProfileID = customerProfileID
+     @customerPaymentProfileID = customerPaymentProfileID
+     @firstName = firstName
+     @lastName = lastName
+     @updateTimeUTC = updateTimeUTC
+     @auReasonCode = auReasonCode
+     @reasonDescription = reasonDescription
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ListOfAUDetailsType
+  class ListOfAUDetailsType
+    include ROXML
+    xml_accessor :auUpdate, :as => AUUpdateType
+    xml_accessor :auDelete, :as => AUDeleteType
+
+    def initialize(auUpdate = nil, auDelete = nil)
+     @auUpdate = auUpdate
+     @auDelete = auDelete
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}AUJobTypeEnum
+  class AUJobTypeEnum < ::String
+    All = BankAccountTypeEnum.new("all")
+    Updates = BankAccountTypeEnum.new("updates")
+    Deletes = BankAccountTypeEnum.new("deletes")
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}GetAUJobSummaryRequest
+  #   refId - SOAP::SOAPString
+  #   messages - MessagesType
+  #   month - SOAP::SOAPString
+  class GetAUJobSummaryRequest
+    include ROXML
+    xml_accessor :merchantAuthentication, :as => MerchantAuthenticationType
+    xml_accessor :refId
+    xml_accessor :month
+  
+    def initialize(merchantAuthentication = nil, refId = nil, month = nil)
+      @merchantAuthentication = merchantAuthentication
+      @refId = refId
+      @month = month
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}GetAUJobSummaryResponse
+  #   refId - SOAP::SOAPString
+  #   messages - MessagesType
+  #   sessionToken - SOAP::SOAPString
+  #   auSummary - ARBSubscriptionMaskedType
+  class GetAUJobSummaryResponse
+    include ROXML
+    xml_accessor :refId
+    xml_accessor :messages, :as => MessagesType
+    xml_accessor :sessionToken
+    xml_accessor :auSummary, :as => ArrayOfAUResponseType
+  
+    def initialize(refId = nil, messages = nil, sessionToken = nil, auSummary = nil)
+      @refId = refId
+      @messages = messages
+      @sessionToken = sessionToken
+      @auSummary = auSummary
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}GetAUJobDetailsRequest
+  #   refId - SOAP::SOAPString
+  #   messages - MessagesType
+  #   month - SOAP::SOAPString
+  #   modifiedTypeFilter - AUJobTypeEnum
+  #   paging - Paging
+  class GetAUJobDetailsRequest
+    include ROXML
+    xml_accessor :merchantAuthentication, :as => MerchantAuthenticationType
+    xml_accessor :refId
+    xml_accessor :month
+    xml_accessor :modifiedTypeFilter
+    xml_accessor :paging, :as => Paging
+  
+    def initialize(merchantAuthentication = nil, refId = nil, month = nil, modifiedTypeFilter = nil, paging = nil)
+      @merchantAuthentication = merchantAuthentication
+      @refId = refId
+      @month = month
+      @modifiedTypeFilter = modifiedTypeFilter
+      @paging = paging
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}GetAUJobDetailsResponse
+  #   refId - SOAP::SOAPString
+  #   messages - MessagesType
+  #   sessionToken - SOAP::SOAPString
+  #   totalNumInResultSet - ListOfAUDetailsType
+  #   auDetails - SOAP::SOAPInt
+  class GetAUJobDetailsResponse
+    include ROXML
+    xml_accessor :refId
+    xml_accessor :messages, :as => MessagesType
+    xml_accessor :sessionToken
+    xml_accessor :totalNumInResultSet, :as => Integer
+    xml_accessor :auDetails, :as => [ListOfAUDetailsType]
+  
+    def initialize(refId = nil, messages = nil, sessionToken = nil, totalNumInResultSet = nil, auDetails = [])
+      @refId = refId
+      @messages = messages
+      @sessionToken = sessionToken
+      @totalNumInResultSet = totalNumInResultSet
+      @auDetails = auDetails
     end
   end
 

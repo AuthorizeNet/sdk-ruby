@@ -66,7 +66,9 @@ module AuthorizeNet::API
     
     def serialize(object,type)
       doc = Nokogiri::XML::Document.new
-      doc.root = object.to_xml     
+      doc.root = object.to_xml
+      constants = YAML.load_file(File.dirname(__FILE__) + "/constants.yml")
+      clientId = constants['clientId']
 
       builder = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |x|
         x.send(type.to_sym, :xmlns => XML_NAMESPACE) {
@@ -74,6 +76,7 @@ module AuthorizeNet::API
             x.name @api_login_id
             x.transactionKey @api_transaction_key
             }
+          x.clientId clientId
          x.send:insert, doc.root.element_children
       }
       end
