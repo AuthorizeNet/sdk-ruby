@@ -10,4 +10,5 @@ SimpleCov.start do
    add_filter 'lib/authorize_net/reporting'
    add_filter 'lib/authorize_net/payment_methods'
    add_filter 'lib/authorize_net/addresses'
+   add_filter 'sample-code-ruby/**/*'
 end
