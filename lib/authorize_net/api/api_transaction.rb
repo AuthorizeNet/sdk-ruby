@@ -56,9 +56,7 @@ module AuthorizeNet::API
      unless responseClass.nil? or request.nil?
        begin
         @xml = serialize(request,type)
-        puts @xml
         respXml = send_request(@xml)
-        puts respXml.body
         @response = deserialize(respXml.body,responseClass) 
        rescue Exception => ex  
           ex  
