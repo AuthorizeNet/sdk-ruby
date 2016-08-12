@@ -1096,7 +1096,7 @@ end
   #   subscriptionId - SubscriptionIdList
   class SubscriptionIdList
     include ROXML
-    xml_accessor :subscriptionId, :as => NumericStringsType
+    xml_accessor :subscriptionId, :as => []
   
     def initialize(subscriptionId = nil)
       @subscriptionId = subscriptionId
@@ -4329,6 +4329,205 @@ end
       @messages = messages
       @sessionToken = sessionToken
       @subscription = subscription
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}AUResponseType
+  class AUResponseType
+    include ROXML
+    xml_accessor :auReasonCode
+    xml_accessor :profileCount, :as => Bignum
+    xml_accessor :reasonDescription
+    
+    def initialize(auReasonCode = nil, profileCount = nil, reasonDescription = nil)
+      @auReasonCode = auReasonCode
+      @profileCount = profileCount
+      @reasonDescription = reasonDescription
+    end
+  end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfAUResponseType
+  class ArrayOfAUResponseType < ::Array
+    include ROXML
+    xml_accessor :auResponse, :as => [AUResponseType]
+
+    def initialize(auResponse = [])
+     @auResponse = auResponse
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}AUUpdateType
+  class AUUpdateType
+    include ROXML
+    xml_accessor :customerProfileID, :as => Bignum
+    xml_accessor :customerPaymentProfileID, :as => Bignum
+    xml_accessor :firstName
+    xml_accessor :lastName
+    xml_accessor :updateTimeUTC
+    xml_accessor :auReasonCode
+    xml_accessor :reasonDescription
+    xml_accessor :newCreditCard, :as => CreditCardMaskedType
+    xml_accessor :oldCreditCard, :as => CreditCardMaskedType
+
+    def initialize(customerProfileID = nil, customerPaymentProfileID = nil, firstName = nil, lastName = nil, updateTimeUTC = nil, auReasonCode = nil, reasonDescription = nil, newCreditCard = nil, oldCreditCard = nil)
+     @customerProfileID = customerProfileID
+     @customerPaymentProfileID = customerPaymentProfileID
+     @firstName = firstName
+     @lastName = lastName
+     @updateTimeUTC = updateTimeUTC
+     @auReasonCode = auReasonCode
+     @reasonDescription = reasonDescription
+     @newCreditCard = newCreditCard
+     @oldCreditCard = oldCreditCard
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}AUDeleteType
+  class AUDeleteType
+    include ROXML
+    xml_accessor :customerProfileID, :as => Bignum
+    xml_accessor :customerPaymentProfileID, :as => Bignum
+    xml_accessor :firstName
+    xml_accessor :lastName
+    xml_accessor :updateTimeUTC
+    xml_accessor :auReasonCode
+    xml_accessor :reasonDescription
+    xml_accessor :creditCard, :as => CreditCardMaskedType
+
+    def initialize(customerProfileID = nil, customerPaymentProfileID = nil, firstName = nil, lastName = nil, updateTimeUTC = nil, auReasonCode = nil, reasonDescription = nil, creditCard = nil)
+     @customerProfileID = customerProfileID
+     @customerPaymentProfileID = customerPaymentProfileID
+     @firstName = firstName
+     @lastName = lastName
+     @updateTimeUTC = updateTimeUTC
+     @auReasonCode = auReasonCode
+     @reasonDescription = reasonDescription
+     @creditCard = creditCard
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}AUDetailsType
+  class AUDetailsType
+    include ROXML
+    xml_accessor :customerProfileID, :as => Bignum
+    xml_accessor :customerPaymentProfileID, :as => Bignum
+    xml_accessor :firstName
+    xml_accessor :lastName
+    xml_accessor :updateTimeUTC
+    xml_accessor :auReasonCode
+    xml_accessor :reasonDescription
+
+    def initialize(customerProfileID = nil, customerPaymentProfileID = nil, firstName = nil, lastName = nil, updateTimeUTC = nil, auReasonCode = nil, reasonDescription = nil)
+     @customerProfileID = customerProfileID
+     @customerPaymentProfileID = customerPaymentProfileID
+     @firstName = firstName
+     @lastName = lastName
+     @updateTimeUTC = updateTimeUTC
+     @auReasonCode = auReasonCode
+     @reasonDescription = reasonDescription
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ListOfAUDetailsType
+  class ListOfAUDetailsType
+    include ROXML
+    xml_accessor :auUpdate, :as => AUUpdateType
+    xml_accessor :auDelete, :as => AUDeleteType
+
+    def initialize(auUpdate = nil, auDelete = nil)
+     @auUpdate = auUpdate
+     @auDelete = auDelete
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}AUJobTypeEnum
+  class AUJobTypeEnum < ::String
+    All = BankAccountTypeEnum.new("all")
+    Updates = BankAccountTypeEnum.new("updates")
+    Deletes = BankAccountTypeEnum.new("deletes")
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}GetAUJobSummaryRequest
+  #   refId - SOAP::SOAPString
+  #   messages - MessagesType
+  #   month - SOAP::SOAPString
+  class GetAUJobSummaryRequest
+    include ROXML
+    xml_accessor :merchantAuthentication, :as => MerchantAuthenticationType
+    xml_accessor :refId
+    xml_accessor :month
+  
+    def initialize(merchantAuthentication = nil, refId = nil, month = nil)
+      @merchantAuthentication = merchantAuthentication
+      @refId = refId
+      @month = month
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}GetAUJobSummaryResponse
+  #   refId - SOAP::SOAPString
+  #   messages - MessagesType
+  #   sessionToken - SOAP::SOAPString
+  #   auSummary - ARBSubscriptionMaskedType
+  class GetAUJobSummaryResponse
+    include ROXML
+    xml_accessor :refId
+    xml_accessor :messages, :as => MessagesType
+    xml_accessor :sessionToken
+    xml_accessor :auSummary, :as => ArrayOfAUResponseType
+  
+    def initialize(refId = nil, messages = nil, sessionToken = nil, auSummary = nil)
+      @refId = refId
+      @messages = messages
+      @sessionToken = sessionToken
+      @auSummary = auSummary
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}GetAUJobDetailsRequest
+  #   refId - SOAP::SOAPString
+  #   messages - MessagesType
+  #   month - SOAP::SOAPString
+  #   modifiedTypeFilter - AUJobTypeEnum
+  #   paging - Paging
+  class GetAUJobDetailsRequest
+    include ROXML
+    xml_accessor :merchantAuthentication, :as => MerchantAuthenticationType
+    xml_accessor :refId
+    xml_accessor :month
+    xml_accessor :modifiedTypeFilter
+    xml_accessor :paging, :as => Paging
+  
+    def initialize(merchantAuthentication = nil, refId = nil, month = nil, modifiedTypeFilter = nil, paging = nil)
+      @merchantAuthentication = merchantAuthentication
+      @refId = refId
+      @month = month
+      @modifiedTypeFilter = modifiedTypeFilter
+      @paging = paging
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}GetAUJobDetailsResponse
+  #   refId - SOAP::SOAPString
+  #   messages - MessagesType
+  #   sessionToken - SOAP::SOAPString
+  #   totalNumInResultSet - ListOfAUDetailsType
+  #   auDetails - SOAP::SOAPInt
+  class GetAUJobDetailsResponse
+    include ROXML
+    xml_accessor :refId
+    xml_accessor :messages, :as => MessagesType
+    xml_accessor :sessionToken
+    xml_accessor :totalNumInResultSet, :as => Integer
+    xml_accessor :auDetails, :as => [ListOfAUDetailsType]
+  
+    def initialize(refId = nil, messages = nil, sessionToken = nil, totalNumInResultSet = nil, auDetails = [])
+      @refId = refId
+      @messages = messages
+      @sessionToken = sessionToken
+      @totalNumInResultSet = totalNumInResultSet
+      @auDetails = auDetails
     end
   end
 
