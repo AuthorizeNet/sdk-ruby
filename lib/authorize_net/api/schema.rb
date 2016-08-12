@@ -2275,6 +2275,7 @@ end
   class ANetApiRequest
     include ROXML
     xml_accessor :merchantAuthentication
+    xml_accessor :clientId
     xml_accessor :refId
   
     def initialize(merchantAuthentication = nil, clientId = nil, refId = nil)
