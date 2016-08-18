@@ -50,6 +50,12 @@ namespace "spec" do
     spec.pattern = FileList['spec/reporting_spec.rb']
     spec.rspec_opts = ['--options', 'spec/spec.opts']
   end
+  
+  desc "Run the Sample code Test Runner"
+  RSpec::Core::RakeTask.new('testrunner') do |spec|
+    spec.pattern = FileList['sample-code-ruby/spec/sample_code_spec.rb']
+    spec.rspec_opts = ['--options', 'spec/spec.opts']
+  end
 end
 
 desc "Builds the gem"
