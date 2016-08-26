@@ -1183,8 +1183,8 @@ end
     xml_accessor :merchantCustomerId
     xml_accessor :description
     xml_accessor :email
-    xml_accessor :paymentProfiles
-    xml_accessor :shipToList
+    xml_accessor :paymentProfiles, :from => 'paymentProfiles', :as => [CustomerPaymentProfileType]
+    xml_accessor :shipToList, :from => 'shipToList', :as => [CustomerAddressType]
   
     def initialize(merchantCustomerId = nil, description = nil, email = nil, paymentProfiles = [], shipToList = [])
       @merchantCustomerId = merchantCustomerId
@@ -2961,8 +2961,8 @@ end
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :customerProfileId
-    xml_accessor :customerPaymentProfileIdList
-    xml_accessor :customerShippingAddressIdList
+    xml_accessor :customerPaymentProfileIdList, :as => NumericStringsType
+    xml_accessor :customerShippingAddressIdList, :as => NumericStringsType
     xml_accessor :validationDirectResponseList
   
     def initialize(refId = nil, messages = nil, sessionToken = nil, customerProfileId = nil, customerPaymentProfileIdList = nil, customerShippingAddressIdList = nil, validationDirectResponseList = nil)
