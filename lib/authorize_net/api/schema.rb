@@ -4903,7 +4903,7 @@ end
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :transactionRequest, :as => TransactionRequestType
-    xml_accessor :hostedPaymentSettings, :as => ArrayOfSetting
+    xml_accessor :hostedPaymentSettings, :as => Settings
   
     def initialize(merchantAuthentication = nil, refId = nil, transactionRequest = nil, hostedPaymentSettings = nil)
       @merchantAuthentication = merchantAuthentication
