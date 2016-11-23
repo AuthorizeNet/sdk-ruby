@@ -3783,7 +3783,7 @@ end
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}TransactionListSorting
   class TransactionListSorting 
     include ROXML
-    xml_accessor :orderBy, :as => TransactionListOrderFieldEnum
+    xml_accessor :orderBy
     xml_accessor :orderDescending
   
     def initialize(orderBy = nil, orderDescending = nil)
@@ -3877,8 +3877,8 @@ end
   
     # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}TransactionGroupStatusEnum
   class TransactionGroupStatusEnum < ::String
-    ANY = PaymentMethodsTypeEnum.new("any")
-    PENDINGAPPROVAL = PaymentMethodsTypeEnum.new("pendingApproval")
+    ANY = TransactionGroupStatusEnum.new("any")
+    PENDINGAPPROVAL = TransactionGroupStatusEnum.new("pendingApproval")
   end
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}getUnsettledTransactionListRequest
@@ -3888,7 +3888,7 @@ end
     include ROXML
     xml_accessor :merchantAuthentication
     xml_accessor :refId
-    xml_accessor :status, :as => TransactionGroupStatusEnum
+    xml_accessor :status
     xml_accessor :sorting, :as => TransactionListSorting
     xml_accessor :paging, :as => Paging
   
@@ -4794,7 +4794,7 @@ end
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfPaymentMethod 
   class ArrayOfPaymentMethod < ::Array
     include ROXML
-    xml_accessor :paymentMethod, :as => [PaymentMethodsTypeEnum]
+    xml_accessor :paymentMethod
 
     def initialize(paymentMethod = [])
      @paymentMethod = paymentMethod
@@ -4844,13 +4844,13 @@ end
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}PaymentMethodsTypeEnum
   class AfdsTransactionEnum < ::String
     Approve = AfdsTransactionEnum.new("approve")
-    Decline = PaymentMethodsTypeEnum.new("decline")
+    Decline = AfdsTransactionEnum.new("decline")
   end
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}HeldTransactionRequestType
   class HeldTransactionRequestType
     include ROXML
-    xml_accessor :action, :as => AfdsTransactionEnum
+    xml_accessor :action
     xml_accessor :refTransId
   
     def initialize(action = nil, refTransId = nil)
