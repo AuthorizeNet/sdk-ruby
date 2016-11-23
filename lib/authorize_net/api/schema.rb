@@ -4818,7 +4818,7 @@ end
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :isTestMode
-    xml_accessor :processors, :as => NumericStringsType
+    xml_accessor :processors, :as => ArrayOfProcessorType
     xml_accessor :merchantName 
     xml_accessor :gatewayId
     xml_accessor :marketTypes, :as => ArrayOfMarketType
