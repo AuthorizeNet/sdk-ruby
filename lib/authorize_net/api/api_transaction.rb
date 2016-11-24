@@ -46,6 +46,11 @@ module AuthorizeNet::API
       API_GET_CUSTOMER_PAYMENT_PROFILE_LIST = "getCustomerPaymentProfileListRequest"
       
       API_ARB_GET_SUBSCRIPTION_REQUEST = "ARBGetSubscriptionRequest"
+
+      API_GET_MERCHANT_DETAILS = "getMerchantDetailsRequest"
+      API_GET_HOSTED_PAYMENT_PAGE = "getHostedPaymentPageRequest"
+      API_UDPATE_HELD_TRANSACTION = "updateHeldTransactionRequest"
+
     end
     
     def initialize(api_login_id, api_transaction_key, options = {})
