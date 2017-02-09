@@ -6,6 +6,9 @@ module AuthorizeNet
     include AuthorizeNet::Model
     
     attr_accessor :invoice_num, :description, :tax, :tax_name, :tax_description, :freight, :freight_name, :freight_description, :duty, :duty_name, :duty_description, :tax_exempt, :po_num, :line_items
+
+    alias_method :invoice_number , :invoice_num
+    alias_method :invoice_number=, :invoice_num=
     
     def add_line_item(id = nil, name = nil, description = nil, quantity = nil, price = nil, taxable = nil)
       if id.kind_of?(AuthorizeNet::LineItem)
@@ -19,6 +22,7 @@ module AuthorizeNet
     def to_hash
       hash = {
         :invoice_num => @invoice_num,
+        :invoice_number => @invoice_num,
         :description => @description,
         :tax => @tax,
         :tax_name => @tax_name,
