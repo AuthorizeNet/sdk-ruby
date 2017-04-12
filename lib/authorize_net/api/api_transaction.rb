@@ -36,6 +36,7 @@ module AuthorizeNet::API
       API_GET_TRANSACTION_DETAILS = "getTransactionDetailsRequest"
       API_GET_UNSETTLED_TRANSACTION_LIST = "getUnsettledTransactionListRequest"
       API_GET_BATCH_STATISTICS = "getBatchStatisticsRequest"
+	  API_GET_TRANSACTION_LIST_FOR_CUSTOMER = "getTransactionListForCustomerRequest"
 	  
       API_GET_HOSTED_PROFILE_PAGE = "getHostedProfilePageRequest"
 
