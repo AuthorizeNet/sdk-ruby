@@ -1678,6 +1678,8 @@ end
   #   mobileDeviceId - SOAP::SOAPString
   #   subscription - SubscriptionPaymentType
   #   hasReturnedItems - SOAP::SOAPBoolean
+  #   fraudInformation - FraudInformationType
+  #   profile - CustomerProfileIdType
   class TransactionSummaryType
     include ROXML
     xml_accessor :transId
@@ -1696,8 +1698,9 @@ end
     xml_accessor :subscription
     xml_accessor :hasReturnedItems
     xml_accessor :fraudInformation
+	xml_accessor :profile, :as => CustomerProfileIdType
   
-    def initialize(transId = nil, submitTimeUTC = nil, submitTimeLocal = nil, transactionStatus = nil, invoiceNumber = nil, firstName = nil, lastName = nil, accountType = nil, accountNumber = nil, settleAmount = nil, marketType = nil, product = nil, mobileDeviceId = nil, subscription = nil, hasReturnedItems = nil, fraudInformation = nil)
+    def initialize(transId = nil, submitTimeUTC = nil, submitTimeLocal = nil, transactionStatus = nil, invoiceNumber = nil, firstName = nil, lastName = nil, accountType = nil, accountNumber = nil, settleAmount = nil, marketType = nil, product = nil, mobileDeviceId = nil, subscription = nil, hasReturnedItems = nil, fraudInformation = nil, profile = nil)
       @transId = transId
       @submitTimeUTC = submitTimeUTC
       @submitTimeLocal = submitTimeLocal
@@ -1714,6 +1717,7 @@ end
       @subscription = subscription
       @hasReturnedItems = hasReturnedItems
       @fraudInformation = fraudInformation
+	  @profile = profile
     end
   end
 
@@ -1926,6 +1930,7 @@ end
   #   returnedItems - ArrayOfReturnedItem
   #   solution - SolutionType
   #   emvDetails - TransactionDetailsType::EmvDetails
+  #   profile - CustomerProfileIdType
   class TransactionDetailsType
     include ROXML
     # inner class for member: EmvDetails
@@ -1990,8 +1995,9 @@ end
     xml_accessor :returnedItems, :as => ArrayOfReturnedItem
     xml_accessor :solution
     xml_accessor :emvDetails, :as => EmvDetails
+	xml_accessor :profile, :as => CustomerProfileIdType
   
-    def initialize(transId = nil, refTransId = nil, splitTenderId = nil, submitTimeUTC = nil, submitTimeLocal = nil, transactionType = nil, transactionStatus = nil, responseCode = nil, responseReasonCode = nil, subscription = nil, responseReasonDescription = nil, authCode = nil, aVSResponse = nil, cardCodeResponse = nil, cAVVResponse = nil, fDSFilterAction = nil, fDSFilters = nil, batch = nil, order = nil, requestedAmount = nil, authAmount = nil, settleAmount = nil, tax = nil, shipping = nil, duty = nil, lineItems = nil, prepaidBalanceRemaining = nil, taxExempt = nil, payment = nil, customer = nil, billTo = nil, shipTo = nil, recurringBilling = nil, customerIP = nil, product = nil, marketType = nil, mobileDeviceId = nil, returnedItems = nil, solution = nil, emvDetails = nil)
+    def initialize(transId = nil, refTransId = nil, splitTenderId = nil, submitTimeUTC = nil, submitTimeLocal = nil, transactionType = nil, transactionStatus = nil, responseCode = nil, responseReasonCode = nil, subscription = nil, responseReasonDescription = nil, authCode = nil, aVSResponse = nil, cardCodeResponse = nil, cAVVResponse = nil, fDSFilterAction = nil, fDSFilters = nil, batch = nil, order = nil, requestedAmount = nil, authAmount = nil, settleAmount = nil, tax = nil, shipping = nil, duty = nil, lineItems = nil, prepaidBalanceRemaining = nil, taxExempt = nil, payment = nil, customer = nil, billTo = nil, shipTo = nil, recurringBilling = nil, customerIP = nil, product = nil, marketType = nil, mobileDeviceId = nil, returnedItems = nil, solution = nil, emvDetails = nil, profile = nil)
       @transId = transId
       @refTransId = refTransId
       @splitTenderId = splitTenderId
@@ -2032,6 +2038,7 @@ end
       @returnedItems = returnedItems
       @solution = solution
       @emvDetails = emvDetails
+	  @profile = profile
     end
   end
   
@@ -2090,6 +2097,7 @@ end
   #   secureAcceptance - TransactionResponse::secureAcceptance
   #   emvResponse - TransactionResponse::emvResponse
   #   transHashSha2 - SOAP::SOAPString
+  #   profile - CustomerProfileIdType
   class TransactionResponse
     include ROXML
     # inner class for member: prePaidCard
@@ -2269,8 +2277,9 @@ end
     xml_accessor :secureAcceptance, :as => SecureAcceptance
     xml_accessor :emvResponse, :as => EmvResponse
     xml_accessor :transHashSha2
+	xml_accessor :profile, :as => CustomerProfileIdType
   
-    def initialize(responseCode = nil, rawResponseCode = nil, authCode = nil, avsResultCode = nil, cvvResultCode = nil, cavvResultCode = nil, transId = nil, refTransID = nil, transHash = nil, testRequest = nil, accountNumber = nil, accountType = nil, splitTenderId = nil, prePaidCard = nil, messages = nil, errors = nil, splitTenderPayments = nil, userFields = nil, shipTo = nil, secureAcceptance = nil, emvResponse = nil, transHashSha2 = nil)
+    def initialize(responseCode = nil, rawResponseCode = nil, authCode = nil, avsResultCode = nil, cvvResultCode = nil, cavvResultCode = nil, transId = nil, refTransID = nil, transHash = nil, testRequest = nil, accountNumber = nil, accountType = nil, splitTenderId = nil, prePaidCard = nil, messages = nil, errors = nil, splitTenderPayments = nil, userFields = nil, shipTo = nil, secureAcceptance = nil, emvResponse = nil, transHashSha2 = nil, profile = nil)
       @responseCode = responseCode
       @rawResponseCode = rawResponseCode
       @authCode = authCode
@@ -2293,6 +2302,7 @@ end
       @secureAcceptance = secureAcceptance
       @emvResponse = emvResponse
       @transHashSha2 = transHashSha2
+	  @profile = profile
     end
   end
   
@@ -3141,18 +3151,24 @@ end
   #   merchantAuthentication - MerchantAuthenticationType
   #   refId - SOAP::SOAPString
   #   customerProfileId - (any)
+  #   merchantCustomerId - SOAP::SOAPString
+  #   email - SOAP::SOAPString
   #   unmaskExpirationDate - SOAP::SOAPBoolean
   class GetCustomerProfileRequest 
     include ROXML
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :customerProfileId
+	xml_accessor :merchantCustomerId
+	xml_accessor :email
     xml_accessor :unmaskExpirationDate
   
-    def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, unmaskExpirationDate = nil)
+    def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, unmaskExpirationDate = nil, merchantCustomerId = nil, email = nil)
       @merchantAuthentication = merchantAuthentication
       @refId = refId
       @customerProfileId = customerProfileId
+	  @merchantCustomerId = merchantCustomerId
+	  @email = email
       @unmaskExpirationDate = unmaskExpirationDate
     end
   end
@@ -3677,18 +3693,24 @@ end
   #   messages - MessagesType
   #   sessionToken - SOAP::SOAPString
   #   transaction - TransactionDetailsType
+  #   clientId - SOAP::SOAPString
+  #   transrefId - SOAP::SOAPString
   class GetTransactionDetailsResponse 
     include ROXML
     xml_accessor :refId
     xml_accessor :messages, :as => MessagesType
     xml_accessor :sessionToken
     xml_accessor :transaction, :as => TransactionDetailsType
+	xml_accessor :clientId
+	xml_accessor :transrefId
   
-    def initialize(refId = nil, messages = nil, sessionToken = nil, transaction = nil)
+    def initialize(refId = nil, messages = nil, sessionToken = nil, transaction = nil, clientId = nil, transrefId = nil)
       @refId = refId
       @messages = messages
       @sessionToken = sessionToken
       @transaction = transaction
+	  @clientId = clientId
+	  @transrefId = transrefId
     end
   end
   
@@ -3922,7 +3944,33 @@ end
       @totalNumInResultSet = totalNumInResultSet
     end
   end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}getTransactionListForCustomerRequest
+  #   merchantAuthentication - MerchantAuthenticationType
+  #   refId - SOAP::SOAPString
+  #   customerProfileId - SOAP::SOAPString
+  #   customerPaymentProfileId - SOAP::SOAPString
+  #	  sorting - TransactionListSorting
+  #   paging - Paging
+  class GetTransactionListForCustomerRequest 
+    include ROXML
+    xml_accessor :merchantAuthentication
+    xml_accessor :refId
+	xml_accessor :customerProfileId
+	xml_accessor :customerPaymentProfileId
+	xml_accessor :sorting, :as => TransactionListSorting
+    xml_accessor :paging, :as => Paging
   
+    def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, customerPaymentProfileId = nil, sorting = nil, paging = nil)
+      @merchantAuthentication = merchantAuthentication
+      @refId = refId
+	  @customerProfileId = customerProfileId
+	  @customerPaymentProfileId = customerPaymentProfileId
+	  @sorting = sorting
+	  @paging = paging
+    end
+  end
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}mobileDeviceRegistrationRequest
   #   merchantAuthentication - MerchantAuthenticationType
   #   refId - SOAP::SOAPString
@@ -4930,4 +4978,5 @@ end
       @token = token
     end
   end
+  
 end

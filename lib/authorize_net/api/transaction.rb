@@ -248,5 +248,9 @@ module AuthorizeNet::API
       make_request(request,UpdateHeldTransactionResponse,Type::API_UDPATE_HELD_TRANSACTION)
     end
 
+    def get_transaction_list_for_customer(request)
+      make_request(request,GetTransactionListResponse,Type::API_GET_TRANSACTION_LIST_FOR_CUSTOMER)
+    end
+	
   end
 end
