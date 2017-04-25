@@ -3163,7 +3163,7 @@ end
 	xml_accessor :email
     xml_accessor :unmaskExpirationDate
   
-    def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, merchantCustomerId = nil, email = nil, unmaskExpirationDate = nil)
+    def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, unmaskExpirationDate = nil, merchantCustomerId = nil, email = nil)
       @merchantAuthentication = merchantAuthentication
       @refId = refId
       @customerProfileId = customerProfileId
