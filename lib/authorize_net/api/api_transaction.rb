@@ -80,12 +80,12 @@ module AuthorizeNet::API
         x.send(type.to_sym, :xmlns => XML_NAMESPACE) {
 	  if @api_login_id == :oauth
 	    x.merchantAuthentication {
-	      x.name @api_login_id
-	      x.transactionKey @api_transaction_key
+	      x.accessToken @api_transaction_key
 	      }
 	  else
 	    x.merchantAuthentication {
-	      x.accessToken @api_transaction_key
+	      x.name @api_login_id
+	      x.transactionKey @api_transaction_key
 	      }
 	  end
           x.clientId clientId
