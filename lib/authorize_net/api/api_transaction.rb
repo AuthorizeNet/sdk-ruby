@@ -78,10 +78,16 @@ module AuthorizeNet::API
 
       builder = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |x|
         x.send(type.to_sym, :xmlns => XML_NAMESPACE) {
-          x.merchantAuthentication {
-            x.name @api_login_id
-            x.transactionKey @api_transaction_key
-            }
+	  if @api_login_id == :oauth
+	    x.merchantAuthentication {
+	      x.name @api_login_id
+	      x.transactionKey @api_transaction_key
+	      }
+	  else
+	    x.merchantAuthentication {
+	      x.accessToken @api_transaction_key
+	      }
+	  end
           x.clientId clientId
          x.send:insert, doc.root.element_children
       }
