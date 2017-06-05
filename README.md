@@ -32,7 +32,7 @@
 ````
 ## Registration & Configuration
 
-Get a sandbox account at https://developer.authorize.net/sandbox/
+Get a sandbox account at https://developer.authorize.net/hello_world/sandbox/
 To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained as described below.
 ````
 #obtain an API login_id and transaction_id according to instructions at https://developer.authorize.net/faqs/#gettranskey
