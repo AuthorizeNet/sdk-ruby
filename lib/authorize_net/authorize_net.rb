@@ -36,6 +36,7 @@ module AuthorizeNet
     # Coverts a value received from Authorize.Net into a BigDecimal.
     def value_to_decimal(value)
       value = "0" if value.to_s.empty?
+      value = value.gsub(/\D/, '') # Why is the solution_id of type BigDecimal?
       BigDecimal.new(value)
     end
     

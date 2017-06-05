@@ -141,6 +141,7 @@ module AuthorizeNet::Reporting
         solution = @transaction.at_css('solution')
         unless solution.nil?
           solution_id = node_content_unless_nil(@transaction.at_css('solution').at_css('id'))
+          solution_id = solution_id.gsub(/\D/, '') unless solution.nil?
           transaction.solution_id = value_to_decimal(solution_id) unless solution_id.nil?
 
           transaction.solution_name = node_content_unless_nil(@transaction.at_css('solution').at_css('name'))

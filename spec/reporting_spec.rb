@@ -596,7 +596,7 @@ describe AuthorizeNet::Reporting do
             </returnedItem>
           </returnedItems>
           <solution>
-            <id>1000004</id>
+            <id>A1000004</id>
             <name>Volusion Shopping Cart</name>
           </solution>
         </transaction>
