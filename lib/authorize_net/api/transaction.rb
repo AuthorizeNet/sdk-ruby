@@ -1,7 +1,8 @@
 module AuthorizeNet::API
   class Transaction < ApiTransaction    
-        
-    def initialize(api_login_id, api_transaction_key, options = {})
+    attr_accessor :access_token
+	
+    def initialize(api_login_id = nil, api_transaction_key = nil, options = {})
        super
     end
        
