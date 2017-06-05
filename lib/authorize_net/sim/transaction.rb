@@ -33,8 +33,8 @@ module AuthorizeNet::SIM
     # +options+:: A hash of options. See below for values.
     # 
     # Options
-    # +sequence+:: The sequence number of the transaction as a string or Fixnum. This is usually something like an invoice number. If none is provided, the SDK generates one at random.
-    # +timestamp+:: The time the transaction was initiated as a string or Fixnum. This needs to be within 15 minutes of when the gateway receives the transaction. If no value is provided, the SDK defaults it to Time.now().
+    # +sequence+:: The sequence number of the transaction as a string or Integer. This is usually something like an invoice number. If none is provided, the SDK generates one at random.
+    # +timestamp+:: The time the transaction was initiated as a string or Integer. This needs to be within 15 minutes of when the gateway receives the transaction. If no value is provided, the SDK defaults it to Time.now().
     # +test+:: A boolean indicating if the transaction should be run in test mode or not (defaults to false).
     # +hosted_payment_form+:: A boolean indicating if the transaction should use a hosted payment form (defaults to false).
     # +relay_response+:: A boolean indicating if the transaction should use the relay response feature to return a receipt to the customer (defaults to true). Direct Post Method requires using a relay response.
