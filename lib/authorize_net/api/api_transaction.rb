@@ -36,6 +36,7 @@ module AuthorizeNet::API
       API_GET_TRANSACTION_DETAILS = "getTransactionDetailsRequest"
       API_GET_UNSETTLED_TRANSACTION_LIST = "getUnsettledTransactionListRequest"
       API_GET_BATCH_STATISTICS = "getBatchStatisticsRequest"
+	  API_GET_TRANSACTION_LIST_FOR_CUSTOMER = "getTransactionListForCustomerRequest"
 	  
       API_GET_HOSTED_PROFILE_PAGE = "getHostedProfilePageRequest"
 
@@ -46,6 +47,11 @@ module AuthorizeNet::API
       API_GET_CUSTOMER_PAYMENT_PROFILE_LIST = "getCustomerPaymentProfileListRequest"
       
       API_ARB_GET_SUBSCRIPTION_REQUEST = "ARBGetSubscriptionRequest"
+
+      API_GET_MERCHANT_DETAILS = "getMerchantDetailsRequest"
+      API_GET_HOSTED_PAYMENT_PAGE = "getHostedPaymentPageRequest"
+      API_UDPATE_HELD_TRANSACTION = "updateHeldTransactionRequest"
+
     end
     
     def initialize(api_login_id, api_transaction_key, options = {})
@@ -66,7 +72,9 @@ module AuthorizeNet::API
     
     def serialize(object,type)
       doc = Nokogiri::XML::Document.new
-      doc.root = object.to_xml     
+      doc.root = object.to_xml
+      constants = YAML.load_file(File.dirname(__FILE__) + "/constants.yml")
+      clientId = constants['clientId']
 
       builder = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |x|
         x.send(type.to_sym, :xmlns => XML_NAMESPACE) {
@@ -74,6 +82,7 @@ module AuthorizeNet::API
             x.name @api_login_id
             x.transactionKey @api_transaction_key
             }
+          x.clientId clientId
          x.send:insert, doc.root.element_children
       }
       end

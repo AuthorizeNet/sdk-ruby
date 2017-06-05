@@ -236,5 +236,21 @@ module AuthorizeNet::API
       make_request(request,ValidateCustomerPaymentProfileResponse,Type::API_VALIDATE_CUSTOMER_PAYMENT_PROFILE)
     end
 
+    def get_merchant_details(request)  
+      make_request(request,GetMerchantDetailsResponse,Type::API_GET_MERCHANT_DETAILS)
+    end
+
+    def get_hosted_payment_page(request)  
+      make_request(request,GetHostedPaymentPageResponse,Type::API_GET_HOSTED_PAYMENT_PAGE)
+    end
+
+    def update_held_transaction(request)  
+      make_request(request,UpdateHeldTransactionResponse,Type::API_UDPATE_HELD_TRANSACTION)
+    end
+
+    def get_transaction_list_for_customer(request)
+      make_request(request,GetTransactionListResponse,Type::API_GET_TRANSACTION_LIST_FOR_CUSTOMER)
+    end
+	
   end
 end
