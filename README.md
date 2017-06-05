@@ -85,6 +85,14 @@ Replace the environment constant in the transaction instantiation.  For example,
 transaction = Transaction.new('API_LOGIN', 'API_KEY', :gateway => :production)
 ```  
 
+### Setting OAuth credentials
+Access Tokens can be setup using the transaction instantiation without the constructor. For example, in the method above:
+```ruby
+transaction = Transaction.new
+transaction.access_token = 'testTokenValue'
+transaction.options_OAuth = {:gateway => :sandbox, :verify_ssl => true}
+```  
+
 ### Direct Post Method (DPM)
 
 A generator is provided to aid in setting up a Direct Post Method application. In the example below +payments+ is the name of the controller to generate.
