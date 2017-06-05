@@ -57,9 +57,14 @@ module AuthorizeNet::API
     def initialize(api_login_id = nil, api_transaction_key = nil, options = {})
        super
     end
-    
+	
+    def setOAuthOptions()
+	   super
+	end
+	
     def make_request(request,responseClass,type)
-     unless responseClass.nil? or request.nil?
+	 setOAuthOptions()
+	 unless responseClass.nil? or request.nil?
        begin
         @xml = serialize(request,type)
         respXml = send_request(@xml)
