@@ -77,7 +77,58 @@ require 'rubygems'
     puts response.transactionResponse.errors.errors[0].errorText
     raise "Failed to charge card."
   end
-````  
+```` 
+### Charging a Credit Card and Redirect back if Declined
+```ruby
+  require 'rubygems'
+  require 'authorizenet'
+
+  include AuthorizeNet::API
+  
+  # Used to allow multiple transation on the same order if order gets declined
+  # lets 1000 transation tries
+  invoice_num = rand(1000) if order.status == 'declined' # insert if statement
+
+  transaction = Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
+
+  request = CreateTransactionRequest.new
+
+  request.transactionRequest = TransactionRequestType.new()
+  request.transactionRequest.amount = 16.00
+  request.transactionRequest.payment = PaymentType.new
+  request.transactionRequest.payment.creditCard = CreditCardType.new('4242424242424242','0220','123') 
+  request.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+  
+  response = transaction.create_transaction(request)
+
+  if response.messages.resultCode == MessageTypeEnum::Ok
+    if check_payment(response)
+      order.status = 'declined' # put what you need
+      unless response.transactionResponse.errors.nil?
+        puts "Transaction Failed. Error Code: #{response.transactionResponse.errors.errors[0].errorCode} #{response.transactionResponse.errors.errors[0].errorText}"
+      else
+        puts "Transaction Failed. Error Code : #{response.messages.messages[0].code} Error Message : #{response.messages.messages[0].text}"
+      end
+    else
+      puts "Successful charge (auth + capture) (authorization code: #{response.transactionResponse.authCode})"
+    end
+  else
+    puts response.messages.messages[0].text
+    puts response.transactionResponse.errors.errors[0].errorCode
+    puts response.transactionResponse.errors.errors[0].errorText
+    raise "Failed to charge card."
+  end
+  
+  # for more info
+  # https://support.authorize.net/authkb/index?page=content&id=A50
+  def check_payment(response)
+    ret = false
+    resp = response.transactionResponse.responseCode
+    res_codes = ['2', '3', '4', '27', '44', '45', '65', '250', '251', '254']
+    res_codes.each { |rs| rs == resp ? ret = true : next }
+    return ret
+  end
+```
 
 ### Setting the Production Environment
 Replace the environment constant in the transaction instantiation.  For example, in the method above:
