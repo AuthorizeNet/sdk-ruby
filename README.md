@@ -78,7 +78,9 @@ require 'rubygems'
     raise "Failed to charge card."
   end
 ```` 
-### Charging a Credit Card and Redirect back if Declined
+### Charging a Credit Card and redirect back if Transaction Declined
+
+If you want your application to redirect back to and have your application inform users that something has gone wrong their transaction was declined use this approach.  
 ```ruby
   require 'rubygems'
   require 'authorizenet'
@@ -86,8 +88,8 @@ require 'rubygems'
   include AuthorizeNet::API
   
   # Used to allow multiple transation on the same order if order gets declined
-  # lets 1000 transation tries
-  invoice_num = rand(1000) if order.status == 'declined' # insert if statement
+  # lets 1001 transation tries
+  invoice_num = rand(1000) if order.status == 'declined' # insert own if statement
 
   transaction = Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
 
@@ -98,6 +100,11 @@ require 'rubygems'
   request.transactionRequest.payment = PaymentType.new
   request.transactionRequest.payment.creditCard = CreditCardType.new('4242424242424242','0220','123') 
   request.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
+  
+  invoice_num = order.status == 'declined' ? invoice_num.to_s : '#insert what you need'
+
+  # add order and line item information
+  request.transactionRequest.order = OrderType.new(invoice_num, 'order name')
   
   response = transaction.create_transaction(request)
 
