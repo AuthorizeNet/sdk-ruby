@@ -80,7 +80,7 @@ require 'rubygems'
 ```` 
 ### Charging a Credit Card and redirect back if Transaction Declined
 
-If you want your application to redirect back to and have your application inform users that something has gone wrong their transaction was declined use this approach.  
+If you want your application to redirect back and have your application inform users that something has gone wrong their transaction was declined use this approach.  
 ```ruby
   require 'rubygems'
   require 'authorizenet'
