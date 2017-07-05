@@ -7,7 +7,6 @@
 
 
 ## Requirements
-
 * Ruby 2.1.0 or higher
 * RubyGem 1.3.7 or higher (to build the gem)
 * RDoc 1.0 or higher (to build documentation)
@@ -20,14 +19,14 @@
 The Authorize.Net APIs only support connections using the TLS 1.2 security protocol. It's important to make sure you have new enough versions of all required components to support TLS 1.2. Additionally, it's very important to keep these components up to date going forward to mitigate the risk of any security flaws that may be discovered in your system or any libraries it uses.
 
 
-## Installation from rubygems.org
+## Installation
 
+### Installation from rubygems.org
 ```
   > sudo gem install authorizenet
 ```
 
-## Installation from project
-
+### Installation from project
 ```
   > bundle install
   > rake gem
@@ -36,30 +35,34 @@ The Authorize.Net APIs only support connections using the TLS 1.2 security proto
 
 
 ## Registration & Configuration
-
 Use of this SDK and the Authorize.Net APIs requires having an account on our system. You can find these details in the Settings section.
 If you don't currently have a production Authorize.Net account and need a sandbox account for testing, you can easily sign up for one [here](https://developer.authorize.net/sandbox/).
 
-
 ### Authentication
-
 To authenticate with the Authorize.Net API you will need to use your account's API Login ID and Transaction Key. If you don't have these values, you can obtain them from our Merchant Interface site. Access the Merchant Interface for production accounts at (https://account.authorize.net/) or sandbox accounts at (https://sandbox.authorize.net).
 
 Once you have your keys simply load them into the appropriate variables in your code, as per the below sample code dealing with the authentication part of the API request.
 
-
 #### To set your API credentials for an API request:
+```ruby
+transaction = Transaction.new('YOUR_API_LOGIN_ID', 'YOUR_TRANSACTION_KEY', :gateway => :sandbox)
+```
 
+You should never include your Login ID and Transaction Key directly in a file that's in a publically accessible portion of your website. A better practice would be to define these in a constants file, and then reference those constants in the appropriate place in your code.
 
-You should never include your Login ID and Transaction Key directly in a PHP file that's in a publically accessible portion of your website. A better practice would be to define these in a constants file, and then reference those constants in the appropriate place in your code.
-
+#### Setting OAuth credentials
+Access Tokens can be setup using the transaction instantiation without the constructor. For example, in the method above:
+```ruby
+transaction = Transaction.new
+transaction.access_token = 'testTokenValue'
+transaction.options_OAuth = {:gateway => :sandbox, :verify_ssl => true}
+```  
 
 ### Switching between the sandbox environment and the production environment
-
 Authorize.Net maintains a complete sandbox environment for testing and development purposes. This sandbox environment is an exact duplicate of our production environment with the transaction authorization and settlement process simulated. By default, this SDK is configured to communicate with the sandbox environment. To switch to the production environment, replace the environment constant in the transaction instantiation.  For example:
 ```ruby
 # For PRODUCTION use
-transaction = Transaction.new('API_LOGIN', 'API_KEY', :gateway => :production)
+transaction = Transaction.new('YOUR_API_LOGIN_ID', 'YOUR_TRANSACTION_KEY', :gateway => :production)
 ```
 
 API credentials are different for each environment, so be sure to switch to the appropriate credentials when switching environments.
@@ -77,32 +80,9 @@ Additionally, you can find details and examples of how our API is structured in 
 The API Reference Guide provides examples of what information is needed for a particular request and how that information would be formatted. Using those examples, you can easily determine what methods would be necessary to include that information in a request using this SDK.
 
 
+## Building & Testing the SDK
 
-
-
-
-#### ??????
-To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained as described below.
-```ruby
-#obtain an API login_id and transaction_id according to instructions at https://developer.authorize.net/faqs/#gettranskey
-api_login_id: {login_id_value}
-api_transaction_key: {transaction_key_value}
-#obtained md5 hash value by first setting the hash value in https://sandbox.authorize.net/ under the Account tab->MD5 Hash
-md5_value: {md5_value}
-```
-
- 
-
-### Setting OAuth credentials
-Access Tokens can be setup using the transaction instantiation without the constructor. For example, in the method above:
-```ruby
-transaction = Transaction.new
-transaction.access_token = 'testTokenValue'
-transaction.options_OAuth = {:gateway => :sandbox, :verify_ssl => true}
-```  
-
-
-## Running the Tests
+### Running the SDK Tests
 To run the integration tests (hitting the sandbox):
 ```
 rake spec
@@ -114,21 +94,18 @@ rake spec:ci
 
 To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ under Account tab->Transaction Details API and enable it.
 
+To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained as described below.
+```ruby
+#obtain an API login_id and transaction_id according to instructions at https://developer.authorize.net/faqs/#gettranskey
+api_login_id: {login_id_value}
+api_transaction_key: {transaction_key_value}
+#obtained md5 hash value by first setting the hash value in https://sandbox.authorize.net/ under the Account tab->MD5 Hash
+md5_value: {md5_value}
+```
 
-## Credit Card Test Numbers
-
-For your reference, you can use the following test credit card numbers.
-The expiration date must be set to the present date or later. Use 123 for
-the CCV code.
-
-* American Express:  370000000000002
-* Discover:  6011000000000012
-* Visa:  4007000000027
-* JCB: 3088000000000017
-* Diners Club/ Carte Blanche:  38000000000006
-* Visa (Card Present Track 1): %B4111111111111111^DOE/JOHN^1803101000000000020000831000000?
+### Testing Guide
+For additional help in testing your own code, Authorize.Net maintains a [comprehensive testing guide](http://developer.authorize.net/hello_world/testing_guide/) that includes test credit card numbers to use and special triggers to generate certain responses from the sandbox environment.
 
 
 ## License
-
-This repository is destributed under a proprietary license. See the provided [`LICENSE.txt`](/license.txt) file.
+This repository is distributed under a proprietary license. See the provided [`LICENSE.txt`](/license.txt) file.
