@@ -30,7 +30,7 @@ The Authorize.Net APIs only support connections using the TLS 1.2 security proto
 ```
   > bundle install
   > rake gem
-  > sudo gem install ./authorizenet-1.9.0.gem
+  > sudo gem install ./authorizenet-1.9.3.gem
 ```
 
 
