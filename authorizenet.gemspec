@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email = "developer@authorize.net"
   s.files = Dir.glob("{lib}/**/*")
   s.homepage = "https://github.com/AuthorizeNet/sdk-ruby"
-  s.license = "https://github.com/AuthorizeNet/sdk-ruby/blob/master/license.txt"
+  s.license = "https://github.com/AuthorizeNet/sdk-ruby/blob/master/LICENSE.txt"
 
   s.required_ruby_version     = '>= 2.1.0'
   s.required_rubygems_version = '>= 1.3.6'
