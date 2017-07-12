@@ -4,8 +4,9 @@ sudo:
     false
     
 rvm:
-  - 2.2.7
+  - 2.2.7    # can't use the 2.2 alias because as of July 2017 travis resolves that to 2.2.0
   - 2.3
+  - 2.4
 
 before_script:
   - git submodule update --remote --recursive
