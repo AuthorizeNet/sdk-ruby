@@ -1,15 +1,15 @@
 Gem::Specification.new do |s|
   s.name = "authorizenet"
-  s.version = "1.9.2"
+  s.version = "1.9.3"
   s.platform = Gem::Platform::RUBY
-  s.date = "2017-04-25"
+  s.date = "2017-06-05"
   s.summary = "Authorize.Net Payments SDK"
   s.description = "Authorize.Net SDK includes standard payments, recurring billing, and customer profiles"
   s.authors = ["Authorize.Net"]
   s.email = "developer@authorize.net"
   s.files = Dir.glob("{lib}/**/*")
   s.homepage = "https://github.com/AuthorizeNet/sdk-ruby"
-  s.license = "https://github.com/AuthorizeNet/sdk-ruby/blob/master/license.txt"
+  s.license = "https://github.com/AuthorizeNet/sdk-ruby/blob/master/LICENSE.txt"
 
   s.required_ruby_version     = '>= 2.1.0'
   s.required_rubygems_version = '>= 1.3.6'
