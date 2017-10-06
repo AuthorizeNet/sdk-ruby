@@ -1,13 +1,13 @@
 # Authorize.Net Ruby SDK
 
-[![Build Status](https://travis-ci.org/AuthorizeNet/sdk-ruby.png?branch=master)](https://travis-ci.org/AuthorizeNet/sdk-ruby)
-[![Coverage Status](https://coveralls.io/repos/AuthorizeNet/sdk-ruby/badge.svg?branch=master&service=github)](https://coveralls.io/github/AuthorizeNet/sdk-ruby?branch=master)
+[![Travis CI Status](https://travis-ci.org/AuthorizeNet/sdk-ruby.svg?branch=master)](https://travis-ci.org/AuthorizeNet/sdk-ruby)
+[![Coverage Status](https://coveralls.io/repos/github/AuthorizeNet/sdk-ruby/badge.svg?branch=master)](https://coveralls.io/github/AuthorizeNet/sdk-ruby?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/?branch=master)
-[![Gem Version](https://img.shields.io/gem/v/authorizenet.svg)](https://rubygems.org/gems/authorizenet)
+[![Gem Version](https://badge.fury.io/rb/authorizenet.svg)](https://badge.fury.io/rb/authorizenet)
 
 
 ## Requirements
-* Ruby 2.1.0 or higher
+* Ruby 2.2.0 or higher
 * RubyGem 1.3.7 or higher (to build the gem)
 * RDoc 1.0 or higher (to build documentation)
 * Rake 0.8.7 or higher (to use the rake tasks)
