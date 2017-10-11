@@ -7,7 +7,7 @@
 
 
 ## Requirements
-* Ruby 2.2 or higher
+* Ruby 2.2.2 or higher
 * RubyGem 1.3.7 or higher (to build the gem)
 * RDoc 1.0 or higher (to build documentation)
 * Rake 0.8.7 or higher (to use the rake tasks)
