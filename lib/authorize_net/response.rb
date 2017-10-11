@@ -1,7 +1,8 @@
 module AuthorizeNet
   
-  # The core, API agnostic response class. You shouldn't instantiate this one.
-  # Instead you should use AuthorizeNet::AIM::Response, AuthorizeNet::ARB::Response or AuthorizeNet::SIM::Response.
+  # The core, API agnostic response class. You shouldn't instantiate
+  # this one. Instead you should use AuthorizeNet::AIM::Response,
+  # AuthorizeNet::ARB::Response or AuthorizeNet::SIM::Response.
   class Response
     
     include AuthorizeNet::TypeConversions
@@ -12,7 +13,8 @@ module AuthorizeNet
     # Fields to convert to/from BigDecimal.
     @@decimal_fields = []
     
-    # DO NOT USE. Instantiate AuthorizeNet::AIM::Response or AuthorizeNet::SIM::Response instead.
+    # DO NOT USE. Instantiate AuthorizeNet::AIM::Response or
+    # AuthorizeNet::SIM::Response instead.
     def initialize()
       raise "#{self.class.to_s} should not be instantiated directly."
     end

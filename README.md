@@ -1,91 +1,56 @@
 # Authorize.Net Ruby SDK
 
-[![Build Status](https://travis-ci.org/AuthorizeNet/sdk-ruby.png?branch=master)](https://travis-ci.org/AuthorizeNet/sdk-ruby)
-[![Coverage Status](https://coveralls.io/repos/AuthorizeNet/sdk-ruby/badge.svg?branch=master&service=github)](https://coveralls.io/github/AuthorizeNet/sdk-ruby?branch=master)
+[![Travis CI Status](https://travis-ci.org/AuthorizeNet/sdk-ruby.svg?branch=master)](https://travis-ci.org/AuthorizeNet/sdk-ruby)
+[![Coverage Status](https://coveralls.io/repos/github/AuthorizeNet/sdk-ruby/badge.svg?branch=master)](https://coveralls.io/github/AuthorizeNet/sdk-ruby?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/?branch=master)
-[![Gem Version](https://img.shields.io/gem/v/authorizenet.svg)](https://rubygems.org/gems/authorizenet)
+[![Gem Version](https://badge.fury.io/rb/authorizenet.svg)](https://badge.fury.io/rb/authorizenet)
 
-`gem install authorizenet`
 
-## Prerequisites
-
-* Ruby 2.1.0 or higher
+## Requirements
+* Ruby 2.2.0 or higher
 * RubyGem 1.3.7 or higher (to build the gem)
 * RDoc 1.0 or higher (to build documentation)
 * Rake 0.8.7 or higher (to use the rake tasks)
 * Bundle 1.6 or higher
 * RSpec 2.1 or higher (to run rspec tests)
+* An Authorize.Net account (see _Registration & Configuration_ section below)
 
-## Installation from rubygems.org
+### TLS 1.2
+The Authorize.Net APIs only support connections using the TLS 1.2 security protocol. It's important to make sure you have new enough versions of all required components to support TLS 1.2. Additionally, it's very important to keep these components up to date going forward to mitigate the risk of any security flaws that may be discovered in your system or any libraries it uses.
 
-````
+
+## Installation
+
+### Installation from rubygems.org
+```
   > sudo gem install authorizenet
-````
-##
+```
 
-# Installation from project
-
-````
+### Installation from project
+```
   > bundle install
   > rake gem
-  > sudo gem install ./authorizenet-1.9.0.gem
-````
+  > sudo gem install ./authorizenet-1.9.3.gem
+```
+
+
 ## Registration & Configuration
+Use of this SDK and the Authorize.Net APIs requires having an account on our system. You can find these details in the Settings section.
+If you don't currently have a production Authorize.Net account and need a sandbox account for testing, you can easily sign up for one [here](https://developer.authorize.net/sandbox/).
 
-Get a sandbox account at https://developer.authorize.net/hello_world/sandbox/
-To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained as described below.
-````
-#obtain an API login_id and transaction_id according to instructions at https://developer.authorize.net/faqs/#gettranskey
-api_login_id: {login_id_value}
-api_transaction_key: {transaction_key_value}
-#obtained md5 hash value by first setting the hash value in https://sandbox.authorize.net/ under the Account tab->MD5 Hash
-md5_value: {md5_value}
-````
+### Authentication
+To authenticate with the Authorize.Net API you will need to use your account's API Login ID and Transaction Key. If you don't have these values, you can obtain them from our Merchant Interface site. Access the Merchant Interface for production accounts at (https://account.authorize.net/) or sandbox accounts at (https://sandbox.authorize.net).
 
-## Usage
-Apart from this README, you can find details and examples of using the SDK in the following places:  
+Once you have your keys simply load them into the appropriate variables in your code, as per the below sample code dealing with the authentication part of the API request.
 
-- [Github Sample Code Repository](https://github.com/AuthorizeNet/sample-code-ruby)
-- [Developer Center Reference](http://developer.authorize.net/api/reference/index.html)  
-
-### Charging a Credit Card
-
-````ruby
-require 'rubygems'
-  require 'authorizenet'
-
-  include AuthorizeNet::API
-
-  transaction = Transaction.new('API_LOGIN', 'API_KEY', :gateway => :sandbox)
-
-  request = CreateTransactionRequest.new
-
-  request.transactionRequest = TransactionRequestType.new()
-  request.transactionRequest.amount = 16.00
-  request.transactionRequest.payment = PaymentType.new
-  request.transactionRequest.payment.creditCard = CreditCardType.new('4242424242424242','0220','123') 
-  request.transactionRequest.transactionType = TransactionTypeEnum::AuthCaptureTransaction
-  
-  response = transaction.create_transaction(request)
-
-  if response.messages.resultCode == MessageTypeEnum::Ok
-    puts "Successful charge (auth + capture) (authorization code: #{response.transactionResponse.authCode})"
-
-  else
-    puts response.messages.messages[0].text
-    puts response.transactionResponse.errors.errors[0].errorCode
-    puts response.transactionResponse.errors.errors[0].errorText
-    raise "Failed to charge card."
-  end
-````  
-
-### Setting the Production Environment
-Replace the environment constant in the transaction instantiation.  For example, in the method above:
+#### To set your API credentials for an API request:
 ```ruby
-transaction = Transaction.new('API_LOGIN', 'API_KEY', :gateway => :production)
-```  
+transaction = Transaction.new('YOUR_API_LOGIN_ID', 'YOUR_TRANSACTION_KEY', :gateway => :sandbox)
+```
 
-### Setting OAuth credentials
+You should never include your Login ID and Transaction Key directly in a file that's in a publically accessible portion of your website. A better practice would be to define these in a constants file, and then reference those constants in the appropriate place in your code.
+
+#### Setting OAuth credentials
 Access Tokens can be setup using the transaction instantiation without the constructor. For example, in the method above:
 ```ruby
 transaction = Transaction.new
@@ -93,73 +58,54 @@ transaction.access_token = 'testTokenValue'
 transaction.options_OAuth = {:gateway => :sandbox, :verify_ssl => true}
 ```  
 
-### Direct Post Method (DPM)
+### Switching between the sandbox environment and the production environment
+Authorize.Net maintains a complete sandbox environment for testing and development purposes. This sandbox environment is an exact duplicate of our production environment with the transaction authorization and settlement process simulated. By default, this SDK is configured to communicate with the sandbox environment. To switch to the production environment, replace the environment constant in the transaction instantiation.  For example:
+```ruby
+# For PRODUCTION use
+transaction = Transaction.new('YOUR_API_LOGIN_ID', 'YOUR_TRANSACTION_KEY', :gateway => :production)
+```
 
-A generator is provided to aid in setting up a Direct Post Method application. In the example below +payments+ is the name of the controller to generate.
-````
-  > sudo gem install rails -v '>= 3.2'
-  > sudo gem install authorizenet
-  > rails new my_direct_post_app
-  > cd my_direct_post_app
-````
-  Edit Gemfile and add the line "gem 'authorizenet'"
-````
-  > rails g authorize_net:direct_post payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
-  > rails server 
-````
-
-After running the generator you will probably want to customize the payment form found in <tt>app/views/payments/payment.erb</tt> and the receipt found in <tt>app/views/payments/receipt.erb</tt>.
-
-There is also a default layout generated, <tt>app/views/layouts/authorize_net.erb</tt>. If you already have your own layout, you can delete that file and the reference to it in the controller (<tt>app/controllers/payments_controller.rb</tt>).
-
-### Server Integration Method (SIM)
-
-A generator is provided to aid in setting up a Server Integration Method application. In the example below +payments+ is the name of the controller to generate.
-````
-  > sudo gem install rails -v '>= 3.2'
-  > sudo gem install authorizenet
-  > rails new my_sim_app
-  > cd my_sim_app
-````
-  Edit Gemfile and add the line "gem 'authorizenet'"
-````
-  > rails g authorize_net:sim payments YOUR_API_LOGIN_ID YOUR_TRANSACTION_KEY MERCH_HASH_KEY
-  > rails server
-````  
-After running the generator you will probably want to customize the payment page found in <tt>app/views/payments/payment.erb</tt> and the thank you page found in <tt>app/views/payments/thank_you.erb</tt>.
-
-You may also want to customize the actual payment form and receipt pages. That can be done by making the necessary changes to the AuthorizeNet::SIM::Transaction object (<tt>@sim_transaction</tt>) found in the +payment+ action in <tt>app/controllers/payments_controller.rb</tt>. The styling of those hosted pages are controlled by the AuthorizeNet::SIM::HostedReceiptPage and AuthorizeNet::SIM::HostedPaymentForm objects (which are passed to the AuthorizeNet::SIM::Transaction).
-
-There is also a default layout generated, <tt>app/views/layouts/authorize_net.erb</tt>. If you already have your own layout, you can delete that file and the reference to it in the controller (<tt>app/controllers/payments_controller.rb</tt>).
+API credentials are different for each environment, so be sure to switch to the appropriate credentials when switching environments.
 
 
+## SDK Usage Examples and Sample Code
+To get started using this SDK, it's highly recommended to download our sample code repository:
+* [Authorize.Net Ruby Sample Code Repository (on GitHub)](https://github.com/AuthorizeNet/sample-code-ruby)
 
-## Running the Tests
+In that respository, we have comprehensive sample code for all common uses of our API:
+
+Additionally, you can find details and examples of how our API is structured in our API Reference Guide:
+* [Developer Center API Reference](http://developer.authorize.net/api/reference/index.html)
+
+The API Reference Guide provides examples of what information is needed for a particular request and how that information would be formatted. Using those examples, you can easily determine what methods would be necessary to include that information in a request using this SDK.
+
+
+## Building & Testing the SDK
+
+### Running the SDK Tests
 To run the integration tests (hitting the sandbox):
-````
+```
 rake spec
-````
+```
 To run the unit tests:
-````
+```
 rake spec:ci
-````
+```
 
 To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ under Account tab->Transaction Details API and enable it.
 
+To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained as described below.
+```ruby
+#obtain an API login_id and transaction_id according to instructions at https://developer.authorize.net/faqs/#gettranskey
+api_login_id: {login_id_value}
+api_transaction_key: {transaction_key_value}
+#obtained md5 hash value by first setting the hash value in https://sandbox.authorize.net/ under the Account tab->MD5 Hash
+md5_value: {md5_value}
+```
 
-## Credit Card Test Numbers
-
-For your reference, you can use the following test credit card numbers.
-The expiration date must be set to the present date or later. Use 123 for
-the CCV code.
-
-* American Express:  370000000000002
-* Discover:  6011000000000012
-* Visa:  4007000000027
-* JCB: 3088000000000017
-* Diners Club/ Carte Blanche:  38000000000006
-* Visa (Card Present Track 1): %B4111111111111111^DOE/JOHN^1803101000000000020000831000000?
+### Testing Guide
+For additional help in testing your own code, Authorize.Net maintains a [comprehensive testing guide](http://developer.authorize.net/hello_world/testing_guide/) that includes test credit card numbers to use and special triggers to generate certain responses from the sandbox environment.
 
 
-
-
+## License
+This repository is distributed under a proprietary license. See the provided [`LICENSE.txt`](/LICENSE.txt) file.
