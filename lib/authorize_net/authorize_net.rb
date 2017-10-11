@@ -6,9 +6,9 @@ module AuthorizeNet
   # Some type conversion routines that will be injected into our
   # Transaction/Response classes.
   module TypeConversions
-    
+
     API_FIELD_PREFIX = 'x_'
-    
+
     # Converts a value received from Authorize.Net into a boolean if
     # possible. This is designed to handle the wide range of boolean
     # formats that Authorize.Net uses.
@@ -38,6 +38,7 @@ module AuthorizeNet
     
     # Converts a value received from Authorize.Net into a BigDecimal.
     def value_to_decimal(value)
+      value = 0 if value == '' # Ruby 2.4+ does not accept ""
       BigDecimal.new(value)
     end
     
@@ -105,15 +106,14 @@ module AuthorizeNet
     # prefixed with key_prefix when being converted to a parameter name.
     def to_param(key, value, key_prefix = API_FIELD_PREFIX)
       key_str = "#{key_prefix}#{key}="
-      if value.kind_of?(Array) 
+      if value.kind_of?(Array)
         (value.collect do |v|
           key_str + CGI::escape(v.to_s)
         end).join('&')
       else
         key_str + CGI::escape(value.to_s)
       end
-    end
-    
+    end 
     
     # Converts an internal field name (Symbol) into an external field
     # name (Symbol) that can be consumed by the Authorize.Net API.
@@ -130,10 +130,10 @@ module AuthorizeNet
       k_str[API_FIELD_PREFIX.length..k_str.length].to_sym
     end
   end
-  
+
   # Provides some basic methods used by the various model classes.
   module Model
-    
+
     # The constructor for models. Takes any of the supported attributes
     # as key/value pairs.
     def initialize(fields = {})
@@ -144,18 +144,18 @@ module AuthorizeNet
         end
       end
     end
-    
+
     def to_a
       [self]
     end
-    
+
     #:enddoc:
     protected
-    
+
     def handle_multivalue_hashing(obj)
       obj.to_a.collect(&:to_hash)
     end
-    
+
   end
 
 end
