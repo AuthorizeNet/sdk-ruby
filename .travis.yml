@@ -2,11 +2,16 @@ language: ruby
 
 sudo:
     false
-    
+
 rvm:
   - 2.2
   - 2.3
   - 2.4
+
+gemfile:
+  - gemfiles/rails_42.gemfile
+  - gemfiles/rails_50.gemfile
+  - gemfiles/rails_51.gemfile
 
 before_script:
   - git submodule update --remote --recursive
