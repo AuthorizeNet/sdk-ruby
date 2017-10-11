@@ -1,8 +1,6 @@
 module AuthorizeNet::Reporting
-
   # Models the details of a transaction.
   class TransactionDetails
-    
     include AuthorizeNet::Model
 
     attr_accessor :id, :submitted_at, :status, :order, :customer, :account_type,
@@ -12,14 +10,13 @@ module AuthorizeNet::Reporting
                   :fds_filter_action, :fds_filters, :batch, :prepaid_balance_remaining,
                   :payment_method, :recurring_billing, :bill_to, :ship_to, :auth_amount,
                   :subscription_id, :subscription_paynum, :solution_id, :solution_name, :returns
-    
+
     def submitted_at=(time)
-      if time.kind_of?(DateTime)
+      if time.is_a?(DateTime)
         @submitted_at = time
       else
         @submitted_at = DateTime.parse(time.to_s)
       end
     end
-
   end
 end

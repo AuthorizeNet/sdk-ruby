@@ -5,16 +5,16 @@ module AuthorizeNet
   module Generators
     class SimGenerator < Rails::Generators::NamedBase
       source_root File.expand_path("../templates", __FILE__)
-      argument :api_login_id, :type => :string, :desc => 'Your Authorize.Net API login ID.', :optional => true
-      argument :api_transaction_key, :type => :string, :desc => 'Your Authorize.Net API transaction key.', :optional => true
-      argument :merchant_hash_value, :type => :string, :desc => 'Your Authorize.Net merchant hash value.', :optional => true
+      argument :api_login_id, type: :string, desc: 'Your Authorize.Net API login ID.', optional: true
+      argument :api_transaction_key, type: :string, desc: 'Your Authorize.Net API transaction key.', optional: true
+      argument :merchant_hash_value, type: :string, desc: 'Your Authorize.Net merchant hash value.', optional: true
       desc <<-DESC
 Description
     Generates a simple implementation of Authorize.Net's SIM integration method.
 
 Example:
     rails generate authorize_net:sim payments API_LOGIN_ID API_TRANSACTION_KEY MERCHANT_HASH_VALUE
-    
+
     This will create:
       create  README-AuthorizeNet
       create  app/views/payments
@@ -28,7 +28,7 @@ Example:
        route  match '/payments/payment', :to => 'payments#payment', :as => 'paymentspayment', :via => [:get]
 
 DESC
-      
+
       def manifest
         copy_file "README-AuthorizeNet", "README-AuthorizeNet"
         empty_directory "app/views/#{file_name}"
@@ -41,7 +41,6 @@ DESC
         route "match '/#{plural_name}/thank_you', :to => '#{file_name}#thank_you', :as => '#{singular_name}_thank_you', :via => [:get]"
         route "match '/#{plural_name}/payment', :to => '#{file_name}#payment', :as => '#{singular_name}payment', :via => [:get]"
       end
-      
     end
   end
 end

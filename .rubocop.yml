@@ -1,0 +1,19 @@
+AllCops:
+  TargetRubyVersion: 2.2
+  # RuboCop has a bunch of cops enabled by default. This setting tells RuboCop
+  # to ignore them, so only the ones explicitly set in this file are enabled.
+  Exclude:
+    - 'sample-code-ruby/**/*'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Check quotes usage according to lint rule below.
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
+  AutoCorrect: false
+
+Style/ConditionalAssignment:
+  Enabled: true
+  AutoCorrect: false
