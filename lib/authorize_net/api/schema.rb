@@ -784,6 +784,7 @@ end
   #   impersonationAuthentication - ImpersonationAuthenticationType
   #   fingerPrint - FingerPrintType
   #   mobileDeviceId - SOAP::SOAPString
+  #   accessToken - SOAP::SOAPString
   class MerchantAuthenticationType
     include ROXML
     xml_accessor :name
@@ -793,8 +794,9 @@ end
     xml_accessor :impersonationAuthentication, :as => ImpersonationAuthenticationType
     xml_accessor :fingerPrint, :as => FingerPrintType
     xml_accessor :mobileDeviceId
+	xml_accessor :accessToken
   
-    def initialize(name = nil, transactionKey = nil, sessionToken = nil, password = nil, impersonationAuthentication = nil, fingerPrint = nil, mobileDeviceId = nil)
+    def initialize(name = nil, transactionKey = nil, sessionToken = nil, password = nil, impersonationAuthentication = nil, fingerPrint = nil, mobileDeviceId = nil, accessToken = nil)
       @name = name
       @transactionKey = transactionKey
       @sessionToken = sessionToken
@@ -802,6 +804,7 @@ end
       @impersonationAuthentication = impersonationAuthentication
       @fingerPrint = fingerPrint
       @mobileDeviceId = mobileDeviceId
+      @accessToken = accessToken
     end
   end
   
@@ -2532,7 +2535,7 @@ end
   #   cardCode - (any)
   class PaymentProfile
     include ROXML
-    xml_accessor :paymentProfileId, :as => Fixnum
+    xml_accessor :paymentProfileId, :as => Integer
     xml_accessor :cardCode
   
     def initialize(paymentProfileId = nil, cardCode = nil)
@@ -2549,9 +2552,9 @@ end
   class CustomerProfilePaymentType
     include ROXML
     xml_accessor :createProfile
-    xml_accessor :customerProfileId, :as => Fixnum
+    xml_accessor :customerProfileId, :as => Integer
     xml_accessor :paymentProfile, :as => PaymentProfile
-    xml_accessor :shippingProfileId, :as => Fixnum
+    xml_accessor :shippingProfileId, :as => Integer
   
     def initialize(createProfile = nil, customerProfileId = nil, paymentProfile = nil, shippingProfileId = nil)
       @createProfile = createProfile

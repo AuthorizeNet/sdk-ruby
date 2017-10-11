@@ -87,6 +87,24 @@ module AuthorizeNet
       end
     end
     
+	def setOAuthOptions()
+		if !@options_OAuth.blank?
+			@options_OAuth = @@option_defaults.merge(@options_OAuth)
+			@verify_ssl = options_OAuth[:verify_ssl]
+			@reference_id = options_OAuth[:reference_id]
+			
+			@gateway = case options_OAuth[:gateway].to_s
+			when 'sandbox', 'test'
+				Gateway::TEST
+			when 'production', 'live'
+				Gateway::LIVE
+			else
+				@gateway = options_OAuth[:gateway]
+				options_OAuth[:gateway]
+			end
+		end
+	end
+	
     # Checks if the transaction has been configured for the sandbox or not. Return FALSE if the
     # transaction is running against the production, TRUE otherwise.
     def test?
