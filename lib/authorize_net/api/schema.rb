@@ -1698,7 +1698,7 @@ end
     xml_accessor :marketType
     xml_accessor :product
     xml_accessor :mobileDeviceId
-    xml_accessor :subscription
+    xml_accessor :subscription, :as => SubscriptionPaymentType
     xml_accessor :hasReturnedItems
     xml_accessor :fraudInformation
 	xml_accessor :profile, :as => CustomerProfileIdType
@@ -1967,7 +1967,7 @@ end
     xml_accessor :transactionStatus
     xml_accessor :responseCode
     xml_accessor :responseReasonCode
-    xml_accessor :subscription
+    xml_accessor :subscription, :as => SubscriptionPaymentType
     xml_accessor :responseReasonDescription
     xml_accessor :authCode
     xml_accessor :aVSResponse
