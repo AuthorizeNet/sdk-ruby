@@ -1,8 +1,7 @@
 module AuthorizeNet
-
   # Defines constants for each payment method type.
   module PaymentMethodType
-    CREDIT_CARD = 'CC'
+    CREDIT_CARD = 'CC'.freeze
   end
 
   # Models a credit card.
@@ -11,8 +10,8 @@ module AuthorizeNet
 
     # The option defaults for the constructor.
     @@option_defaults = {
-      :card_code => nil,
-      :card_type => nil
+      card_code: nil,
+      card_type: nil
     }
 
     attr_accessor :card_number, :expiration, :card_code, :card_type, :track_1, :track_2
@@ -47,15 +46,15 @@ module AuthorizeNet
     end
 
     def to_hash
-      Hash.new.tap do |ch|
+      {}.tap do |ch|
         ch[:method] = PAYMENT_METHOD_CODE
         ch[:card_num] = @card_number
         ch[:exp_date] = @expiration
         ch[:card_code] = @card_code if @card_code
         ch[:track1] = @track_1.match(/(%|^)(.*?)(\?|$)/)[2] if @track_1
         ch[:track2] = @track_2.match(/(;|^)(.*?)(\?|$)/)[2] if @track_2
-        #ch[:track1] = @track_1.match(/^%(?<fc>.)(?<p>[\d]{1,19}+)\^(?<n>.{2,26})\^(?<e>[\d]{0,4}|\^)(?<sc>[\d]{0,3}|\^)(?<dd>.*)\?\Z/) if @track_1
-        #ch[:track2] = @track_2.match(/\A;(?<pan>[\d]{1,19}+)=(?<expiration>[\d]{0,4}|=)(?<service_code>[\d]{0,3}|=)(?<discretionary_data>.*)\?\Z/) if @track_2
+        # ch[:track1] = @track_1.match(/^%(?<fc>.)(?<p>[\d]{1,19}+)\^(?<n>.{2,26})\^(?<e>[\d]{0,4}|\^)(?<sc>[\d]{0,3}|\^)(?<dd>.*)\?\Z/) if @track_1
+        # ch[:track2] = @track_2.match(/\A;(?<pan>[\d]{1,19}+)=(?<expiration>[\d]{0,4}|=)(?<service_code>[\d]{0,3}|=)(?<discretionary_data>.*)\?\Z/) if @track_2
       end
     end
   end

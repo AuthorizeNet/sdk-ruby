@@ -1,10 +1,9 @@
-#require 'coveralls'
-#Coveralls.wear!
+# require 'coveralls'
+# Coveralls.wear!
 require "authorizenet"
 require "yaml"
 
-
-Dir['./spec/support/**/*.rb'].each{ |f| require f }
+Dir['./spec/support/**/*.rb'].each { |f| require f }
 
 RSpec.configure do |config|
   config.include SharedHelper
