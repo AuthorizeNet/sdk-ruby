@@ -1054,6 +1054,14 @@ end
     end
   end
   
+  class Settings
+    include ROXML
+    xml_accessor :settings, :as => [SettingType]
+    def initialize(settings = [])
+      @settings = settings
+    end
+  end
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}permissionType
   #   permissionName - SOAP::SOAPString
   class PermissionType
