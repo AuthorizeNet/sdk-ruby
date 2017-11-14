@@ -36,6 +36,7 @@ module AuthorizeNet::API
       API_GET_TRANSACTION_DETAILS = "getTransactionDetailsRequest"
       API_GET_UNSETTLED_TRANSACTION_LIST = "getUnsettledTransactionListRequest"
       API_GET_BATCH_STATISTICS = "getBatchStatisticsRequest"
+	  API_GET_TRANSACTION_LIST_FOR_CUSTOMER = "getTransactionListForCustomerRequest"
 	  
       API_GET_HOSTED_PROFILE_PAGE = "getHostedProfilePageRequest"
 
@@ -53,12 +54,17 @@ module AuthorizeNet::API
 
     end
     
-    def initialize(api_login_id, api_transaction_key, options = {})
+    def initialize(api_login_id = nil, api_transaction_key = nil, options = {})
        super
     end
-    
+	
+    def setOAuthOptions()
+	   super
+	end
+	
     def make_request(request,responseClass,type)
-     unless responseClass.nil? or request.nil?
+	 setOAuthOptions()
+	 unless responseClass.nil? or request.nil?
        begin
         @xml = serialize(request,type)
         respXml = send_request(@xml)
@@ -78,8 +84,13 @@ module AuthorizeNet::API
       builder = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |x|
         x.send(type.to_sym, :xmlns => XML_NAMESPACE) {
           x.merchantAuthentication {
-            x.name @api_login_id
-            x.transactionKey @api_transaction_key
+			if !@access_token.blank?
+				x.accessToken @access_token
+			end
+			if !@api_login_id.blank? || (@access_token.blank? && @api_login_id.blank?)
+				x.name @api_login_id
+				x.transactionKey @api_transaction_key
+			end
             }
           x.clientId clientId
          x.send:insert, doc.root.element_children
