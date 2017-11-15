@@ -51,6 +51,7 @@ module AuthorizeNet::API
       API_GET_MERCHANT_DETAILS = "getMerchantDetailsRequest"
       API_GET_HOSTED_PAYMENT_PAGE = "getHostedPaymentPageRequest"
       API_UDPATE_HELD_TRANSACTION = "updateHeldTransactionRequest"
+      API_UPDATE_MERCHANT_DETAILS = "updateMerchantDetailsRequest"
 
     end
     
