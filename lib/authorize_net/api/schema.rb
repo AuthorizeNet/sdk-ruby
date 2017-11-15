@@ -1046,14 +1046,6 @@ end
     end
   end
   
-  class ArrayOfSetting
-    include ROXML
-    xml_accessor :settings, :as => [SettingType]
-    def initialize(settings = [])
-      @settings = settings
-    end
-  end
-  
   class Settings
     include ROXML
     xml_accessor :settings, :as => [SettingType]
@@ -3949,13 +3941,13 @@ end
   #   merchantAuthentication - MerchantAuthenticationType
   #   refId - SOAP::SOAPString
   #   customerProfileId - (any)
-  #   hostedProfileSettings - ArrayOfSetting
+  #   hostedProfileSettings - Settings
   class GetHostedProfilePageRequest 
     include ROXML
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :customerProfileId
-    xml_accessor :hostedProfileSettings, :as => ArrayOfSetting
+    xml_accessor :hostedProfileSettings, :as => Settings
   
     def initialize(merchantAuthentication = nil, refId = nil, customerProfileId = nil, hostedProfileSettings = nil)
       @merchantAuthentication = merchantAuthentication
@@ -4361,7 +4353,7 @@ end
   #   customerIP - SOAP::SOAPString
   #   cardholderAuthentication - CcAuthenticationType
   #   retail - TransRetailInfoType
-  #   transactionSettings - ArrayOfSetting
+  #   transactionSettings - Settings
   #   userFields - TransactionRequestType::UserFields
   class TransactionRequestType
     include ROXML 
@@ -4388,7 +4380,7 @@ end
     xml_accessor :customerIP
     xml_accessor :cardholderAuthentication, :as => CcAuthenticationType
     xml_accessor :retail, :as => TransRetailInfoType
-    xml_accessor :transactionSettings, :as => ArrayOfSetting
+    xml_accessor :transactionSettings, :as => Settings
     xml_accessor :userFields, :as => UserFields
     xml_accessor :surcharge, :as => ExtendedAmountType
     xml_accessor :merchantDescriptor
@@ -5098,7 +5090,7 @@ end
     xml_accessor :merchantAuthentication
     xml_accessor :refId
     xml_accessor :transactionRequest, :as => TransactionRequestType
-    xml_accessor :hostedPaymentSettings, :as => ArrayOfSetting
+    xml_accessor :hostedPaymentSettings, :as => Settings
   
     def initialize(merchantAuthentication = nil, refId = nil, transactionRequest = nil, hostedPaymentSettings = nil)
       @merchantAuthentication = merchantAuthentication
