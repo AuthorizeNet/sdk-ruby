@@ -255,6 +255,9 @@ module AuthorizeNet::API
     def get_transaction_list_for_customer(request)
       make_request(request,GetTransactionListResponse,Type::API_GET_TRANSACTION_LIST_FOR_CUSTOMER)
     end
-	
+  
+    def update_merchant_details(request)
+      make_request(request,UpdateMerchantDetailsResponse,Type::API_UPDATE_MERCHANT_DETAILS)
+    end
   end
 end
