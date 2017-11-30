@@ -90,7 +90,7 @@ module AuthorizeNet::Reporting
         unless tax.nil?
           transaction.order ||= AuthorizeNet::Order.new()
           tax_amount = node_content_unless_nil(tax.at_css('amount'))
-          transaction.order.tax_amount = value_to_decimal(tax_amount) unless tax_amount.nil?
+          transaction.order.tax = value_to_decimal(tax_amount) unless tax_amount.nil?
           transaction.order.tax_name = node_content_unless_nil(tax.at_css('name'))
           transaction.order.tax_description = node_content_unless_nil(tax.at_css('description'))
         end
@@ -99,16 +99,16 @@ module AuthorizeNet::Reporting
         unless shipping.nil?
           transaction.order ||= AuthorizeNet::Order.new()
           shipping_amount = node_content_unless_nil(shipping.at_css('amount'))
-          transaction.order.shipping_amount = value_to_decimal(shipping_amount) unless shipping_amount.nil?
-          transaction.order.shipping_name = node_content_unless_nil(shipping.at_css('name'))
-          transaction.order.shipping_description = node_content_unless_nil(shipping.at_css('description'))
+          transaction.order.freight = value_to_decimal(shipping_amount) unless shipping_amount.nil?
+          transaction.order.freight_name = node_content_unless_nil(shipping.at_css('name'))
+          transaction.order.freight_description = node_content_unless_nil(shipping.at_css('description'))
         end
         
         duty = @transaction.at_css('duty')
         unless duty.nil?
           transaction.order ||= AuthorizeNet::Order.new()
           duty_amount = node_content_unless_nil(duty.at_css('amount'))
-          transaction.order.duty_amount = value_to_decimal(duty_amount) unless duty_amount.nil?
+          transaction.order.duty = value_to_decimal(duty_amount) unless duty_amount.nil?
           transaction.order.duty_name = node_content_unless_nil(duty.at_css('name'))
           transaction.order.duty_description = node_content_unless_nil(duty.at_css('description'))
         end
