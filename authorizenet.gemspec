@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "authorizenet"
-  s.version = "1.9.4"
+  s.version = "1.9.4.1"
   s.platform = Gem::Platform::RUBY
   s.date = "2017-11-17"
   s.summary = "Authorize.Net Payments SDK"
