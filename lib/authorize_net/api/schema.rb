@@ -4380,6 +4380,7 @@ end
     xml_accessor :customerIP
     xml_accessor :cardholderAuthentication, :as => CcAuthenticationType
     xml_accessor :retail, :as => TransRetailInfoType
+    xml_accessor :employeeId
     xml_accessor :transactionSettings, :as => Settings
     xml_accessor :userFields, :as => UserFields
     xml_accessor :surcharge, :as => ExtendedAmountType
@@ -4387,7 +4388,7 @@ end
     xml_accessor :subMerchant, :as => SubMerchantType
     xml_accessor :tip, :as => ExtendedAmountType
   
-    def initialize(transactionType = nil, amount = nil, currencyCode = nil, payment = nil, profile = nil, solution = nil, callId = nil, authCode = nil, refTransId = nil, splitTenderId = nil, order = nil, lineItems = nil, tax = nil, duty = nil, shipping = nil, taxExempt = nil, poNumber = nil, customer = nil, billTo = nil, shipTo = nil, customerIP = nil, cardholderAuthentication = nil, retail = nil, transactionSettings = nil, userFields = nil, surcharge = nil, merchantDescriptor = nil, subMerchant = nil, tip = nil)
+    def initialize(transactionType = nil, amount = nil, currencyCode = nil, payment = nil, profile = nil, solution = nil, callId = nil, authCode = nil, refTransId = nil, splitTenderId = nil, order = nil, lineItems = nil, tax = nil, duty = nil, shipping = nil, taxExempt = nil, poNumber = nil, customer = nil, billTo = nil, shipTo = nil, customerIP = nil, cardholderAuthentication = nil, retail = nil, transactionSettings = nil, userFields = nil, surcharge = nil, merchantDescriptor = nil, subMerchant = nil, tip = nil, employeeId = nil)
       @transactionType = transactionType
       @amount = amount
       @currencyCode = currencyCode
@@ -4417,6 +4418,7 @@ end
       @merchantDescriptor = merchantDescriptor
       @subMerchant = subMerchant
       @tip = tip
+      @employeeId = employeeId
     end
   end
   
