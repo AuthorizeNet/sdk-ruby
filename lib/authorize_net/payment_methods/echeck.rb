@@ -1,42 +1,41 @@
 module AuthorizeNet
-  
   # Defines constants for each payment method type.
   module PaymentMethodType
-    ECHECK = 'ECHECK'
+    ECHECK = 'ECHECK'.freeze
   end
-  
+
   # Models an eCheck.
   class ECheck
     PAYMENT_METHOD_CODE = AuthorizeNet::PaymentMethodType::ECHECK
-    
+
     # Defines constants for each bank account type.
     module AccountType
-      CHECKING = 'CHECKING'
-      SAVINGS = 'SAVINGS'
-      BUSINESS_CHECKING = 'BUSINESSCHECKING'
+      CHECKING = 'CHECKING'.freeze
+      SAVINGS = 'SAVINGS'.freeze
+      BUSINESS_CHECKING = 'BUSINESSCHECKING'.freeze
     end
-    
+
     # Defines constants for each check type.
     module CheckType
-      ACCOUNTS_RECEIVABLE_CONVERSION = 'ARC'
-      BACK_OFFICE_CONVERSION = 'BOC'
-      CASH_CONCENTRATION_DISBURSEMENT = 'CCD'
-      PREARRANGED_PAYMENT_DEPOSIT = 'PPD'
-      TELEPHONE_INITIATED = 'TEL'
-      INTERNET_INITIATED = 'WEB'
+      ACCOUNTS_RECEIVABLE_CONVERSION = 'ARC'.freeze
+      BACK_OFFICE_CONVERSION = 'BOC'.freeze
+      CASH_CONCENTRATION_DISBURSEMENT = 'CCD'.freeze
+      PREARRANGED_PAYMENT_DEPOSIT = 'PPD'.freeze
+      TELEPHONE_INITIATED = 'TEL'.freeze
+      INTERNET_INITIATED = 'WEB'.freeze
     end
-    
+
     # The option defaults for the constructor.
     @@option_defaults = {
-      :echeck_type => CheckType::INTERNET_INITIATED,
-      :check_number => nil,
-      :account_type => AccountType::CHECKING
+      echeck_type: CheckType::INTERNET_INITIATED,
+      check_number: nil,
+      account_type: AccountType::CHECKING
     }
-    
+
     attr_accessor :routing_number, :account_number, :bank_name, :account_holder_name, :echeck_type, :check_number, :account_type
-    
+
     # Constructs a new eCheck object.
-    # 
+    #
     # +routing_number+:: The bank routing number as a string.
     # +account_number+:: The bank account number as a string.
     # +bank_name+:: The legal name of the bank. This should match the name associated with the +routing_number+.
@@ -53,20 +52,19 @@ module AuthorizeNet
       @check_number = options[:check_number]
       @account_type = options[:account_type]
     end
-    
+
     def to_hash
       hash = {
-        :method => PAYMENT_METHOD_CODE,
-        :bank_aba_code => @routing_number,
-        :bank_acct_num => @account_number,
-        :bank_acct_type => @account_type,
-        :bank_name => @bank_name,
-        :bank_acct_name => @account_holder_name,
-        :echeck_type => @echeck_type
+        method: PAYMENT_METHOD_CODE,
+        bank_aba_code: @routing_number,
+        bank_acct_num: @account_number,
+        bank_acct_type: @account_type,
+        bank_name: @bank_name,
+        bank_acct_name: @account_holder_name,
+        echeck_type: @echeck_type
       }
       hash[:bank_check_number] = @check_number unless @check_number.nil?
       hash
     end
   end
-  
 end

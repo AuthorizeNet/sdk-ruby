@@ -1,13 +1,11 @@
 module AuthorizeNet::ARB
-
   class Sorting
-    
     # Models Sorting
     include AuthorizeNet::Model
-    
+
     attr_accessor :order_by, :order_descending
 
-    # Initializes Sorting object. 
+    # Initializes Sorting object.
     #
     # Typical usage:
     #  sorting = AuthorizeNet::ARB::Sorting.new('name',true)
@@ -29,15 +27,13 @@ module AuthorizeNet::ARB
       @order_by = order_by
       @order_descending = order_descending
     end
-   
+
     def to_hash
       hash = {
-        :order_by => @order_by,
-        :order_descending => @order_descending
+        order_by: @order_by,
+        order_descending: @order_descending
       }
-      hash.delete_if {|k, v| v.nil?}
+      hash.delete_if { |_k, v| v.nil? }
     end
-      
   end
-
 end
