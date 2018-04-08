@@ -1970,7 +1970,7 @@ end
   #   subscription - SubscriptionPaymentType
   #   responseReasonDescription - SOAP::SOAPString
   #   authCode - SOAP::SOAPString
-  #   aVSResponse - SOAP::SOAPString
+  #   AVSResponse - SOAP::SOAPString
   #   cardCodeResponse - SOAP::SOAPString
   #   cAVVResponse - SOAP::SOAPString
   #   fDSFilterAction - SOAP::SOAPString
@@ -2035,7 +2035,7 @@ end
     xml_accessor :subscription, :as => SubscriptionPaymentType
     xml_accessor :responseReasonDescription
     xml_accessor :authCode
-    xml_accessor :aVSResponse
+    xml_accessor :AVSResponse
     xml_accessor :cardCodeResponse
     xml_accessor :cAVVResponse
     xml_accessor :fDSFilterAction
@@ -2081,7 +2081,7 @@ end
       @subscription = subscription
       @responseReasonDescription = responseReasonDescription
       @authCode = authCode
-      @aVSResponse = aVSResponse
+      @AVSResponse = aVSResponse
       @cardCodeResponse = cardCodeResponse
       @cAVVResponse = cAVVResponse
       @fDSFilterAction = fDSFilterAction
