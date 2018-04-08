@@ -2,7 +2,7 @@
 # the current runtime to see if Rails is present. If it is, we inject our helper into
 # ActiveSupport.
 
-#coverall
+# coverall
 # require 'coveralls'
 # Coveralls.wear!
 
@@ -16,7 +16,7 @@ require 'date'
 
 # TODO: Add local data validation where possible
 
-$:.unshift File.dirname(__FILE__)
+$LOAD_PATH.unshift File.dirname(__FILE__)
 
 require "authorize_net/authorize_net"
 require "authorize_net/payment_methods/credit_card"
@@ -86,8 +86,8 @@ if defined?(Rails)
   if defined?(Rails::Railtie)
     module AuthorizeNet
       class Railtie < Rails::Railtie
-        initializer "authorize_net.load_path_initialize" do |app|
-          %w{ models controllers helpers }.each do |dir|
+        initializer "authorize_net.load_path_initialize" do |_app|
+          %w[models controllers helpers].each do |dir|
             path = File.join(File.dirname(__FILE__), 'app', dir)
             $LOAD_PATH << path
             ActiveSupport::Dependencies.autoload_paths << path
@@ -97,7 +97,7 @@ if defined?(Rails)
       end
     end
   else
-    %w{ models controllers helpers }.each do |dir|
+    %w[models controllers helpers].each do |dir|
       path = File.join(File.dirname(__FILE__), 'app', dir)
       $LOAD_PATH << path
       ActiveSupport::Dependencies.load_paths << path

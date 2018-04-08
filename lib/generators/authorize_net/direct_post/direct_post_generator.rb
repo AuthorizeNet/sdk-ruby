@@ -4,12 +4,12 @@ require 'rails/generators/named_base'
 module AuthorizeNet
   module Generators
     class DirectPostGenerator < Rails::Generators::NamedBase
-      source_root File.expand_path("../templates", __FILE__)
+      source_root File.expand_path('templates', __dir__)
       p '__FILE__:' + __FILE__
       p 'source_root:' + source_root
-      argument :api_login_id, :type => :string, :desc => 'Your Authorize.Net API login ID.', :optional => true
-      argument :api_transaction_key, :type => :string, :desc => 'Your Authorize.Net API transaction key.', :optional => true
-      argument :merchant_hash_value, :type => :string, :desc => 'Your Authorize.Net merchant hash value.', :optional => true
+      argument :api_login_id, type: :string, desc: 'Your Authorize.Net API login ID.', optional: true
+      argument :api_transaction_key, type: :string, desc: 'Your Authorize.Net API transaction key.', optional: true
+      argument :merchant_hash_value, type: :string, desc: 'Your Authorize.Net merchant hash value.', optional: true
       desc <<-DESC
 Description
     Generates a simple implementation of Authorize.Net's Direct Post Method integration method.
@@ -32,7 +32,7 @@ Example:
        route  match '/payments/payment', :to => 'payments#payment', :as => 'paymentspayment', :via => [:get]
 
 DESC
-      
+
       def manifest
         copy_file "README-AuthorizeNet", "README-AuthorizeNet"
         empty_directory "app/views/#{file_name}"
@@ -47,7 +47,6 @@ DESC
         route "match '/#{plural_name}/relay_response', :to => '#{file_name}#relay_response', :as => '#{singular_name}_relay_response', :via => [:post]"
         route "match '/#{plural_name}/payment', :to => '#{file_name}#payment', :as => '#{singular_name}payment', :via => [:get]"
       end
-      
     end
   end
 end

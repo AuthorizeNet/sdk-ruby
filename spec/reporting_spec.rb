@@ -14,12 +14,12 @@ describe AuthorizeNet::Reporting do
   end
 
   it "should support instantiation" do
-    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
     transaction.should be_kind_of(AuthorizeNet::Reporting::Transaction)
   end
 
   it "should be able to fetch a list of settled batches" do
-    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
     transaction.should respond_to(:get_settled_batch_list)
     response = transaction.get_settled_batch_list
     response.success?.should be_truthy
@@ -27,15 +27,15 @@ describe AuthorizeNet::Reporting do
   end
 
   it "should be able to fetch a list of settled batches with start and end dates" do
-    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
     transaction.should respond_to(:get_settled_batch_list)
-    response = transaction.get_settled_batch_list(Time.now() - (1 * 3600 * 12), Time.now())
+    response = transaction.get_settled_batch_list(Time.now - (1 * 3600 * 12), Time.now)
     response.success?.should be_truthy
     response.should respond_to(:batch_list)
   end
 
   it "should be able to fetch a list of settled batches with statistics" do
-    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
     transaction.should respond_to(:get_settled_batch_list)
     response = transaction.get_settled_batch_list(nil, nil, true)
     response.success?.should be_truthy
@@ -43,7 +43,7 @@ describe AuthorizeNet::Reporting do
   end
 
   it "should be able to fetch a transaction list" do
-    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
     transaction.should respond_to(:get_transaction_list)
     response = transaction.get_transaction_list('111111')
     response.success?.should be_truthy
@@ -51,7 +51,7 @@ describe AuthorizeNet::Reporting do
   end
 
   it "should be able to fetch a list of unsettled transactions" do
-    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
     transaction.should respond_to(:get_unsettled_transaction_list)
     response = transaction.get_unsettled_transaction_list
     puts response.inspect unless response.success?
@@ -61,33 +61,31 @@ describe AuthorizeNet::Reporting do
 
   it "should be able to fetch transaction details" do
     # create a transaction to fetch
-    transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, gateway: :sandbox)
     credit_card = AuthorizeNet::CreditCard.new('4111111111111111', '1120')
-    transaction.set_fields(:duplicate_window => 0)
+    transaction.set_fields(duplicate_window: 0)
     response = transaction.purchase(10.0, credit_card)
 
     # fetch the transaction
-    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
     transaction.should respond_to(:get_transaction_details)
     response = transaction.get_transaction_details(response.transaction_id)
     response.success?.should be_truthy
     response.should respond_to(:transaction)
   end
-=begin
-  # To get this test to run.  You must setup an ARB subscription. After the subscription runs a transaction get
-  # the transaction_id and put it in this test.
-  it "should be able to fetch transaction details with subscription info" do
-    transaction_id = 2212429253
-
-    transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
-    transaction.should respond_to(:get_transaction_details)
-    detail_response = transaction.get_transaction_details(transaction_id)
-    detail_response.success?.should be_truthy
-    detail_response.should respond_to(:transaction)
-    detail_response.transaction.subscription_id.should == 2072134
-    detail_response.transaction.subscription_paynum.should == 1
-  end
-=end
+  #   # To get this test to run.  You must setup an ARB subscription. After the subscription runs a transaction get
+  #   # the transaction_id and put it in this test.
+  #   it "should be able to fetch transaction details with subscription info" do
+  #     transaction_id = 2212429253
+  #
+  #     transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+  #     transaction.should respond_to(:get_transaction_details)
+  #     detail_response = transaction.get_transaction_details(transaction_id)
+  #     detail_response.success?.should be_truthy
+  #     detail_response.should respond_to(:transaction)
+  #     detail_response.transaction.subscription_id.should == 2072134
+  #     detail_response.transaction.subscription_paynum.should == 1
+  #   end
   describe "parsing batch statistics" do
     before do
       @response = '<getSettledBatchListResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
@@ -235,7 +233,7 @@ describe AuthorizeNet::Reporting do
       connection.stub(:start).and_return(net_response)
       Net::HTTP.stub(:new).and_return(connection)
 
-      transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+      transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
       transaction.should respond_to(:get_settled_batch_list)
       response = transaction.get_settled_batch_list(nil, nil, true)
       response.success?.should be_truthy
@@ -245,13 +243,12 @@ describe AuthorizeNet::Reporting do
       batches.each do |batch|
         batch.statistics.should be_kind_of(Array)
         batch.statistics[0].should be_kind_of(AuthorizeNet::Reporting::BatchStatistics)
-        if batch.id == '836099'
-          batch.statistics.length.should == 2
-          batch.statistics[1].account_type.should == 'MasterCard'
-          batch.payment_method.should == 'creditCard'
-          batch.statistics[1].charge_amount.should == 973.24
-          batch.statistics[1].void_count.should == 4
-        end
+        next unless batch.id == '836099'
+        batch.statistics.length.should == 2
+        batch.statistics[1].account_type.should == 'MasterCard'
+        batch.payment_method.should == 'creditCard'
+        batch.statistics[1].charge_amount.should == 973.24
+        batch.statistics[1].void_count.should == 4
       end
     end
   end
@@ -312,7 +309,7 @@ describe AuthorizeNet::Reporting do
       connection.stub(:start).and_return(net_response)
       Net::HTTP.stub(:new).and_return(connection)
 
-      transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+      transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
       transaction.should respond_to(:get_transaction_list)
       response = transaction.get_settled_batch_list('111111')
       response.success?.should be_truthy
@@ -415,7 +412,7 @@ describe AuthorizeNet::Reporting do
       connection.stub(:start).and_return(net_response)
       Net::HTTP.stub(:new).and_return(connection)
 
-      transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+      transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
       transaction.should respond_to(:get_transaction_details)
       response = transaction.get_transaction_details('2212429253')
       response.success?.should be_truthy
@@ -517,7 +514,7 @@ describe AuthorizeNet::Reporting do
       connection.stub(:start).and_return(net_response)
       Net::HTTP.stub(:new).and_return(connection)
 
-      transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+      transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
       transaction.should respond_to(:get_transaction_details)
       response = transaction.get_transaction_details('2212429253')
       response.success?.should be_truthy
@@ -528,12 +525,12 @@ describe AuthorizeNet::Reporting do
       transaction.response_code.should == "1"
       transaction.response_reason_code.should == "1"
       transaction.response_reason_description.should == "Approval"
-      transaction.subscription_id.should == 2072134
+      transaction.subscription_id.should == 2_072_134
       transaction.subscription_paynum.should == 1
       transaction.auth_code.should == "JJRP3T"
       transaction.avs_response.should == 'Y'
-      transaction.auth_amount.should == 40000.00
-      transaction.settle_amount.should == 40000.00
+      transaction.auth_amount.should == 40_000.00
+      transaction.settle_amount.should == 40_000.00
       transaction.recurring_billing.should be_truthy
     end
 
@@ -609,7 +606,7 @@ describe AuthorizeNet::Reporting do
       connection.stub(:start).and_return(net_response)
       Net::HTTP.stub(:new).and_return(connection)
 
-      transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, :gateway => :sandbox)
+      transaction = AuthorizeNet::Reporting::Transaction.new(@api_login, @api_key, gateway: :sandbox)
       transaction.should respond_to(:get_transaction_details)
       response = transaction.get_transaction_details('2212429253')
       response.success?.should be_truthy
@@ -626,7 +623,7 @@ describe AuthorizeNet::Reporting do
       transaction.returns.returned_items.length.should == 2
       transaction.returns.returned_items.should be_kind_of(Array)
       transaction.returns.returned_items[0].should be_kind_of(AuthorizeNet::Reporting::ReturnedItem)
-      transaction.returns.returned_items[0].id = 2148887938
+      transaction.returns.returned_items[0].id = 2_148_887_938
       transaction.returns.returned_items[0].code = 'R02'
       transaction.returns.returned_items[0].code = 'Account Closed'
     end
