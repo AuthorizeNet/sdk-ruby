@@ -1,5 +1,3 @@
-# require 'coveralls'
-# Coveralls.wear!
 require "authorizenet"
 require "yaml"
 
