@@ -365,6 +365,18 @@ describe AuthorizeNet::Reporting do
           </order>
           <authAmount>10.00</authAmount>
           <settleAmount>10.00</settleAmount>
+          <tax>
+            <amount>0.99</amount>
+            <description>Local municipality sales tax</description>
+          </tax>
+          <duty>
+            <amount>15.00</amount>
+            <description>export</description>
+          </duty>
+          <shipping>
+            <amount>5.20</amount>
+            <description>Ultra-fast 3 day shipping</description>
+          </shipping>
           <lineItems>
             <lineItem>
               <itemId>ITEM00001</itemId>
@@ -427,6 +439,12 @@ describe AuthorizeNet::Reporting do
       transaction.avs_response.should == 'Y'
       transaction.auth_amount.should == 10.00
       transaction.settle_amount.should == 10.00
+      transaction.order.tax.should == 0.99
+      transaction.order.tax_description.should == 'Local municipality sales tax'
+      transaction.order.duty.should == 15.00
+      transaction.order.duty_description.should == 'export'
+      transaction.order.freight.should == 5.20
+      transaction.order.freight_description.should == 'Ultra-fast 3 day shipping'
       transaction.recurring_billing.should be_truthy
 
       transaction.order.should be_kind_of(AuthorizeNet::Order)
