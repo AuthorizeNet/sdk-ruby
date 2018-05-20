@@ -2,7 +2,7 @@
 
 [![Version         ][rubygems_badge]][rubygems]
 [![Travis CI       ][travis_badge]][travis]
-[![Coverage        ][codecov_badge]][codecov]
+[![Coverage        ][coverage_badge]][coverage]
 [![Scrutinizer     ][scrutinizer_badge]][scrutinizer]
 
 ## Requirements
@@ -113,7 +113,7 @@ This repository is distributed under a proprietary license. See the provided [`L
 [rubygems]: https://rubygems.org/gems/authorizenet
 [travis_badge]: https://travis-ci.org/AuthorizeNet/sdk-ruby.svg?branch=master
 [travis]: https://travis-ci.org/AuthorizeNet/sdk-ruby
-[codecov_badge]: https://codecov.io/gh/AuthorizeNet/sdk-ruby/branch/master/graph/badge.svg
-[codecov]: https://codecov.io/gh/AuthorizeNet/sdk-ruby
+[coverage_badge]: https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/badges/coverage.png?b=master
+[coverage]: https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/?branch=master
 [scrutinizer_badge]: https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/badges/quality-score.png?b=master
 [scrutinizer]: https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/?branch=master

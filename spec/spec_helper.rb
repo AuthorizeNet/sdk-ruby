@@ -1,8 +1,8 @@
 require 'simplecov'
 SimpleCov.start
 
-require 'codecov'
-SimpleCov.formatter = SimpleCov::Formatter::Codecov
+require 'scrutinizer/ocular'
+Scrutinizer::Ocular.watch!
 
 require "authorizenet"
 require "yaml"
