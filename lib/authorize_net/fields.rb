@@ -57,7 +57,6 @@ module AuthorizeNet
         nil,
         nil,
         nil,
-        nil,
         :account_number,
         :card_type,
         :split_tender_id,
