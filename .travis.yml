@@ -21,4 +21,5 @@ script:
   - bundle exec rake spec:ci
   - bundle exec rake spec:api
   - bundle exec rake spec:cim
+  - bundle exec rake spec:reporting
   - bundle exec rake spec:testrunner
