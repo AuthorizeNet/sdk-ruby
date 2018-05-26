@@ -368,21 +368,6 @@ describe AuthorizeNet::Reporting do
           </order>
           <authAmount>10.00</authAmount>
           <settleAmount>10.00</settleAmount>
-          <tax>
-            <amount>0.00</amount>
-            <name>tax name</name>
-            <description>tax description</description>
-          </tax>
-          <shipping>
-            <amount>0.00</amount>
-            <name>shipping name</name>
-            <description>shipping description</description>
-          </shipping>
-          <duty>
-            <amount>0.00</amount>
-            <name>duty name</name>
-            <description>duty description</description>
-          </duty>
           <lineItems>
             <lineItem>
               <itemId>ITEM00001</itemId>
@@ -452,18 +437,6 @@ describe AuthorizeNet::Reporting do
       transaction.order.line_items.length.should == 2
       transaction.order.line_items[0].should be_kind_of(AuthorizeNet::LineItem)
       transaction.order.tax_exempt.should be_falsey
-
-      transaction.order.tax_amount.should == 0.00
-      transaction.order.tax_name.should == 'tax name'
-      transaction.order.tax_description.should == 'tax description'
-
-      transaction.order.duty_amount.should == 0.00
-      transaction.order.duty_name.should == 'duty name'
-      transaction.order.duty_description.should == 'duty description'
-
-      transaction.order.shipping_amount.should == 0.00
-      transaction.order.shipping_name.should == 'shipping name'
-      transaction.order.shipping_description.should == 'shipping description'
 
       transaction.payment_method.should be_kind_of(AuthorizeNet::CreditCard)
       transaction.payment_method.card_number.should == 'XXXX1111'
