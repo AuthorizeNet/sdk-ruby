@@ -4,7 +4,7 @@ include  AuthorizeNet::API
 describe Transaction do
   before :all do
     begin
-      creds = YAML.load_file(File.dirname(__FILE__) + "/credentials.yml")
+      creds = credentials
       @api_key = creds['api_transaction_key']
       @api_login = creds['api_login_id']
       @gateway = :sandbox
