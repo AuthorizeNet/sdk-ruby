@@ -484,6 +484,7 @@ describe Transaction do
   end
 
   it "should be able to get subscription" do
+    @api_login, @api_key = '5KP3u95bQpv', '346HZ32z3fP4hTG2' # FIXME: this spec added in #66 depends on a hard coded test account.
     transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, gateway: @gateway)
     @createTransactionRequest = ARBGetSubscriptionRequest.new
 
@@ -505,6 +506,7 @@ describe Transaction do
   end
 
   it "should be able to get Customer Payment Profile List Request" do
+    @api_login, @api_key = '5KP3u95bQpv', '346HZ32z3fP4hTG2' # FIXME: this spec added in #66 depends on a hard coded test account.
     transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, gateway: @gateway)
 
     searchTypeEnum = CustomerPaymentProfileSearchTypeEnum::CardsExpiringInMonth
@@ -538,6 +540,7 @@ describe Transaction do
   end
 
   it "should be able to get transaction List Request" do
+    @api_login, @api_key = '5KP3u95bQpv', '346HZ32z3fP4hTG2' # FIXME: this spec added in #72 depends on a hard coded test account.
     transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, gateway: @gateway)
 
     batchId = "4551107"
