@@ -20,7 +20,7 @@ describe AuthorizeNet::AIM::Transaction do
     @type = AuthorizeNet::AIM::Transaction::Type::AUTHORIZE_AND_CAPTURE
     @test_mode = false
     @gateway = :sandbox
-    @amount = rand(100..10_099) / 100.0
+    @amount = rand(100..10_099) / BigDecimal.new(100)
     @credit_card = AuthorizeNet::CreditCard.new('4111111111111111', '01' + (Time.now + (3600 * 24 * 365)).strftime('%y'))
     @response = '1,1,1,(TESTMODE) This transaction has been approved.,000000,P,0,,,10.00,CC,auth_capture,,,,,,,,,,,,,,,,,,,,,,,,,,7A3C09A367FED29C9902038440CD8A52,,,,,,,,,,,,,XXXX0027,Visa,,,,,,,,,,,,,,,,'
     @echeck = AuthorizeNet::ECheck.new('322271627', '123456789', 'JPMorgan Chase Bank', 'John Doe')
