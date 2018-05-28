@@ -158,7 +158,7 @@ describe Transaction do
 
     expect(createProfResp).not_to eq(nil)
     unless createProfResp.messages.resultCode == MessageTypeEnum::Ok
-      puts createProfResp.messages.messages[0].text
+      puts createProfResp.messages.messages[0].text, createProfReq.transId
     end
     expect(createProfResp.messages.resultCode).to eq(MessageTypeEnum::Ok)
     expect(createProfResp.customerProfileId).not_to eq(nil)
