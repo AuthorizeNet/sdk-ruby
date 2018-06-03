@@ -187,6 +187,10 @@ module AuthorizeNet
             {:expirationDate => :exp_date},
             {:cardCode => :card_code}
           ]},
+          {:opaqueData => [
+            {:dataDescriptor => :opaque_data_descriptor},
+            {:dataValue => :opaque_data_value}
+          ]},
           {:bankAccount => [
             {:accountType => :bank_acct_type},
             {:routingNumber => :bank_aba_code},
