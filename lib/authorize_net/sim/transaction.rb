@@ -40,6 +40,7 @@ module AuthorizeNet::SIM
     # +transaction_type+:: The type of transaction to perform. Defaults to AuthorizeNet::Type::AUTHORIZE_AND_CAPTURE. This value is only used if run is called directly.
     #
     def initialize(api_login_id, api_transaction_key, amount, options = {})
+      ActiveSupport::Deprecation.warn "use AuthorizeNet::API::Transaction"
       super()
       @api_transaction_key = api_transaction_key
       @api_login_id = api_login_id

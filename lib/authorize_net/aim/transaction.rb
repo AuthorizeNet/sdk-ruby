@@ -41,6 +41,7 @@ module AuthorizeNet::AIM
     # +market_type+:: A constant from MarketType indicating your industry. Used for card present transactions. Defaults to MarketType::RETAIL.
     #
     def initialize(api_login_id, api_transaction_key, options = {})
+      ActiveSupport::Deprecation.warn "use AuthorizeNet::API::Transaction"
       super()
       options = @@option_defaults.merge(options)
       @api_login_id = api_login_id

@@ -27,6 +27,7 @@ module AuthorizeNet::CIM
     # +reference_id+:: A string that can be used to identify a particular transaction with its response. Will be echo'd in the response, only if it was provided in the transaction. Defaults to nil.
     #
     def initialize(api_login_id, api_transaction_key, options = {})
+      ActiveSupport::Deprecation.warn "use AuthorizeNet::API::Transaction"
       super
       @delim_char = ','
       @encap_char = nil
