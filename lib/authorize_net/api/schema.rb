@@ -306,6 +306,7 @@ module AuthorizeNet::API
   #   expirationDate - SOAP::SOAPString
   #   cardType - SOAP::SOAPString
   #   cardArt - CardArt
+  #   isPaymentToken - SOAP::SOAPBoolean
   class CreditCardMaskedType
     include ROXML
     xml_accessor :cardNumber
@@ -313,13 +314,15 @@ module AuthorizeNet::API
     xml_accessor :cardType
     xml_accessor :cardArt
     xml_accessor :issuerNumber
+    xml_accessor :isPaymentToken
 
-    def initialize(cardNumber = nil, expirationDate = nil, cardType = nil, cardArt = nil, issuerNumber = nil)
+    def initialize(cardNumber = nil, expirationDate = nil, cardType = nil, cardArt = nil, issuerNumber = nil, isPaymentToken = nil)
       @cardNumber = cardNumber
       @expirationDate = expirationDate
       @cardType = cardType
       @cardArt = cardArt
       @issuerNumber = issuerNumber
+      @isPaymentToken = isPaymentToken
     end
   end
 
@@ -602,6 +605,7 @@ end
   #   payPal - PayPalType
   #   opaqueData - OpaqueDataType
   #   emv - PaymentEmvType
+  #   dataSource - SOAP::SOAPString
   class PaymentType
     include ROXML
     xml_accessor :creditCard, as: CreditCardType
@@ -611,8 +615,9 @@ end
     xml_accessor :payPal, as: PayPalType
     xml_accessor :opaqueData, as: OpaqueDataType
     xml_accessor :emv, as: PaymentEmvType
+    xml_accessor :dataSource
 
-    def initialize(creditCard = nil, bankAccount = nil, trackData = nil, encryptedTrackData = nil, payPal = nil, opaqueData = nil, emv = nil)
+    def initialize(creditCard = nil, bankAccount = nil, trackData = nil, encryptedTrackData = nil, payPal = nil, opaqueData = nil, emv = nil, dataSource = nil)
       @creditCard = creditCard
       @bankAccount = bankAccount
       @trackData = trackData
@@ -620,6 +625,7 @@ end
       @payPal = payPal
       @opaqueData = opaqueData
       @emv = emv
+      @dataSource = dataSource
     end
   end
 
@@ -1220,6 +1226,7 @@ end
   #   email - SOAP::SOAPString
   #   paymentProfiles - CustomerPaymentProfileType
   #   shipToList - CustomerAddressType
+  #   profileType - CustomerProfileTypeEnum
   class CustomerProfileType
     include ROXML
     xml_accessor :merchantCustomerId
@@ -1227,13 +1234,15 @@ end
     xml_accessor :email
     xml_accessor :paymentProfiles, from: 'paymentProfiles', as: [CustomerPaymentProfileType]
     xml_accessor :shipToList, from: 'shipToList', as: [CustomerAddressType]
+    xml_accessor :profileType
 
-    def initialize(merchantCustomerId = nil, description = nil, email = nil, paymentProfiles = [], shipToList = [])
+    def initialize(merchantCustomerId = nil, description = nil, email = nil, paymentProfiles = [], shipToList = [], profileType = nil)
       @merchantCustomerId = merchantCustomerId
       @description = description
       @email = email
       @paymentProfiles = paymentProfiles
       @shipToList = shipToList
+      @profileType = profileType
     end
   end
 
@@ -1257,6 +1266,29 @@ end
     end
   end
 
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerProfileInfoExType
+  #   merchantCustomerId - SOAP::SOAPString
+  #   description - SOAP::SOAPString
+  #   email - SOAP::SOAPString
+  #   customerProfileId - (any)
+  #   profileType - CustomerProfileTypeEnum
+  class CustomerProfileInfoExType
+    include ROXML
+    xml_accessor :merchantCustomerId
+    xml_accessor :description
+    xml_accessor :email
+    xml_accessor :customerProfileId
+    xml_accessor :profileType
+
+    def initialize(merchantCustomerId = nil, description = nil, email = nil, customerProfileId = nil, profileType = nil)
+      @merchantCustomerId = merchantCustomerId
+      @description = description
+      @email = email
+      @customerProfileId = customerProfileId
+      @profileType = profileType
+    end
+  end
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerProfileMaskedType
   #   merchantCustomerId - SOAP::SOAPString
   #   description - SOAP::SOAPString
@@ -1264,6 +1296,7 @@ end
   #   customerProfileId - (any)
   #   paymentProfiles - CustomerPaymentProfileMaskedType
   #   shipToList - CustomerAddressExType
+  #   profileType - CustomerProfileTypeEnum
   class CustomerProfileMaskedType
     include ROXML
     xml_accessor :merchantCustomerId
@@ -1272,14 +1305,16 @@ end
     xml_accessor :customerProfileId
     xml_accessor :paymentProfiles, from: 'paymentProfiles', as: [CustomerPaymentProfileMaskedType]
     xml_accessor :shipToList, from: 'shipToList', as: [CustomerAddressExType]
+    xml_accessor :profileType
 
-    def initialize(merchantCustomerId = nil, description = nil, email = nil, customerProfileId = nil, paymentProfiles = [], shipToList = [])
+    def initialize(merchantCustomerId = nil, description = nil, email = nil, customerProfileId = nil, paymentProfiles = [], shipToList = [], profileType = nil)
       @merchantCustomerId = merchantCustomerId
       @description = description
       @email = email
       @customerProfileId = customerProfileId
       @paymentProfiles = paymentProfiles
       @shipToList = shipToList
+      @profileType = profileType
     end
   end
 
@@ -3195,6 +3230,7 @@ end
   #   transId - (any)
   #   customer - CustomerProfileBaseType
   #   customerProfileId - NumericStringsType
+  #   profileType - CustomerProfileTypeEnum
   class CreateCustomerProfileFromTransactionRequest
     include ROXML
     xml_accessor :merchantAuthentication, as: MerchantAuthenticationType
@@ -3204,8 +3240,9 @@ end
     xml_accessor :customerProfileId, as: NumericStringsType
     xml_accessor :defaultPaymentProfile
     xml_accessor :defaultShippingAddress
+    xml_accessor :profileType
 
-    def initialize(merchantAuthentication = nil, refId = nil, transId = nil, customer = nil, customerProfileId = nil, defaultPaymentProfile = nil, defaultShippingAddress = nil)
+    def initialize(merchantAuthentication = nil, refId = nil, transId = nil, customer = nil, customerProfileId = nil, defaultPaymentProfile = nil, defaultShippingAddress = nil, profileType = nil)
       @merchantAuthentication = merchantAuthentication
       @refId = refId
       @transId = transId
@@ -3213,6 +3250,7 @@ end
       @customerProfileId = customerProfileId
       @defaultPaymentProfile = defaultPaymentProfile
       @defaultShippingAddress = defaultShippingAddress
+      @profileType = profileType
     end
   end
 
@@ -5021,6 +5059,12 @@ end
   class AfdsTransactionEnum < ::String
     Approve = AfdsTransactionEnum.new("approve")
     Decline = AfdsTransactionEnum.new("decline")
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerProfileTypeEnum
+  class CustomerProfileTypeEnum < ::String
+    Regular = CustomerProfileTypeEnum.new("regular")
+    Guest = CustomerProfileTypeEnum.new("guest")
   end
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}HeldTransactionRequestType
