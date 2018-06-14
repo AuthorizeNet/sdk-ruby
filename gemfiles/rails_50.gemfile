@@ -2,6 +2,7 @@
 
 source "https://rubygems.org"
 
+gem "coveralls", require: false
 gem "rails", "~> 5.0", ">= 5.0.3"
 
 gemspec path: "../"
