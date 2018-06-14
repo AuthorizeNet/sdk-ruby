@@ -236,7 +236,7 @@ describe AuthorizeNet::CIM::Transaction do
 
     describe "should be able to create payment transactions" do
       before do
-        @amount = rand(100..10_099) / 100.0
+        @amount = rand(100..10_099) / BigDecimal.new(100)
       end
 
       it "should support authorization and capture transactions" do

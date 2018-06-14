@@ -1,5 +1,9 @@
-# require 'coveralls'
-# Coveralls.wear!
+require 'simplecov'
+SimpleCov.start
+
+require 'scrutinizer/ocular'
+Scrutinizer::Ocular.watch!
+
 require "authorizenet"
 require "yaml"
 
