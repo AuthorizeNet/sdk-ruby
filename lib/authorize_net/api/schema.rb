@@ -4369,12 +4369,12 @@ end
     xml_accessor :billTo, as: CustomerAddressType
     xml_accessor :shipTo, as: NameAndAddressType
     xml_accessor :customerIP
-    xml_accessor :cardholderAuthentication, :as => CcAuthenticationType
-    xml_accessor :retail, :as => TransRetailInfoType
+    xml_accessor :cardholderAuthentication, as:CcAuthenticationType
+    xml_accessor :retail, as: => TransRetailInfoType
     xml_accessor :employeeId
-    xml_accessor :transactionSettings, :as => Settings
-    xml_accessor :userFields, :as => UserFields
-    xml_accessor :surcharge, :as => ExtendedAmountType
+    xml_accessor :transactionSettings, as: Settings
+    xml_accessor :userFields, as: => UserFields
+    xml_accessor :surcharge, as: => ExtendedAmountType
     xml_accessor :merchantDescriptor
     xml_accessor :subMerchant, as: SubMerchantType
     xml_accessor :tip, as: ExtendedAmountType
