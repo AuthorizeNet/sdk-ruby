@@ -264,13 +264,15 @@ describe AuthorizeNet::AIM::Transaction do
   end
 
   it "should be able to validate the passed MD5 hash" do
+    skip
     transaction = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, transaction_type: @type, gateway: @gateway, test: @test_mode)
     transaction.purchase(@amount, @credit_card).should be_kind_of(AuthorizeNet::AIM::Response)
     transaction.response.success?.should be_truthy
     transaction.response.valid_md5?(@api_login, @md5_value).should be_truthy
   end
 
-  it "should be able to validate the passed MD5 hash for card present transactions" do
+   it "should be able to validate the passed MD5 hash for card present transactions" do
+     skip
     @credit_card = AuthorizeNet::CreditCard.new(nil, nil, track_1: '%B4111111111111111^DOE/JOHN^1803101000000000020000831000000?')
     purchase = AuthorizeNet::AIM::Transaction.new(@api_login, @api_key, gateway: :card_present_test, test: false)
     response = purchase.purchase(@amount, @credit_card)
