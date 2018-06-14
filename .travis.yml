@@ -19,6 +19,7 @@ before_script:
 
 script:
   - bundle exec rake spec:ci
+  - bundle exec rake spec:aim
   - bundle exec rake spec:api
   - bundle exec rake spec:cim
   - bundle exec rake spec:reporting
