@@ -21,4 +21,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency('appraisal')
   s.add_development_dependency 'rake', '~> 0.8', '>= 0.8.7'
   s.add_development_dependency 'rspec', '~> 2.1'
+  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'scrutinizer-ocular'
 end

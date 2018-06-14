@@ -64,7 +64,7 @@ describe AuthorizeNet::SIM::Response do
   end
 
   before do
-    @amount = rand(100..10_099) / 100.0
+    @amount = rand(100..10_099) / BigDecimal.new(100)
     @fingerprint = 'a8ea7b27729daf76d4a67bdb7d0a2fa3'
     @sequence = '123456789'
     @timestamp = '987654321'
