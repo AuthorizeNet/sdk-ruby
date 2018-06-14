@@ -1,9 +1,10 @@
 # Authorize.Net Ruby SDK
 
-[![Version         ][rubygems_badge]][rubygems]
-[![Travis CI       ][travis_badge]][travis]
-[![Coverage        ][codecov_badge]][codecov]
-[![Scrutinizer     ][scrutinizer_badge]][scrutinizer]
+[![Travis CI Status](https://travis-ci.org/AuthorizeNet/sdk-ruby.svg?branch=master)](https://travis-ci.org/AuthorizeNet/sdk-ruby)
+[![Coverage Status](https://coveralls.io/repos/github/AuthorizeNet/sdk-ruby/badge.svg?branch=master)](https://coveralls.io/github/AuthorizeNet/sdk-ruby?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/?branch=master)
+[![Gem Version](https://badge.fury.io/rb/authorizenet.svg)](https://badge.fury.io/rb/authorizenet)
+
 
 ## Requirements
 * Ruby 2.2.2 or higher
@@ -108,12 +109,3 @@ For additional help in testing your own code, Authorize.Net maintains a [compreh
 
 ## License
 This repository is distributed under a proprietary license. See the provided [`LICENSE.txt`](/LICENSE.txt) file.
-
-[rubygems_badge]: https://badge.fury.io/rb/authorizenet.svg
-[rubygems]: https://rubygems.org/gems/authorizenet
-[travis_badge]: https://travis-ci.org/AuthorizeNet/sdk-ruby.svg?branch=master
-[travis]: https://travis-ci.org/AuthorizeNet/sdk-ruby
-[codecov_badge]: https://codecov.io/gh/AuthorizeNet/sdk-ruby/branch/master/graph/badge.svg
-[codecov]: https://codecov.io/gh/AuthorizeNet/sdk-ruby
-[scrutinizer_badge]: https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/badges/quality-score.png?b=master
-[scrutinizer]: https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/?branch=master

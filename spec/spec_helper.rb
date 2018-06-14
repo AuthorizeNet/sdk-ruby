@@ -1,9 +1,5 @@
-require 'simplecov'
-SimpleCov.start
-
-require 'codecov'
-SimpleCov.formatter = SimpleCov::Formatter::Codecov
-
+# require 'coveralls'
+# Coveralls.wear!
 require "authorizenet"
 require "yaml"
 
