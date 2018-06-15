@@ -12,11 +12,15 @@ gemfile:
   - gemfiles/rails_42.gemfile
   - gemfiles/rails_50.gemfile
   - gemfiles/rails_51.gemfile
+  - gemfiles/rails_52.gemfile
 
 before_script:
   - git submodule update --remote --recursive
 
 script:
   - bundle exec rake spec:ci
+  - bundle exec rake spec:aim
   - bundle exec rake spec:api
+  - bundle exec rake spec:cim
+  - bundle exec rake spec:reporting
   - bundle exec rake spec:testrunner
