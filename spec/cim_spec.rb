@@ -253,6 +253,7 @@ describe AuthorizeNet::CIM::Transaction do
         transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, gateway: :sandbox)
         expect(transaction).to respond_to(:create_transaction_auth_only)
         response = transaction.create_transaction_auth_only(@amount, profile, payment_profile, AuthorizeNet::Order.new)
+        expect(response.message_text).to eq 'Successful.'
         expect(response.success?).to eq true
         direct_response = response.direct_response
         expect(direct_response).to be_instance_of(AuthorizeNet::AIM::Response)
@@ -263,6 +264,7 @@ describe AuthorizeNet::CIM::Transaction do
         # create an auth only transaction
         transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, gateway: :sandbox)
         response = transaction.create_transaction_auth_only(@amount + 10, profile, payment_profile, AuthorizeNet::Order.new)
+        expect(response.message_text).to eq 'Successful.'
         expect(response.success?).to eq true
         direct_response = response.direct_response
         expect(direct_response.success?).to eq true
@@ -281,6 +283,7 @@ describe AuthorizeNet::CIM::Transaction do
         # create a transaction
         transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, gateway: :sandbox)
         response = transaction.create_transaction_auth_capture(@amount, profile, payment_profile, AuthorizeNet::Order.new)
+        expect(response.message_text).to eq 'Successful.'
         expect(response.success?).to eq true
         direct_response = response.direct_response
         expect(direct_response.success?).to eq true
@@ -326,6 +329,7 @@ describe AuthorizeNet::CIM::Transaction do
       it "should support custom fields" do
         transaction = AuthorizeNet::CIM::Transaction.new(api_login, api_key, gateway: :sandbox)
         response = transaction.create_transaction_auth_capture(@amount, profile, payment_profile, AuthorizeNet::Order.new, custom_fields: { foo: '123', bar: '456' })
+        expect(response.message_text).to eq 'Successful.'
         expect(response.success?).to eq true
         direct_response = response.direct_response
         expect(direct_response.success?).to eq true
@@ -341,6 +345,7 @@ describe AuthorizeNet::CIM::Transaction do
         order.description = 'This order includes invoice num'
         order.po_num = 'PO_12345'
         response = transaction.create_transaction_auth_capture(@amount, profile, payment_profile, order)
+        expect(response.message_text).to eq 'Successful.'
         expect(response.success?).to eq true
         direct_response = response.direct_response
         expect(direct_response).to be_instance_of(AuthorizeNet::AIM::Response)

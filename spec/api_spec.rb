@@ -4,7 +4,7 @@ include  AuthorizeNet::API
 describe Transaction do
   before :all do
     begin
-      creds = YAML.load_file(File.dirname(__FILE__) + "/credentials.yml")
+      creds = credentials
       @api_key = creds['api_transaction_key']
       @api_login = creds['api_login_id']
       @gateway = :sandbox
@@ -158,7 +158,7 @@ describe Transaction do
 
     expect(createProfResp).not_to eq(nil)
     unless createProfResp.messages.resultCode == MessageTypeEnum::Ok
-      puts createProfResp.messages.messages[0].text
+      puts createProfResp.messages.messages[0].text, createProfReq.transId
     end
     expect(createProfResp.messages.resultCode).to eq(MessageTypeEnum::Ok)
     expect(createProfResp.customerProfileId).not_to eq(nil)
@@ -484,6 +484,7 @@ describe Transaction do
   end
 
   it "should be able to get subscription" do
+    @api_login, @api_key = '5KP3u95bQpv', '346HZ32z3fP4hTG2' # FIXME: this spec added in #66 depends on a hard coded test account.
     transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, gateway: @gateway)
     @createTransactionRequest = ARBGetSubscriptionRequest.new
 
@@ -505,6 +506,7 @@ describe Transaction do
   end
 
   it "should be able to get Customer Payment Profile List Request" do
+    @api_login, @api_key = '5KP3u95bQpv', '346HZ32z3fP4hTG2' # FIXME: this spec added in #66 depends on a hard coded test account.
     transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, gateway: @gateway)
 
     searchTypeEnum = CustomerPaymentProfileSearchTypeEnum::CardsExpiringInMonth
@@ -538,6 +540,7 @@ describe Transaction do
   end
 
   it "should be able to get transaction List Request" do
+    @api_login, @api_key = '5KP3u95bQpv', '346HZ32z3fP4hTG2' # FIXME: this spec added in #72 depends on a hard coded test account.
     transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, gateway: @gateway)
 
     batchId = "4551107"
