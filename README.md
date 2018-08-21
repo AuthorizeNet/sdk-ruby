@@ -6,7 +6,7 @@
 [![Scrutinizer     ][scrutinizer_badge]][scrutinizer]
 
 Starting Release 1.8.6 November 2015 the Authorize.Net API has been [reorganized to be more merchant focused](https://developer.authorize.net/api/upgrade_guide/).
-AIM, ARB, CIM, Reporting and SIM have all been deprecated in favor of AuthorizeNet::API.
+AIM, ARB, CIM, Reporting and SIM have all been deprecated in favor of sdk-ruby/lib/authorize_net/api.
 
 ## Requirements
 * Ruby 2.2.2 or higher

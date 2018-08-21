@@ -1,20 +1,20 @@
 # Migrating from Legacy Authorize.Net Classes
 
-Authorize.Net no longer supports several legacy classes, including AIM, ARB and others listed below, as part of sdk-dotnet. If you are using any of these, we recommend that you update your code to use the new Authorize.Net API classes under (sdk-ruby/lib/authorize_net/api).
+Authorize.Net no longer supports several legacy classes, including AIM, ARB and others listed below, as part of sdk-ruby. If you are using any of these, we recommend that you update your code to use the new Authorize.Net API classes under (sdk-ruby/lib/authorize_net/api).
 
 **For details on the deprecation and replacement of legacy Authorize.Net APIs, visit https://developer.authorize.net/api/upgrade_guide/.**
 
 ## Full list of classes that are no longer supported
 | Class                               | New Feature                                                                                                                                                    | Sample Codes directory/repository                                                 |
 |-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| AIM (Authorize.NET/AIM)             | [PaymentTransactions](https://developer.authorize.net/api/reference/index.html#payment-transactions)                                                           | [sample-code-csharp/PaymentTransactions](https://github.com/AuthorizeNet/sample-code-csharp/tree/master/PaymentTransactions)    |
-| ARB (Authorize.NET/ARB)             | [RecurringBilling](https://developer.authorize.net/api/reference/index.html#recurring-billing)                                                                 | [sample-code-csharp/Recurring Billing](https://github.com/AuthorizeNet/sample-code-csharp/tree/master/RecurringBilling)          | 
-| CIM (Authorize.NET/CIM)             | [CustomerProfiles](https://developer.authorize.net/api/reference/index.html#customer-profiles)                                                                 | [sample-code-csharp/CustomerProfiles](https://github.com/AuthorizeNet/sample-code-csharp/tree/master/CustomerProfiles)          |
+| AIM (Authorize.NET/AIM)             | [PaymentTransactions](https://developer.authorize.net/api/reference/index.html#payment-transactions)                                                           | [sample-code-ruby/PaymentTransactions](https://github.com/AuthorizeNet/sample-code-ruby/tree/master/PaymentTransactions)    |
+| ARB (Authorize.NET/ARB)             | [RecurringBilling](https://developer.authorize.net/api/reference/index.html#recurring-billing)                                                                 | [sample-code-ruby/Recurring Billing](https://github.com/AuthorizeNet/sample-code-ruby/tree/master/RecurringBilling)          | 
+| CIM (Authorize.NET/CIM)             | [CustomerProfiles](https://developer.authorize.net/api/reference/index.html#customer-profiles)                                                                 | [sample-code-ruby/CustomerProfiles](https://github.com/AuthorizeNet/sample-code-ruby/tree/master/CustomerProfiles)          |
 | SIM (Authorize.NET/SIM)             | [Accept Hosted](https://developer.authorize.net/content/developer/en_us/api/reference/features/accept_hosted.html)                                             | Not available                                                                                                                         |
-| Reporting	(Authorize.NET/Reporting) | [TransactionReporting](https://developer.authorize.net/api/reference/index.html#transaction-reporting)                                                          | [Sample Accept Application](https://github.com/AuthorizeNet/accept-sample-app)    |
+| Reporting	(Authorize.NET/Reporting) | [TransactionReporting](https://developer.authorize.net/api/reference/index.html#transaction-reporting)                                                         | [Sample-Code-Ruby/TransactionReporting](https://github.com/AuthorizeNet/sample-code-ruby/tree/master/TransactionReporting)    |
 
 ## Example 
-#### Corresponding new model code (charge-credit-card):
+#### New model sample code for (charge-credit-card)
    ```Ruby
 require 'rubygems'
 require 'yaml'
