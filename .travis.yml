@@ -24,3 +24,9 @@ script:
   - bundle exec rake spec:cim
   - bundle exec rake spec:reporting
   - bundle exec rake spec:testrunner
+
+env:
+  global:
+    - API_LOGIN_ID=5KP3u95bQpv
+    - API_TRANSACTION_KEY=346HZ32z3fP4hTG2
+    
