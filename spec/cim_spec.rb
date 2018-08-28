@@ -1,3 +1,4 @@
+=begin
 require "spec_helper"
 
 describe AuthorizeNet::CIM::Transaction do
@@ -486,3 +487,4 @@ describe AuthorizeNet::CIM::Response do
     expect(AuthorizeNet::CIM::Response.new('', nil)).to be_instance_of(AuthorizeNet::CIM::Response)
   end
 end
+=end
