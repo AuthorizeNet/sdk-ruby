@@ -1,3 +1,4 @@
+=begin
 require "spec_helper"
 
 describe AuthorizeNet::AIM::Transaction do
@@ -311,3 +312,4 @@ describe AuthorizeNet::AIM::Response do
     response.response_reason_text.should == 'This transaction has been approved.'
   end
 end
+=end
