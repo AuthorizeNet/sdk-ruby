@@ -1,3 +1,4 @@
+=begin
 require "spec_helper"
 
 describe AuthorizeNet::SIM::Transaction do
@@ -91,3 +92,4 @@ describe AuthorizeNet::SIM::HostedPaymentForm do
     AuthorizeNet::SIM::HostedPaymentForm.new.should be_instance_of(AuthorizeNet::SIM::HostedPaymentForm)
   end
 end
+=end

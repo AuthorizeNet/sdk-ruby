@@ -1,3 +1,4 @@
+=begin
 require "spec_helper"
 
 describe AuthorizeNet do
@@ -215,3 +216,4 @@ describe AuthorizeNet::TypeConversions do
     subject.value_to_decimal('').should == BigDecimal('0.0')
   end
 end
+=end

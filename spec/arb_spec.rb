@@ -1,3 +1,4 @@
+=begin
 require "spec_helper"
 
 describe AuthorizeNet::ARB::Transaction do
@@ -264,3 +265,4 @@ describe AuthorizeNet::ARB::Subscription do
     subscription.unit.should == AuthorizeNet::ARB::Subscription::IntervalUnits::MONTH
   end
 end
+=end
