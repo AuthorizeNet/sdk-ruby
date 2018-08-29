@@ -22,7 +22,7 @@ AIM, ARB, CIM, Reporting and SIM have all been deprecated in favor of sdk-ruby/l
 
 ### Contribution  
   - If you need information or clarification about any Authorize.Net features, please create an issue for it. Also you can search in the [Authorize.Net developer community](https://community.developer.authorize.net/).  
-  - Before creating pull requests, please read [the contributors guide](CONTRIBUTING.md)
+  - Before creating pull requests, please read [the contributors guide](CONTRIBUTING.md).
   
 ### TLS 1.2
 The Authorize.Net APIs only support connections using the TLS 1.2 security protocol. It's important to make sure you have new enough versions of all required components to support TLS 1.2. Additionally, it's very important to keep these components up to date going forward to mitigate the risk of any security flaws that may be discovered in your system or any libraries it uses.
