@@ -1,3 +1,5 @@
+require File.join File.dirname(__FILE__), 'LogHelper'
+
 module AuthorizeNet::API
   class ApiTransaction < AuthorizeNet::XmlTransaction
     module Type
@@ -59,15 +61,20 @@ module AuthorizeNet::API
     def setOAuthOptions
       super
   end
-
+    
     def make_request(request, responseClass, type)
       setOAuthOptions
       unless responseClass.nil? || request.nil?
         begin
           @xml = serialize(request, type)
+          LogHelper.log.debug(@xml)
           respXml = send_request(@xml)
           @response = deserialize(respXml.body, responseClass)
+          LogHelper.log.debug(respXml.body)
+	  return @response
         rescue Exception => ex
+	     LogHelper.log.error(ex.message)
+	     ex.backtrace.each {|line| LogHelper.log.error(line)}
           ex
         end
         end
@@ -94,6 +101,7 @@ module AuthorizeNet::API
       end
       builder.to_xml
     end
+
 
     def send_request(xml)
       url = URI.parse(@gateway)
