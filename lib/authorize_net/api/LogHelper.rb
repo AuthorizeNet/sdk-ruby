@@ -8,7 +8,7 @@ class Log
     @@loglevels = ['error','info','debug','warn']
     def initialize()
         begin	
-	    filepath = './Config.yml'
+	    filepath = './LogConfig.yml'
 	    if(File.file?(filepath))
 		cnf = YAML::load(File.open(filepath))
 		if(@@loglevels.include? cnf['loglevel'].downcase)
