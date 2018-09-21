@@ -5,10 +5,10 @@ require File.join File.dirname(__FILE__), 'SensitiveDataFilter'
 module AuthorizeNet::API
 class Log
     @@shouldLog = false
-    @@loglevels = ['error','info','debug','warn']
+    @@loglevels = ['debug','info','warn','error']
     def initialize()
         begin	
-	    filepath = './Config.yml'
+	    filepath = './LogConfig.yml'
 	    if(File.file?(filepath))
 		cnf = YAML::load(File.open(filepath))
 		if(@@loglevels.include? cnf['loglevel'].downcase)
@@ -39,6 +39,15 @@ class Log
        		@@shouldLog = false
 	end
     end
+    def debug(message)
+	if(@@shouldLog)
+             begin
+		@logger.debug message
+             rescue Exception => ex
+                ex
+             end
+	end
+    end
     def info(message)
 	if(@@shouldLog)
              begin 
@@ -46,6 +55,15 @@ class Log
              rescue Exception => ex
                 ex
              end 
+	end
+    end
+    def warn(message)
+	if(@@shouldLog)
+             begin
+		@logger.warn message
+             rescue Exception => ex
+                ex
+             end
 	end
     end
     def error(message)
@@ -57,34 +75,16 @@ class Log
              end
 	end
     end
-    def fatal(message)
-	if(@@shouldLog)
-             begin
-		@logger.fatal message
-             rescue Exception => ex
-                ex
-             end
-	end
-    end
-    def debug(message)
-	if(@@shouldLog)
-             begin
-		@logger.debug message
-             rescue Exception => ex
-                ex
-             end
-	end
-    end
     def LogLevelMapper(loglevel)
 	case loglevel
-        	when 'debug'
+       	when 'debug'
 			Logger::DEBUG
-		when 'error'
-			Logger::ERROR
 		when 'info'
 			Logger::INFO
 		when 'warn'
 			Logger::WARN
+		when 'error'
+			Logger::ERROR
 		end
     end
 end
