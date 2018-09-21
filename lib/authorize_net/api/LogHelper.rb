@@ -4,18 +4,11 @@ require File.join File.dirname(__FILE__), 'SensitiveDataFilter'
 
 module AuthorizeNet::API
 class Log
-    ANET_LOG_DEBUG = 1;
-    ANET_LOG_INFO  = 2;
-    ANET_LOG_WARN  = 3;
-    ANET_LOG_ERROR = 4;
-
     @@shouldLog = false
-    @@loglevels = ['debug','info','warn','error']
-    @@logLevel  = ANET_LOG_ERROR;
-
+    @@loglevels = ['error','info','debug','warn']
     def initialize()
         begin	
-	    filepath = './LogConfig.yml'
+	    filepath = './Config.yml'
 	    if(File.file?(filepath))
 		cnf = YAML::load(File.open(filepath))
 		if(@@loglevels.include? cnf['loglevel'].downcase)
@@ -46,45 +39,37 @@ class Log
        		@@shouldLog = false
 	end
     end
-    def debug(message)
-	if(@@shouldLog)
-             begin
-                if(@@logLevel <= ANET_LOG_DEBUG)
-		   @logger.debug message
-                end
-             rescue Exception => ex
-                ex
-             end
-	end
-    end
     def info(message)
 	if(@@shouldLog)
              begin 
-                if(@@logLevel <= ANET_LOG_INFO)
-                   @logger.info message
-                end
+		@logger.info message
              rescue Exception => ex
                 ex
              end 
 	end
     end
-    def warn(message)
+    def error(message)
 	if(@@shouldLog)
              begin
-                if(@@logLevel <= ANET_LOG_WARN)
-		   @logger.warn message
-                end
+		@logger.error message
              rescue Exception => ex
                 ex
              end
 	end
     end
-    def error(message)
+    def fatal(message)
 	if(@@shouldLog)
              begin
-                if(@@logLevel <= ANET_LOG_ERROR)
-		   @logger.error message
-                end
+		@logger.fatal message
+             rescue Exception => ex
+                ex
+             end
+	end
+    end
+    def debug(message)
+	if(@@shouldLog)
+             begin
+		@logger.debug message
              rescue Exception => ex
                 ex
              end
@@ -93,17 +78,13 @@ class Log
     def LogLevelMapper(loglevel)
 	case loglevel
         	when 'debug'
-			@@logLevel = ANET_LOG_DEBUG
-			return Logger::DEBUG
-		when 'info'
-			@@logLevel = ANET_LOG_INFO
-			return Logger::INFO
-		when 'warn'
-			@@logLevel = ANET_LOG_WARN
-			return Logger::WARN
+			Logger::DEBUG
 		when 'error'
-			@@logLevel = ANET_LOG_ERROR
-			return Logger::ERROR
+			Logger::ERROR
+		when 'info'
+			Logger::INFO
+		when 'warn'
+			Logger::WARN
 		end
     end
 end
