@@ -4,11 +4,18 @@ require File.join File.dirname(__FILE__), 'SensitiveDataFilter'
 
 module AuthorizeNet::API
 class Log
+    ANET_LOG_DEBUG = 1;
+    ANET_LOG_INFO  = 2;
+    ANET_LOG_WARN  = 3;
+    ANET_LOG_ERROR = 4;
+
     @@shouldLog = false
-    @@loglevels = ['error','info','debug','warn']
+    @@loglevels = ['debug','info','warn','error']
+    @@logLevel  = ANET_LOG_ERROR;
+
     def initialize()
         begin	
-	    filepath = './Config.yml'
+	    filepath = './LogConfig.yml'
 	    if(File.file?(filepath))
 		cnf = YAML::load(File.open(filepath))
 		if(@@loglevels.include? cnf['loglevel'].downcase)
@@ -39,37 +46,45 @@ class Log
        		@@shouldLog = false
 	end
     end
+    def debug(message)
+	if(@@shouldLog)
+             begin
+                if(@@logLevel <= ANET_LOG_DEBUG)
+		   @logger.debug message
+                end
+             rescue Exception => ex
+                ex
+             end
+	end
+    end
     def info(message)
 	if(@@shouldLog)
              begin 
-		@logger.info message
+                if(@@logLevel <= ANET_LOG_INFO)
+                   @logger.info message
+                end
              rescue Exception => ex
                 ex
              end 
 	end
     end
+    def warn(message)
+	if(@@shouldLog)
+             begin
+                if(@@logLevel <= ANET_LOG_WARN)
+		   @logger.warn message
+                end
+             rescue Exception => ex
+                ex
+             end
+	end
+    end
     def error(message)
 	if(@@shouldLog)
              begin
-		@logger.error message
-             rescue Exception => ex
-                ex
-             end
-	end
-    end
-    def fatal(message)
-	if(@@shouldLog)
-             begin
-		@logger.fatal message
-             rescue Exception => ex
-                ex
-             end
-	end
-    end
-    def debug(message)
-	if(@@shouldLog)
-             begin
-		@logger.debug message
+                if(@@logLevel <= ANET_LOG_ERROR)
+		   @logger.error message
+                end
              rescue Exception => ex
                 ex
              end
@@ -78,13 +93,17 @@ class Log
     def LogLevelMapper(loglevel)
 	case loglevel
         	when 'debug'
-			Logger::DEBUG
-		when 'error'
-			Logger::ERROR
+			@@logLevel = ANET_LOG_DEBUG
+			return Logger::DEBUG
 		when 'info'
-			Logger::INFO
+			@@logLevel = ANET_LOG_INFO
+			return Logger::INFO
 		when 'warn'
-			Logger::WARN
+			@@logLevel = ANET_LOG_WARN
+			return Logger::WARN
+		when 'error'
+			@@logLevel = ANET_LOG_ERROR
+			return Logger::ERROR
 		end
     end
 end
