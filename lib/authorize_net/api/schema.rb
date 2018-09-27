@@ -3382,7 +3382,7 @@ end
     xml_accessor :messages, as: MessagesType
     xml_accessor :sessionToken
     xml_accessor :defaultShippingAddress
-    xml_accessor :address
+    xml_accessor :address, as: CustomerAddressExType
     xml_accessor :subscriptionIds, as: SubscriptionIdList
 
     def initialize(refId = nil, messages = nil, sessionToken = nil, address = nil, subscriptionIds = nil, defaultShippingAddress = nil)
