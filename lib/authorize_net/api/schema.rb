@@ -270,6 +270,9 @@ module AuthorizeNet::API
   #   cardCode - (any)
   #   isPaymentToken - SOAP::SOAPBoolean
   #   cryptogram - SOAP::SOAPString
+  #   tokenRequestorName - SOAP::SOAPString
+  #   tokenRequestorId - SOAP::SOAPString
+  #   tokenRequestorEci - SOAP::SOAPString
   class CreditCardType
     include ROXML
     xml_accessor :cardNumber
@@ -277,13 +280,19 @@ module AuthorizeNet::API
     xml_accessor :cardCode
     xml_accessor :isPaymentToken
     xml_accessor :cryptogram
+    xml_accessor :tokenRequestorName
+    xml_accessor :tokenRequestorId
+    xml_accessor :tokenRequestorEci
 
-    def initialize(cardNumber = nil, expirationDate = nil, cardCode = nil, isPaymentToken = nil, cryptogram = nil)
+    def initialize(cardNumber = nil, expirationDate = nil, cardCode = nil, isPaymentToken = nil, cryptogram = nil, tokenRequestorName = nil, tokenRequestorId = nil, tokenRequestorEci = nil)
       @cardNumber = cardNumber
       @expirationDate = expirationDate
       @cardCode = cardCode
       @isPaymentToken = isPaymentToken
       @cryptogram = cryptogram
+      @tokenRequestorName = tokenRequestorName
+      @tokenRequestorId = tokenRequestorId
+      @tokenRequestorEci = tokenRequestorEci
     end
   end
 
@@ -650,16 +659,19 @@ end
   #   tokenSource - SOAP::SOAPString
   #   tokenNumber - SOAP::SOAPString
   #   expirationDate - SOAP::SOAPString
+  #   tokenRequestorId - SOAP::SOAPString
   class TokenMaskedType
     include ROXML
     xml_accessor :tokenSource
     xml_accessor :tokenNumber
     xml_accessor :expirationDate
+    xml_accessor :tokenRequestorId
 
-    def initialize(tokenSource = nil, tokenNumber = nil, expirationDate = nil)
+    def initialize(tokenSource = nil, tokenNumber = nil, expirationDate = nil, tokenRequestorId = nil)
       @tokenSource = tokenSource
       @tokenNumber = tokenNumber
       @expirationDate = expirationDate
+      @tokenRequestorId = tokenRequestorId
     end
   end
 
@@ -3382,7 +3394,7 @@ end
     xml_accessor :messages, as: MessagesType
     xml_accessor :sessionToken
     xml_accessor :defaultShippingAddress
-    xml_accessor :address
+    xml_accessor :address, as: CustomerAddressExType
     xml_accessor :subscriptionIds, as: SubscriptionIdList
 
     def initialize(refId = nil, messages = nil, sessionToken = nil, address = nil, subscriptionIds = nil, defaultShippingAddress = nil)
