@@ -36,6 +36,8 @@ module AuthorizeNet::API
       API_GET_UNSETTLED_TRANSACTION_LIST = "getUnsettledTransactionListRequest".freeze
       API_GET_BATCH_STATISTICS = "getBatchStatisticsRequest".freeze
       API_GET_TRANSACTION_LIST_FOR_CUSTOMER = "getTransactionListForCustomerRequest".freeze
+      API_GET_AUJOB_DETAILS = "getaujobdetailsRequest".freeze
+
 
       API_GET_HOSTED_PROFILE_PAGE = "getHostedProfilePageRequest".freeze
 
@@ -62,6 +64,7 @@ module AuthorizeNet::API
 
     def make_request(request, responseClass, type)
       setOAuthOptions
+      responseClass.roxml_attrs[4].instance_variable_set('@name','auDetails')#added for audetails fiels
       unless responseClass.nil? || request.nil?
         begin
           @xml = serialize(request, type)

@@ -230,6 +230,9 @@ module AuthorizeNet::API
     def get_transaction_list(request)
       make_request(request, GetTransactionListResponse, Type::API_GET_TRANSACTION_LIST)
     end
+    def get_aujob_details(request)
+      make_request(request,GetAUJobDetailsResponse, Type::API_GET_AUJOB_DETAILS)
+    end
 
     # This request enables you to validate customer payment profile.
     #
