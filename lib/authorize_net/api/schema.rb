@@ -4742,8 +4742,9 @@ end
     xml_accessor :reasonDescription
     xml_accessor :newCreditCard, as: CreditCardMaskedType
     xml_accessor :oldCreditCard, as: CreditCardMaskedType
+	xml_accessor :subscriptionIdList, as:[SubscriptionIdList]
 
-    def initialize(customerProfileID = nil, customerPaymentProfileID = nil, firstName = nil, lastName = nil, updateTimeUTC = nil, auReasonCode = nil, reasonDescription = nil, newCreditCard = nil, oldCreditCard = nil)
+    def initialize(customerProfileID = nil, customerPaymentProfileID = nil, firstName = nil, lastName = nil, updateTimeUTC = nil, auReasonCode = nil, reasonDescription = nil, newCreditCard = nil, oldCreditCard = nil,subscriptionIdList= [])
       @customerProfileID = customerProfileID
       @customerPaymentProfileID = customerPaymentProfileID
       @firstName = firstName
@@ -4753,6 +4754,7 @@ end
       @reasonDescription = reasonDescription
       @newCreditCard = newCreditCard
       @oldCreditCard = oldCreditCard
+	  @subscriptionIdList = SubscriptionIdList
     end
   end
 
@@ -4767,8 +4769,9 @@ end
     xml_accessor :auReasonCode
     xml_accessor :reasonDescription
     xml_accessor :creditCard, as: CreditCardMaskedType
+	xml_accessor :subscriptionIdList, as:[SubscriptionIdList]
 
-    def initialize(customerProfileID = nil, customerPaymentProfileID = nil, firstName = nil, lastName = nil, updateTimeUTC = nil, auReasonCode = nil, reasonDescription = nil, creditCard = nil)
+    def initialize(customerProfileID = nil, customerPaymentProfileID = nil, firstName = nil, lastName = nil, updateTimeUTC = nil, auReasonCode = nil, reasonDescription = nil, creditCard = nil,subscriptionIdList= [])
       @customerProfileID = customerProfileID
       @customerPaymentProfileID = customerPaymentProfileID
       @firstName = firstName
@@ -4777,6 +4780,7 @@ end
       @auReasonCode = auReasonCode
       @reasonDescription = reasonDescription
       @creditCard = creditCard
+	  @subscriptionIdList = SubscriptionIdList
     end
   end
 
@@ -4805,10 +4809,10 @@ end
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ListOfAUDetailsType
   class ListOfAUDetailsType
     include ROXML
-    xml_accessor :auUpdate, as: AUUpdateType
-    xml_accessor :auDelete, as: AUDeleteType
+    xml_accessor :auUpdate, as: [AUUpdateType]
+    xml_accessor :auDelete, as: [AUDeleteType]
 
-    def initialize(auUpdate = nil, auDelete = nil)
+    def initialize(auUpdate = [], auDelete = [])
       @auUpdate = auUpdate
       @auDelete = auDelete
     end
