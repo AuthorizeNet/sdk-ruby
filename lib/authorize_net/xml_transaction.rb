@@ -6,10 +6,9 @@ module AuthorizeNet
 
     # Constants for both the various Authorize.Net subscription gateways are defined here.
     module Gateway
-      #LIVE = 'https://api2.authorize.net/xml/v1/request.api'.freeze
-      LIVE = 'https://downloadvposecr.labwebapp.com/xml/v1/request.api '.freeze
-      #TEST = 'https://apitest.authorize.net/xml/v1/request.api'.freeze
-      TEST=  'https://downloadvposecr.labwebapp.com/xml/v1/request.api'.freeze
+      LIVE = 'https://api2.authorize.net/xml/v1/request.api'.freeze
+      TEST = 'https://apitest.authorize.net/xml/v1/request.api'.freeze
+      
     end
 
     # Constants for both the various Authorize.Net transaction types are defined here.
