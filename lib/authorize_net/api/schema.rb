@@ -5302,9 +5302,10 @@ end
 # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}getCustomerPaymentProfileNonceResponse
 class GetCustomerPaymentProfileNonceResponse
   include ROXML
-  xml_accessor :opaqueData
-  
-  def initialize(opaqueData = nil)
+  xml_accessor :opaqueData, as: OpaqueDataType
+  xml_accessor :messages, as: MessagesType
+  def initialize(messages = nil,opaqueData = nil)
+    @messages = messages
     @opaqueData = opaqueData
   end
 end
