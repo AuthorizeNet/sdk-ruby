@@ -52,6 +52,8 @@ module AuthorizeNet::API
       API_GET_HOSTED_PAYMENT_PAGE = "getHostedPaymentPageRequest".freeze
       API_UDPATE_HELD_TRANSACTION = "updateHeldTransactionRequest".freeze
       API_UPDATE_MERCHANT_DETAILS = "updateMerchantDetailsRequest".freeze
+      API_GET_CUSTOMER_PAYMENT_PROFILE_NONCE = "getCustomerPaymentProfileNonceRequest".freeze
+     
     end
 
     def initialize(api_login_id = nil, api_transaction_key = nil, options = {})

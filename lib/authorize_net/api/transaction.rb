@@ -257,5 +257,9 @@ module AuthorizeNet::API
     def update_merchant_details(request)
       make_request(request, UpdateMerchantDetailsResponse, Type::API_UPDATE_MERCHANT_DETAILS)
     end
+
+    def get_customer_payment_profile_nonce(request)
+      make_request(request, GetCustomerPaymentProfileNonceResponse, Type::API_GET_CUSTOMER_PAYMENT_PROFILE_NONCE)
+    end
   end
 end
