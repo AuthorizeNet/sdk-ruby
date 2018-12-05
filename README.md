@@ -115,6 +115,28 @@ md5_value: {md5_value}
 ### Testing Guide
 For additional help in testing your own code, Authorize.Net maintains a [comprehensive testing guide](http://developer.authorize.net/hello_world/testing_guide/) that includes test credit card numbers to use and special triggers to generate certain responses from the sandbox environment.
 
+## Logging Sensitive Data
+A new sensitive data logger has been introduced with the Authorize.Net Ruby Sdk. To use it in your code, create a file called `LogConfig.yml` and place it in the base folder of your application. The logger configuration should contain the following lines:
+```
+loglevel: info
+filepath: <file_path>
+maskSensitiveData: true
+```
+The logger code uses the default Ruby `Logger` library. So there is no need to install any external libraries for the purpose of logging. All the above three fields in the LogConfig.yml file are mandatory. The logging levels available are `debug, info, warn` and `error`.
+
+The value for `maskSensitiveData` can either be **true** or **false**. Setting the `maskSensitiveData` flag to **true** masks the sensitive data in the request XML body while logging to the log file. You can turn off logging by removing the configuration file from your application folder. 
+
+The list of sensitive fields which will be masked during logging are
+* Card Number, 
+* Card Code, 
+* Expiration Date, 
+* Name on Account, 
+* Transaction Key and 
+* Account Number. 
+
+There is also a list of regular expressions which the sensitive logger uses to mask credit card numbers while logging. 
+
+Further information on the sensitive data logging and regular expressions can be found at this [location](https://github.com/AuthorizeNet/sdk-ruby/blob/master/lib/authorize_net/api/SensitiveDataFilter.rb).
 
 ## License
 This repository is distributed under a proprietary license. See the provided [`LICENSE.txt`](/LICENSE.txt) file.
