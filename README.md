@@ -1,4 +1,4 @@
-# Authorize.Net Ruby SDK
+﻿# Authorize.Net Ruby SDK
 
 [![Version         ][rubygems_badge]][rubygems]
 [![Travis CI       ][travis_badge]][travis]
