@@ -10,7 +10,7 @@ rvm:
 
 matrix:
     allow_failures:
-          - 2.2
+    - rvm: 2.2
           
 gemfile:
   - gemfiles/rails_42.gemfile
