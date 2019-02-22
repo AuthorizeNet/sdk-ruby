@@ -8,16 +8,16 @@ rvm:
   - 2.3
   - 2.4
 
-matrix:
-    allow_failures:
-    - rvm: 2.2
-          
 gemfile:
   - gemfiles/rails_42.gemfile
   - gemfiles/rails_50.gemfile
   - gemfiles/rails_51.gemfile
   - gemfiles/rails_52.gemfile
 
+matrix:
+    allow_failures:
+    - gemfile: gemfiles/rails_42.gemfile
+    
 before_script:
   - git submodule update --remote --recursive
 
