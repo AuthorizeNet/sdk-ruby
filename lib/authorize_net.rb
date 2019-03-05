@@ -19,15 +19,15 @@ require 'date'
 $LOAD_PATH.unshift File.dirname(__FILE__)
 
 require "authorize_net/authorize_net"
-require "authorize_net/customer"
-require "authorize_net/email_receipt"
-require "authorize_net/order"
-require "authorize_net/line_item"
+# require "authorize_net/customer"
+# require "authorize_net/email_receipt"
+# require "authorize_net/order"
+# require "authorize_net/line_item"
 require "authorize_net/response"
-require "authorize_net/key_value_response"
+# require "authorize_net/key_value_response"
 require "authorize_net/xml_response"
 require "authorize_net/transaction"
-require "authorize_net/key_value_transaction"
+# require "authorize_net/key_value_transaction"
 require "authorize_net/xml_transaction"
 
 # API
