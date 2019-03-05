@@ -1,7 +1,6 @@
 module AuthorizeNet
-  # The core, API agnostic transaction class. You shouldn't instantiate this one.
-  # Instead you should use AuthorizeNet::AIM::Transaction,
-  # AuthorizeNet::SIM::Transaction or AuthorizeNet::ARB::Transaction.
+  # The core, API agnostic transaction class.
+  # You shouldn't instantiate this one.
   class Transaction
     include AuthorizeNet::TypeConversions
 
@@ -11,8 +10,7 @@ module AuthorizeNet
     # Fields to convert to/from BigDecimal.
     @@decimal_fields = []
 
-    # DO NOT USE. Instantiate AuthorizeNet::AIM::Transaction,
-    # AuthorizeNet::SIM::Transaction or AuthorizeNet::ARB::Transaction instead.
+    # DO NOT USE.
     def initialize
       @fields ||= {}
     end
