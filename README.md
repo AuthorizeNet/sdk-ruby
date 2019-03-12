@@ -18,14 +18,14 @@ AIM, ARB, CIM, Reporting and SIM have all been deprecated in favor of sdk-ruby/l
 * An Authorize.Net account (see _Registration & Configuration_ section below)
 
 ### Migrating from older versions  
- Since August 2018, the Authorize.Net API has been reorganized to be more merchant focused. AuthorizeNetAIM, AuthorizeNetARB, AuthorizeNetCIM, Reporting and AuthorizeNetSIM classes have all been deprecated in favor of AuthorizeNet::API. To see the full list of mapping of new features corresponding to the deprecated features, you can see [MIGRATING.md](MIGRATING.md).  
+Since August 2018, the Authorize.Net API has been reorganized to be more merchant focused. AuthorizeNetAIM, AuthorizeNetARB, AuthorizeNetCIM, Reporting and AuthorizeNetSIM classes have been deprecated in favor of AuthorizeNet::API. To see the full list of mapping of new features corresponding to the deprecated features, see [MIGRATING.md](MIGRATING.md).  
 
 ### Contribution  
-  - If you need information or clarification about any Authorize.Net features, please create an issue for it. Also you can search in the [Authorize.Net developer community](https://community.developer.authorize.net/).  
-  - Before creating pull requests, please read [the contributors guide](CONTRIBUTING.md).
+  - If you need information or clarification about Authorize.Net features, create an issue with your question. You can also search the [Authorize.Net developer community](https://community.developer.authorize.net/) for discussions related to your question.  
+  - Before creating pull requests, read [the contributors guide](CONTRIBUTING.md).
   
 ### TLS 1.2
-The Authorize.Net APIs only support connections using the TLS 1.2 security protocol. It's important to make sure you have new enough versions of all required components to support TLS 1.2. Additionally, it's very important to keep these components up to date going forward to mitigate the risk of any security flaws that may be discovered in your system or any libraries it uses.
+The Authorize.Net API only support connections using the TLS 1.2 security protocol. Make sure to upgrade all required components to support TLS 1.2. Keep these components up to date to mitigate the risk of new security flaws.
 
 
 ## Installation
@@ -44,23 +44,23 @@ The Authorize.Net APIs only support connections using the TLS 1.2 security proto
 
 
 ## Registration & Configuration
-Use of this SDK and the Authorize.Net APIs requires having an account on our system. You can find these details in the Settings section.
-If you don't currently have a production Authorize.Net account and need a sandbox account for testing, you can easily sign up for one [here](https://developer.authorize.net/sandbox/).
+Use of this SDK and the Authorize.Net APIs requires having an account on the Authorize.Net system. You can find these details in the Settings section.
+If you don't currently have a production Authorize.Net account, [sign up for a sandbox account](https://developer.authorize.net/sandbox/).
 
 ### Authentication
-To authenticate with the Authorize.Net API you will need to use your account's API Login ID and Transaction Key. If you don't have these values, you can obtain them from our Merchant Interface site. Access the Merchant Interface for production accounts at (https://account.authorize.net/) or sandbox accounts at (https://sandbox.authorize.net).
+To authenticate with the Authorize.Net API, use your account's API Login ID and Transaction Key. If you don't have these credentials, obtain them from the Merchant Interface.  For production accounts, the Merchant Interface is located at (https://account.authorize.net/), and for sandbox accounts, at (https://sandbox.authorize.net).
 
-Once you have your keys simply load them into the appropriate variables in your code, as per the below sample code dealing with the authentication part of the API request.
+After you have your credentials, load them into the appropriate variables in your code. The below sample code shows how to set the credentials as part of the API request.
 
 #### To set your API credentials for an API request:
 ```ruby
 transaction = Transaction.new('YOUR_API_LOGIN_ID', 'YOUR_TRANSACTION_KEY', :gateway => :sandbox)
 ```
 
-You should never include your Login ID and Transaction Key directly in a file that's in a publically accessible portion of your website. A better practice would be to define these in a constants file, and then reference those constants in the appropriate place in your code.
+Never include your API Login ID and Transaction Key directly in a file in a publically accessible portion of your website. As a best practice, define the API Login ID and Transaction Key in a constants file, and then reference those constants in your code.
 
 #### Setting OAuth credentials
-Access Tokens can be setup using the transaction instantiation without the constructor. For example, in the method above:
+Access Tokens can be set up using the transaction instantiation without the constructor. For example, in the method above:
 ```ruby
 transaction = Transaction.new
 transaction.access_token = 'testTokenValue'
@@ -68,37 +68,35 @@ transaction.options_OAuth = {:gateway => :sandbox, :verify_ssl => true}
 ```  
 
 ### Switching between the sandbox environment and the production environment
-Authorize.Net maintains a complete sandbox environment for testing and development purposes. This sandbox environment is an exact duplicate of our production environment with the transaction authorization and settlement process simulated. By default, this SDK is configured to communicate with the sandbox environment. To switch to the production environment, replace the environment constant in the transaction instantiation.  For example:
+Authorize.Net maintains a complete sandbox environment for testing and development purposes. The sandbox environment is an exact duplicate of our production environment, with simulated transaction authorization and settlement. By default, this SDK is configured to use the sandbox environment. To switch to the production environment, replace the environment constant in the transaction instantiation.  For example:
 ```ruby
 # For PRODUCTION use
 transaction = Transaction.new('YOUR_API_LOGIN_ID', 'YOUR_TRANSACTION_KEY', :gateway => :production)
 ```
-
 API credentials are different for each environment, so be sure to switch to the appropriate credentials when switching environments.
 
-
 ## SDK Usage Examples and Sample Code
-To get started using this SDK, it's highly recommended to download our sample code repository:
+When using this SDK, downloading the Authorize.Net sample code repository is recommended.
 * [Authorize.Net Ruby Sample Code Repository (on GitHub)](https://github.com/AuthorizeNet/sample-code-ruby)
 
-In that respository, we have comprehensive sample code for all common uses of our API:
+The respository contains comprehensive sample code for common uses of the Authorize.Net API.
 
-Additionally, you can find details and examples of how our API is structured in our API Reference Guide:
+The API Reference contains details and examples of the structure and formatting of the Authorize.Net API.
 * [Developer Center API Reference](http://developer.authorize.net/api/reference/index.html)
 
-The API Reference Guide provides examples of what information is needed for a particular request and how that information would be formatted. Using those examples, you can easily determine what methods would be necessary to include that information in a request using this SDK.
+Use the examples in the API Reference to determine which methods and information to include in an API request using this SDK.
 
 ## Create a Chase Pay Transaction
 
 Use this method to authorize and capture a payment using a tokenized credit card number issued by Chase Pay. Chase Pay transactions are only available to merchants using the Paymentech processor.
 
 The following information is required in the request:
-- The **payment token**,
-- The **expiration date**,
-- The **cryptogram** received from the token provider,
-- The **tokenRequestorName**,
-- The **tokenRequestorId**, and
-- The **tokenRequestorEci**.
+- **payment token**
+- **expiration date**
+- **cryptogram** received from the token provider
+- **tokenRequestorName**
+- **tokenRequestorId**
+- **tokenRequestorEci**
 
 When using the SDK to submit Chase Pay transactions, consider the following points:
 - `tokenRequesterName` must be populated with **`”CHASE_PAY”`**
@@ -109,7 +107,7 @@ When using the SDK to submit Chase Pay transactions, consider the following poin
 ## Building & Testing the SDK
 
 ### Running the SDK Tests
-To run the integration tests (hitting the sandbox):
+To run the integration tests in the sandbox:
 ```
 rake spec
 ```
@@ -118,42 +116,41 @@ To run the unit tests:
 rake spec:ci
 ```
 
-To get spec/reporting_spec.rb to pass, go to https://sandbox.authorize.net/ under Account tab->Transaction Details API and enable it.
-
-To run rspec tests, create a spec/credentials.yml with the following keys and the values obtained as described below.
+To run rspec tests, create a spec/credentials.yml with the following credentials and the values obtained as described below.
 ```ruby
 #obtain an API login_id and transaction_id according to instructions at https://developer.authorize.net/faqs/#gettranskey
 api_login_id: {login_id_value}
 api_transaction_key: {transaction_key_value}
-#obtained md5 hash value by first setting the hash value in https://sandbox.authorize.net/ under the Account tab->MD5 Hash
-md5_value: {md5_value}
 ```
 
 ### Testing Guide
-For additional help in testing your own code, Authorize.Net maintains a [comprehensive testing guide](http://developer.authorize.net/hello_world/testing_guide/) that includes test credit card numbers to use and special triggers to generate certain responses from the sandbox environment.
+For additional help in testing your code, Authorize.Net maintains a [comprehensive testing guide](http://developer.authorize.net/hello_world/testing_guide/) that includes test credit card numbers to use and special triggers to generate certain responses from the sandbox environment.
 
 ## Logging Sensitive Data
-A new sensitive data logger has been introduced with the Authorize.Net Ruby Sdk. To use it in your code, create a file called `LogConfig.yml` and place it in the base folder of your application. The logger configuration should contain the following lines:
+A new sensitive data logger has been introduced with the Authorize.Net Ruby SDK. To use it in your code, create a file called `LogConfig.yml` and place it in the base folder of your application. The logger configuration should contain the following lines:
 ```
 loglevel: info
 filepath: <file_path>
 maskSensitiveData: true
 ```
-The logger code uses the default Ruby `Logger` library. So there is no need to install any external libraries for the purpose of logging. All the above three fields in the LogConfig.yml file are mandatory. The logging levels available are `debug, info, warn` and `error`.
+The logger code uses the default Ruby `Logger` library. There is no need to install external libraries for the purpose of logging. The above three fields in the LogConfig.yml file are mandatory. The logging levels available are `debug, info, warn` and `error`.
 
-The value for `maskSensitiveData` can either be **true** or **false**. Setting the `maskSensitiveData` flag to **true** masks the sensitive data in the request XML body while logging to the log file. You can turn off logging by removing the configuration file from your application folder. 
+The value for `maskSensitiveData` can either be `true` or `false`. Setting the `maskSensitiveData` flag to `true` masks the sensitive data in the request XML body while logging to the log file. You can turn off logging by removing the configuration file from your application folder. 
 
-The list of sensitive fields which will be masked during logging are
-* Card Number, 
-* Card Code, 
-* Expiration Date, 
-* Name on Account, 
-* Transaction Key and 
-* Account Number. 
+The sensitive fields that are masked during logging are:
+* Card Number
+* Card Code
+* Expiration Date
+* Transaction Key
+* Account Number
+* Name on Account
 
 There is also a list of regular expressions which the sensitive logger uses to mask credit card numbers while logging. 
 
-Further information on the sensitive data logging and regular expressions can be found at this [location](https://github.com/AuthorizeNet/sdk-ruby/blob/master/lib/authorize_net/api/SensitiveDataFilter.rb).
+More information on the regular espressions used during sensitive data logging [can be found here](https://github.com/AuthorizeNet/sdk-ruby/blob/master/lib/authorize_net/api/SensitiveDataFilter.rb).
+
+### Transaction Hash Upgrade
+Authorize.Net is phasing out the MD5 based `transHash` element in favor of the SHA-512 based `transHashSHA2`. The setting in the Merchant Interface which controlled the MD5 Hash option is no longer available, and the `transHash` element will stop returning values at a later date to be determined. For information on how to use `transHashSHA2`, see the [Transaction Hash Upgrade Guide](https://developer.authorize.net/support/hash_upgrade/).
 
 ## License
 This repository is distributed under a proprietary license. See the provided [`LICENSE.txt`](/LICENSE.txt) file.
