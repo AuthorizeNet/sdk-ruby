@@ -8,6 +8,7 @@ module AuthorizeNet
     module Gateway
       LIVE = 'https://api2.authorize.net/xml/v1/request.api'.freeze
       TEST = 'https://apitest.authorize.net/xml/v1/request.api'.freeze
+      
     end
 
     # Constants for both the various Authorize.Net transaction types are defined here.
@@ -38,6 +39,7 @@ module AuthorizeNet
       REPORT_GET_TRANSACTION_LIST = "getTransactionListRequest".freeze
       REPORT_GET_UNSETTLED_TRANSACTION_LIST = "getUnsettledTransactionListRequest".freeze
       REPORT_GET_TRANSACTION_DETAILS = "getTransactionDetailsRequest".freeze
+      REPORT_GET_AUJOB_DETAILS = "getAUJobDetailsRequest".freeze
     end
 
     # Fields to convert to/from booleans.
