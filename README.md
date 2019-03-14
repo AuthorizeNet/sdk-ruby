@@ -50,14 +50,14 @@ If you don't currently have a production Authorize.Net account, [sign up for a s
 ### Authentication
 To authenticate with the Authorize.Net API, use your account's API Login ID and Transaction Key. If you don't have these credentials, obtain them from the Merchant Interface.  For production accounts, the Merchant Interface is located at (https://account.authorize.net/), and for sandbox accounts, at (https://sandbox.authorize.net).
 
-After you have your credentials, load them into the appropriate variables in your code. The below sample code shows how to set the credentials as part of the API request.
+After you have obtained your credentials, load them into the appropriate variables in your code. The below sample code shows how to set the credentials as part of the API request.
 
 #### To set your API credentials for an API request:
 ```ruby
 transaction = Transaction.new('YOUR_API_LOGIN_ID', 'YOUR_TRANSACTION_KEY', :gateway => :sandbox)
 ```
 
-Never include your API Login ID and Transaction Key directly in a file in a publically accessible portion of your website. As a best practice, define the API Login ID and Transaction Key in a constants file, and then reference those constants in your code.
+Never include your API Login ID and Transaction Key directly in a file in a publicly accessible portion of your website. As a best practice, define the API Login ID and Transaction Key in a constants file, and reference those constants in your code.
 
 #### Setting OAuth credentials
 Access Tokens can be set up using the transaction instantiation without the constructor. For example, in the method above:
@@ -68,7 +68,7 @@ transaction.options_OAuth = {:gateway => :sandbox, :verify_ssl => true}
 ```  
 
 ### Switching between the sandbox environment and the production environment
-Authorize.Net maintains a complete sandbox environment for testing and development purposes. The sandbox environment is an exact duplicate of our production environment, with simulated transaction authorization and settlement. By default, this SDK is configured to use the sandbox environment. To switch to the production environment, replace the environment constant in the transaction instantiation.  For example:
+Authorize.Net maintains a complete sandbox environment for testing and development purposes. The sandbox environment is an exact replica of our production environment, with simulated transaction authorization and settlement. By default, this SDK is configured to use the sandbox environment. To switch to the production environment, replace the environment constant in the transaction instantiation.  For example:
 ```ruby
 # For PRODUCTION use
 transaction = Transaction.new('YOUR_API_LOGIN_ID', 'YOUR_TRANSACTION_KEY', :gateway => :production)
@@ -79,7 +79,7 @@ API credentials are different for each environment, so be sure to switch to the 
 When using this SDK, downloading the Authorize.Net sample code repository is recommended.
 * [Authorize.Net Ruby Sample Code Repository (on GitHub)](https://github.com/AuthorizeNet/sample-code-ruby)
 
-The respository contains comprehensive sample code for common uses of the Authorize.Net API.
+The repository contains comprehensive sample code for common uses of the Authorize.Net API.
 
 The API Reference contains details and examples of the structure and formatting of the Authorize.Net API.
 * [Developer Center API Reference](http://developer.authorize.net/api/reference/index.html)
@@ -147,7 +147,7 @@ The sensitive fields that are masked during logging are:
 
 There is also a list of regular expressions which the sensitive logger uses to mask credit card numbers while logging. 
 
-More information on the regular espressions used during sensitive data logging [can be found here](https://github.com/AuthorizeNet/sdk-ruby/blob/master/lib/authorize_net/api/SensitiveDataFilter.rb).
+More information on the regular expressions used during sensitive data logging [can be found here](https://github.com/AuthorizeNet/sdk-ruby/blob/master/lib/authorize_net/api/SensitiveDataFilter.rb).
 
 ### Transaction Hash Upgrade
 Authorize.Net is phasing out the MD5 based `transHash` element in favor of the SHA-512 based `transHashSHA2`. The setting in the Merchant Interface which controlled the MD5 Hash option is no longer available, and the `transHash` element will stop returning values at a later date to be determined. For information on how to use `transHashSHA2`, see the [Transaction Hash Upgrade Guide](https://developer.authorize.net/support/hash_upgrade/).
