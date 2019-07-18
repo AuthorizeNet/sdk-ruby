@@ -3462,7 +3462,7 @@ end
     xml_accessor :refId
     xml_accessor :transId
     xml_accessor :customer, as: CustomerProfileBaseType
-    xml_accessor :customerProfileId, as: NumericStringsType
+    xml_accessor :customerProfileId
     xml_accessor :defaultPaymentProfile
     xml_accessor :defaultShippingAddress
     xml_accessor :profileType
