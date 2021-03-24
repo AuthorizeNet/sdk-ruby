@@ -1598,7 +1598,7 @@ end
     def initialize(originalNetworkTransId = nil, originalAuthAmount = nil, reason = nil)
       @originalNetworkTransId = originalNetworkTransId
       @reason = reason
-          
+      @originalAuthAmount = originalAuthAmount
     end
   end
 
