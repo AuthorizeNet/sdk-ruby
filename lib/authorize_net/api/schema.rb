@@ -1191,12 +1191,79 @@ end
     end
   end
 
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}profileTransAmountType
+  #   amount - SOAP::SOAPDecimal
+  #   tax - ExtendedAmountType
+  #   shipping - ExtendedAmountType
+  #   duty - ExtendedAmountType
+  #   lineItems - LineItemType
+  class ProfileTransAmountType
+    include ROXML
+    xml_accessor :amount
+    xml_accessor :tax
+    xml_accessor :shipping
+    xml_accessor :duty
+    xml_accessor :lineItems
+
+    def initialize(amount = nil, tax = nil, shipping = nil, duty = nil, lineItems = [])
+      @amount = amount
+      @tax = tax
+      @shipping = shipping
+      @duty = duty
+      @lineItems = lineItems
+    end
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}merchantInitTransReasonEnum
+  class MerchantInitTransReasonEnum < ::String
+    resubmission = MerchantInitTransReasonEnum.new("resubmission")
+    delayedCharge = MerchantInitTransReasonEnum.new("delayedCharge")
+    reauthorization = MerchantInitTransReasonEnum.new("reauthorization")
+    noShow = MerchantInitTransReasonEnum.new("noShow")
+  end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}extendedAmountType
+  #   amount - SOAP::SOAPDecimal
+  #   name - SOAP::SOAPString
+  #   description - SOAP::SOAPString
+  class ExtendedAmountType
+    include ROXML
+    xml_accessor :amount, as: BigDecimal
+    xml_accessor :name
+    xml_accessor :description
+
+    def initialize(amount = nil, name = nil, description = nil)
+      @amount = amount
+      @name = name
+      @description = description
+    end
+  end
+
+  #{AnetApi/xml/v1/schema/AnetApiSchema.xsd}subsequentAuthInformation
+  #     originalNetworkTransId - SOAP::SOAPString
+  #     originalAuthAmount - SOAP::SOAPDecimal
+  #     reason - MerchantInitTransReasonEnum 
+  class SubsequentAuthInformation
+    include ROXML
+    xml_accessor :originalNetworkTransId
+	xml_accessor :originalAuthAmount
+    xml_accessor :reason #, as: MerchantInitTransReasonEnum 
+    
+    def initialize(originalNetworkTransId = nil, originalAuthAmount = nil, reason = nil)
+      @originalNetworkTransId = originalNetworkTransId
+      @reason = reason
+      @originalAuthAmount = originalAuthAmount
+    end
+  end
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerPaymentProfileType
   #   customerType - CustomerTypeEnum
   #   billTo - CustomerAddressType
   #   payment - PaymentType
   #   driversLicense - DriversLicenseType
   #   taxId - SOAP::SOAPString
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
+  #   subsequentAuthInformation - SubsequentAuthInformation
   class CustomerPaymentProfileType
     include ROXML
     xml_accessor :customerType
@@ -1407,23 +1474,7 @@ end
       @profileType = profileType
     end
   end
-
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}extendedAmountType
-  #   amount - SOAP::SOAPDecimal
-  #   name - SOAP::SOAPString
-  #   description - SOAP::SOAPString
-  class ExtendedAmountType
-    include ROXML
-    xml_accessor :amount, as: BigDecimal
-    xml_accessor :name
-    xml_accessor :description
-
-    def initialize(amount = nil, name = nil, description = nil)
-      @amount = amount
-      @name = name
-      @description = description
-    end
-  end
+  
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}lineItemType
   #   itemId - SOAP::SOAPString
@@ -1522,37 +1573,6 @@ end
     end
   end
 
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}profileTransAmountType
-  #   amount - SOAP::SOAPDecimal
-  #   tax - ExtendedAmountType
-  #   shipping - ExtendedAmountType
-  #   duty - ExtendedAmountType
-  #   lineItems - LineItemType
-  class ProfileTransAmountType
-    include ROXML
-    xml_accessor :amount
-    xml_accessor :tax
-    xml_accessor :shipping
-    xml_accessor :duty
-    xml_accessor :lineItems
-
-    def initialize(amount = nil, tax = nil, shipping = nil, duty = nil, lineItems = [])
-      @amount = amount
-      @tax = tax
-      @shipping = shipping
-      @duty = duty
-      @lineItems = lineItems
-    end
-  end
-
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}merchantInitTransReasonEnum
-  class MerchantInitTransReasonEnum < ::String
-    resubmission = MerchantInitTransReasonEnum.new("resubmission")
-    delayedCharge = MerchantInitTransReasonEnum.new("delayedCharge")
-    reauthorization = MerchantInitTransReasonEnum.new("reauthorization")
-    noShow = MerchantInitTransReasonEnum.new("noShow")
-  end
-
   #{AnetApi/xml/v1/schema/AnetApiSchema.xsd}processingOptions
   #     isFirstRecurringPayment - SOAP::SOAPBoolean
   #     isFirstSubsequentAuth - SOAP::SOAPBoolean
@@ -1582,23 +1602,6 @@ end
     
     def initialize(authorizationIndicator = nil)
       @authorizationIndicator = authorizationIndicator
-    end
-  end
-
-  #{AnetApi/xml/v1/schema/AnetApiSchema.xsd}subsequentAuthInformation
-  #     originalNetworkTransId - SOAP::SOAPString
-  #     originalAuthAmount - SOAP::SOAPDecimal
-  #     reason - MerchantInitTransReasonEnum 
-  class SubsequentAuthInformation
-    include ROXML
-    xml_accessor :originalNetworkTransId
-	xml_accessor :originalAuthAmount
-    xml_accessor :reason #, as: MerchantInitTransReasonEnum 
-    
-    def initialize(originalNetworkTransId = nil, originalAuthAmount = nil, reason = nil)
-      @originalNetworkTransId = originalNetworkTransId
-      @reason = reason
-      @originalAuthAmount = originalAuthAmount
     end
   end
 
