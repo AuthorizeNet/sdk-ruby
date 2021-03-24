@@ -1604,7 +1604,7 @@ end
   #     authorizationIndicator - AuthIndicatorEnum
   class AuthorizationIndicatorType
     include ROXML
-    xml_accessor :authorizationIndicator, as: AuthIndicatorEnum
+    xml_accessor :authorizationIndicator #, as: AuthIndicatorEnum
     
     def initialize(authorizationIndicator = nil)
       @authorizationIndicator = authorizationIndicator
