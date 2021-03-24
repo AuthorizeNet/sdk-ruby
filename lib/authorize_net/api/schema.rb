@@ -1593,6 +1593,12 @@ end
             
     end
   end
+
+  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}authIndicatorEnum
+  class AuthIndicatorEnum < ::String
+    Pre = AuthIndicatorEnum.new("pre")
+    Final = AuthIndicatorEnum.new("final")
+  end
   
   #{AnetApi/xml/v1/schema/AnetApiSchema.xsd}authorizationIndicatorType
   #     authorizationIndicator - AuthIndicatorEnum
@@ -2933,12 +2939,6 @@ end
     BusinessChecking = BankAccountTypeEnum.new("businessChecking")
     Checking = BankAccountTypeEnum.new("checking")
     Savings = BankAccountTypeEnum.new("savings")
-  end
-
-  # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}authIndicatorEnum
-  class AuthIndicatorEnum < ::String
-    Pre = AuthIndicatorEnum.new("pre")
-    Final = AuthIndicatorEnum.new("final")
   end
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}echeckTypeEnum
