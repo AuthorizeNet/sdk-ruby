@@ -24,7 +24,7 @@ matrix:
         # - gemfile: gemfiles/rails_42.gemfile
     include:
         - rvm: 3.0
-          env: REXML_VERSION=3.2.*
+          env: REXML_VERSION=3.2.0
     
 before_script:
   - echo "$REXML_VERSION"
