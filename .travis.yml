@@ -4,31 +4,24 @@ sudo:
     false
 
 rvm:
-  # RETIRING
-  # - 2.2
-  # - 2.3
-  # - 2.4
-  # - 2.5
-  # - 2.6
-  # - 2.7
+  # RETIRING 2.2 and 2.3
+  - 2.4
+  - 2.5
+  - 2.6
+  - 2.7
   - 3.0
 
 gemfile:
-  # - gemfiles/rails_42.gemfile
-  # - gemfiles/rails_50.gemfile
-  # - gemfiles/rails_51.gemfile
+  - gemfiles/rails_42.gemfile
+  - gemfiles/rails_50.gemfile
+  - gemfiles/rails_51.gemfile
   - gemfiles/rails_52.gemfile
 
-# matrix:
-    # allow_failures:
-        # - gemfile: gemfiles/rails_42.gemfile
-    # include:
-        # - rvm: 3.0
-          # env: REXML_VERSION=3.2.0
+matrix:
+    allow_failures:
+        - gemfile: gemfiles/rails_42.gemfile
     
 before_script:
-  # - echo "$REXML_VERSION"
-  # - if [[ "$REXML_VERSION" != "" ]]; then gem install rexml -v "$REXML_VERSION"; fi
   - git submodule update --remote --recursive
 
 script:
