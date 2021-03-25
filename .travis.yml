@@ -22,9 +22,14 @@ gemfile:
 matrix:
     allow_failures:
     - gemfile: gemfiles/rails_42.gemfile
+    include:
+    - rvm: 3.0
+      env: REXML_VERSION=3.2.*
     
 before_script:
   - git submodule update --remote --recursive
+  - echo "$REXML_VERSION"
+  - if [[ "$REXML_VERSION" != "" ]]; then gem install rexml -v "$REXML_VERSION"; fi
 
 script:
    - bundle exec rake spec:testrunner
