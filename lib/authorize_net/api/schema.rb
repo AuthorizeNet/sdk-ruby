@@ -1291,6 +1291,8 @@ end
   #   payment - PaymentType
   #   driversLicense - DriversLicenseType
   #   taxId - SOAP::SOAPString
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
+  #   subsequentAuthInformation - SubsequentAuthInformation
   #   customerPaymentProfileId - (any)
   class CustomerPaymentProfileExType
     include ROXML
@@ -1299,14 +1301,18 @@ end
     xml_accessor :payment, as: PaymentType
     xml_accessor :driversLicense, as: DriversLicenseType
     xml_accessor :taxId
+    xml_accessor :defaultPaymentProfile
+    xml_accessor :subsequentAuthInformation, as: SubsequentAuthInformation
     xml_accessor :customerPaymentProfileId
 
-    def initialize(customerType = nil, billTo = nil, payment = nil, driversLicense = nil, taxId = nil, customerPaymentProfileId = nil)
+    def initialize(customerType = nil, billTo = nil, payment = nil, driversLicense = nil, taxId = nil, defaultPaymentProfile = nil, subsequentAuthInformation = nil, customerPaymentProfileId = nil)
       @customerType = customerType
       @billTo = billTo
       @payment = payment
       @driversLicense = driversLicense
       @taxId = taxId
+      @defaultPaymentProfile = defaultPaymentProfile
+      @subsequentAuthInformation = subsequentAuthInformation
       @customerPaymentProfileId = customerPaymentProfileId
     end
   end
