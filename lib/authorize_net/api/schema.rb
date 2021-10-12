@@ -1272,7 +1272,7 @@ end
     xml_accessor :driversLicense, as: DriversLicenseType
     xml_accessor :taxId
     xml_accessor :defaultPaymentProfile
-	xml_accessor :subsequentAuthInformation, as: SubsequentAuthInformation
+	  xml_accessor :subsequentAuthInformation, as: SubsequentAuthInformation
 
     def initialize(customerType = nil, billTo = nil, payment = nil, driversLicense = nil, taxId = nil, defaultPaymentProfile = nil, subsequentAuthInformation = nil)
       @customerType = customerType
@@ -1281,7 +1281,7 @@ end
       @driversLicense = driversLicense
       @taxId = taxId
       @defaultPaymentProfile = defaultPaymentProfile
-	  @subsequentAuthInformation = subsequentAuthInformation
+	    @subsequentAuthInformation = subsequentAuthInformation
     end
   end
 
@@ -1333,6 +1333,7 @@ end
   #   billTo - CustomerAddressType
   #   customerProfileId - (any)
   #   customerPaymentProfileId - (any)
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
   #   payment - PaymentMaskedType
   #   driversLicense - DriversLicenseMaskedType
   #   taxId - SOAP::SOAPString
@@ -1348,8 +1349,8 @@ end
     xml_accessor :driversLicense, as: DriversLicenseMaskedType
     xml_accessor :taxId
     xml_accessor :subscriptionIds, as: SubscriptionIdList
-	xml_accessor :originalNetworkTransId
-	xml_accessor :originalAuthAmount
+	  xml_accessor :originalNetworkTransId
+	  xml_accessor :originalAuthAmount
 
     def initialize(customerType = nil, billTo = nil, customerProfileId = nil, customerPaymentProfileId = nil, payment = nil, driversLicense = nil, taxId = nil, subscriptionIds = nil, defaultPaymentProfile = nil, originalNetworkTransId = nil, originalAuthAmount = nil)
       @customerType = customerType
@@ -1361,8 +1362,8 @@ end
       @taxId = taxId
       @subscriptionIds = subscriptionIds
       @defaultPaymentProfile = defaultPaymentProfile
-	  @originalAuthAmount = originalAuthAmount
-	  @originalNetworkTransId = originalNetworkTransId
+	    @originalAuthAmount = originalAuthAmount
+	    @originalNetworkTransId = originalNetworkTransId
     end
   end
 
@@ -3463,6 +3464,7 @@ end
   #   refId - SOAP::SOAPString
   #   customerProfileId - (any)
   #   address - CustomerAddressType
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   class CreateCustomerShippingAddressRequest
     include ROXML
     xml_accessor :merchantAuthentication
@@ -3509,6 +3511,8 @@ end
   #   transId - (any)
   #   customer - CustomerProfileBaseType
   #   customerProfileId - NumericStringsType
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   #   profileType - CustomerProfileTypeEnum
   class CreateCustomerProfileFromTransactionRequest
     include ROXML
@@ -3653,6 +3657,7 @@ end
   #   refId - SOAP::SOAPString
   #   messages - MessagesType
   #   sessionToken - SOAP::SOAPString
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   #   address - CustomerAddressExType
   #   subscriptionIds - SubscriptionIdList
   class GetCustomerShippingAddressResponse
@@ -3756,6 +3761,7 @@ end
   #   refId - SOAP::SOAPString
   #   customerProfileId - (any)
   #   address - CustomerAddressExType
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   class UpdateCustomerShippingAddressRequest
     include ROXML
     xml_accessor :merchantAuthentication
@@ -4787,6 +4793,7 @@ end
   end
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerPaymentProfileListItemType
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
   #   customerPaymentProfileId - SOAP::SOAPInt
   #   customerProfileId - SOAP::SOAPInt
   #   billTo - CustomerAddressType
@@ -4800,8 +4807,8 @@ end
     xml_accessor :customerProfileId
     xml_accessor :billTo, as: CustomerAddressType
     xml_accessor :payment, as: PaymentMaskedType
-	xml_accessor :originalNetworkTransId
-	xml_accessor :originalAuthAmount
+	  xml_accessor :originalNetworkTransId
+	  xml_accessor :originalAuthAmount
 	
 
     def initialize(customerPaymentProfileId = nil, customerProfileId = nil, billTo = nil, payment = nil, defaultPaymentProfile = nil, originalNetworkTransId = nil, originalAuthAmount = nil)
@@ -4810,8 +4817,8 @@ end
       @billTo = billTo
       @payment = payment
       @defaultPaymentProfile = defaultPaymentProfile
-	  @originalNetworkTransId = originalNetworkTransId
-	  @originalAuthAmount = originalAuthAmount
+	    @originalNetworkTransId = originalNetworkTransId
+	    @originalAuthAmount = originalAuthAmount
     end
   end
 
