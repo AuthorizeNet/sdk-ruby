@@ -1,0 +1,57 @@
+name: Authorize.net Ruby CI
+on:
+    push:
+    pull_request:
+    workflow_dispatch:
+env:
+    sdk_ruby: 'sdk-ruby'
+    sample_code_ruby: 'sample-code-ruby'
+jobs:
+    workflow-job:
+        defaults:
+            run:
+                shell: bash
+        strategy:
+            fail-fast: false
+            matrix:
+                operating-system: [ubuntu-latest, macos-latest, windows-latest]
+                ruby-version: ['2.4', '2.5', '2.6', '2.7', '3.0', '3.1', '3.2', '3.3']
+        runs-on: ${{matrix.operating-system}}
+        env:
+            API_LOGIN_ID: 5KP3u95bQpv
+            API_TRANSACTION_KEY: 346HZ32z3fP4hTG2
+            MD5_VALUE: 'MD5_TEST'
+        steps:
+            - name: Creating separate folders for SDK and Sample Codes
+              run: |
+                rm -rf $sdk_ruby
+                rm -rf $sample_code_ruby
+                mkdir $sdk_ruby $sample_code_ruby
+
+            - name: Checkout authorizenet/sdk-ruby
+              uses: actions/checkout@v4
+              with:
+                  path: ${{env.sdk_ruby}}
+
+
+            - name: Checkout authorizenet/sample-code-ruby
+              uses: actions/checkout@v4
+              with:
+                repository: 'authorizenet/sample-code-ruby'
+                ref: 'future' # Remove this line before pushing to master branch
+                path: ${{env.sample_code_ruby}}
+
+
+            - name: Install ruby
+              uses: ruby/setup-ruby@v1
+              with:
+                ruby-version: ${{matrix.ruby-version}}
+
+
+            - name: Install and Test
+              run: |
+                bundle exec rake spec
+
+                bundle install
+                rake gem
+                bundle exec rspec spec/sample_code_spec.rb
