@@ -543,7 +543,7 @@ describe Transaction do
     @api_login, @api_key = '5KP3u95bQpv', '346HZ32z3fP4hTG2' # FIXME: this spec added in #72 depends on a hard coded test account.
     transaction = AuthorizeNet::API::Transaction.new(@api_login, @api_key, gateway: @gateway)
 
-    batchId = "4551107"
+    batchId = "15181378"
 
     @getTransactionListRequest = GetTransactionListRequest.new
     @getTransactionListRequest.batchId = batchId

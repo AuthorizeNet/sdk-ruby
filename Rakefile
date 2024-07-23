@@ -9,45 +9,9 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
 end
 
 namespace "spec" do
-  desc "Run the CIM spec"
-  RSpec::Core::RakeTask.new('cim') do |spec|
-    spec.pattern = FileList['spec/cim_spec.rb']
-    spec.rspec_opts = ['--options', 'spec/spec.opts']
-  end
-
-  desc "Run the ARB spec"
-  RSpec::Core::RakeTask.new('arb') do |spec|
-    spec.pattern = FileList['spec/arb_spec.rb']
-    spec.rspec_opts = ['--options', 'spec/spec.opts']
-  end
-
-  desc "Run the AIM spec"
-  RSpec::Core::RakeTask.new('aim') do |spec|
-    spec.pattern = FileList['spec/aim_spec.rb']
-    spec.rspec_opts = ['--options', 'spec/spec.opts']
-  end
-
   desc "Run the API spec"
   RSpec::Core::RakeTask.new('api') do |spec|
     spec.pattern = FileList['spec/api_spec.rb']
-    spec.rspec_opts = ['--options', 'spec/spec.opts']
-  end
-
-  desc "Run the CI Unit Test spec"
-  RSpec::Core::RakeTask.new('ci') do |spec|
-    spec.pattern = FileList['spec/authorize_net_spec.rb']
-    spec.rspec_opts = ['--options', 'spec/spec.opts']
-  end
-
-  desc "Run the SIM spec"
-  RSpec::Core::RakeTask.new('sim') do |spec|
-    spec.pattern = FileList['spec/sim_spec.rb']
-    spec.rspec_opts = ['--options', 'spec/spec.opts']
-  end
-
-  desc "Run the Reporting spec"
-  RSpec::Core::RakeTask.new('reporting') do |spec|
-    spec.pattern = FileList['spec/reporting_spec.rb']
     spec.rspec_opts = ['--options', 'spec/spec.opts']
   end
 
