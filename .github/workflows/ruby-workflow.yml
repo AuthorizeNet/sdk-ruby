@@ -50,8 +50,13 @@ jobs:
 
             - name: Install and Test
               run: |
-                bundle exec rake spec
-
+                cd $sdk_ruby
                 bundle install
                 rake gem
+                PACKAGE_VERSION=$(gem spec authorizenet-2.0.1.gem version | grep -Po '(?<=^version: )(([0-9]+).([0-9]+).([0-9]+)*)$')
+                bundle exec rake spec
+
+                cd ../$sample-code-ruby
+                bundle install
+                gem install ../$sdk_ruby/authorizenet-$PACKAGE_VERSION.gem
                 bundle exec rspec spec/sample_code_spec.rb
