@@ -16,6 +16,16 @@ jobs:
             matrix:
                 operating-system: [ubuntu-latest, macos-latest, windows-latest]
                 ruby-version: ['2.4', '2.5', '2.6', '2.7', '3.0', '3.1', '3.2', '3.3']
+                exclude:
+                  - operating-system: macos-latest
+                    ruby-version: '2.4'
+                  - operating-system: macos-latest
+                    ruby-version: '2.5'
+                include:
+                  - operating-system: macos-13
+                    ruby-version: '2.4'
+                  - operating-system: macos-13
+                    ruby-version: '2.5'
         runs-on: ${{matrix.operating-system}}
         env:
             API_LOGIN_ID: 5KP3u95bQpv
@@ -53,10 +63,10 @@ jobs:
                 cd $sdk_ruby
                 bundle install
                 rake gem
-                PACKAGE_VERSION=$(cat authorizenet.gemspec | grep -Po '(?<=s.version = \")(([0-9]+).([0-9]+).([0-9]+)*)')
+                PACKAGE_VERSION=$(cat authorizenet.gemspec | grep -w s.version | cut -d '"' -f 2)
                 bundle exec rake spec
 
                 cd ../$sample_code_ruby
-                bundle install
                 gem install ../$sdk_ruby/authorizenet-$PACKAGE_VERSION.gem
+                bundle install
                 bundle exec rspec spec/sample_code_spec.rb
