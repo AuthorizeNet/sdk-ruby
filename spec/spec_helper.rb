@@ -6,6 +6,7 @@
 
 require "authorizenet"
 require "yaml"
+require "active_support"
 
 ActiveSupport::Deprecation.behavior = lambda do |msg, stack|
   # when running this test suite ignore our own deprecation warnings
