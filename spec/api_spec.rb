@@ -1,4 +1,5 @@
 require "spec_helper"
+require "active_support"
 include  AuthorizeNet::API
 
 describe Transaction do
