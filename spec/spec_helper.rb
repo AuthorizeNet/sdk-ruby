@@ -8,12 +8,12 @@ require "authorizenet"
 require "yaml"
 require "active_support"
 
-ActiveSupport::Deprecation.behavior = lambda do |msg, stack|
-  # when running this test suite ignore our own deprecation warnings
-  unless /use AuthorizeNet::API::Transaction/ =~ msg
-    ActiveSupport::Deprecation::DEFAULT_BEHAVIORS[:stderr].call(msg, stack, ActiveSupport::Deprecation.new)
-  end
-end
+# ActiveSupport::Deprecation.behavior = lambda do |msg, stack|
+#   # when running this test suite ignore our own deprecation warnings
+#   unless /use AuthorizeNet::API::Transaction/ =~ msg
+#     ActiveSupport::Deprecation::DEFAULT_BEHAVIORS[:stderr].call(msg, stack, ActiveSupport::Deprecation.new)
+#   end
+# end
 
 Dir['./spec/support/**/*.rb'].each { |f| require f }
 
