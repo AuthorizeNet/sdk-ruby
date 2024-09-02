@@ -3680,7 +3680,7 @@ end
     include ROXML
     xml_accessor :merchantAuthentication
     xml_accessor :refId
-    xml_accessor :profile, as: CustomerProfileExType
+    xml_accessor :profile, as: CustomerProfileInfoExType
 
     def initialize(merchantAuthentication = nil, refId = nil, profile = nil)
       @merchantAuthentication = merchantAuthentication
