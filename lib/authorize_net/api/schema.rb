@@ -1293,6 +1293,8 @@ end
   #   payment - PaymentType
   #   driversLicense - DriversLicenseType
   #   taxId - SOAP::SOAPString
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
+  #   subsequentAuthInformation - SubsequentAuthInformation
   #   customerPaymentProfileId - (any)
   class CustomerPaymentProfileExType
     include ROXML
@@ -1301,14 +1303,18 @@ end
     xml_accessor :payment, as: PaymentType
     xml_accessor :driversLicense, as: DriversLicenseType
     xml_accessor :taxId
+    xml_accessor :defaultPaymentProfile
+    xml_accessor :subsequentAuthInformation, as: SubsequentAuthInformation
     xml_accessor :customerPaymentProfileId
 
-    def initialize(customerType = nil, billTo = nil, payment = nil, driversLicense = nil, taxId = nil, customerPaymentProfileId = nil)
+    def initialize(customerType = nil, billTo = nil, payment = nil, driversLicense = nil, taxId = nil, defaultPaymentProfile = nil, subsequentAuthInformation = nil, customerPaymentProfileId = nil)
       @customerType = customerType
       @billTo = billTo
       @payment = payment
       @driversLicense = driversLicense
       @taxId = taxId
+      @defaultPaymentProfile = defaultPaymentProfile
+      @subsequentAuthInformation = subsequentAuthInformation
       @customerPaymentProfileId = customerPaymentProfileId
     end
   end
@@ -1329,6 +1335,7 @@ end
   #   billTo - CustomerAddressType
   #   customerProfileId - (any)
   #   customerPaymentProfileId - (any)
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
   #   payment - PaymentMaskedType
   #   driversLicense - DriversLicenseMaskedType
   #   taxId - SOAP::SOAPString
@@ -3461,6 +3468,7 @@ end
   #   refId - SOAP::SOAPString
   #   customerProfileId - (any)
   #   address - CustomerAddressType
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   class CreateCustomerShippingAddressRequest
     include ROXML
     xml_accessor :merchantAuthentication
@@ -3506,7 +3514,9 @@ end
   #   refId - SOAP::SOAPString
   #   transId - (any)
   #   customer - CustomerProfileBaseType
-  #   customerProfileId - NumericStringsType
+  #   customerProfileId - (any)
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   #   profileType - CustomerProfileTypeEnum
   class CreateCustomerProfileFromTransactionRequest
     include ROXML
@@ -3514,7 +3524,7 @@ end
     xml_accessor :refId
     xml_accessor :transId
     xml_accessor :customer, as: CustomerProfileBaseType
-    xml_accessor :customerProfileId, as: NumericStringsType
+    xml_accessor :customerProfileId # This should NOT be NumericStringsType because NumericStringsType is an array type, not the base type.
     xml_accessor :defaultPaymentProfile
     xml_accessor :defaultShippingAddress
     xml_accessor :profileType
@@ -3651,6 +3661,7 @@ end
   #   refId - SOAP::SOAPString
   #   messages - MessagesType
   #   sessionToken - SOAP::SOAPString
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   #   address - CustomerAddressExType
   #   subscriptionIds - SubscriptionIdList
   class GetCustomerShippingAddressResponse
@@ -3754,6 +3765,7 @@ end
   #   refId - SOAP::SOAPString
   #   customerProfileId - (any)
   #   address - CustomerAddressExType
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   class UpdateCustomerShippingAddressRequest
     include ROXML
     xml_accessor :merchantAuthentication
@@ -4785,6 +4797,7 @@ end
   end
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerPaymentProfileListItemType
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
   #   customerPaymentProfileId - SOAP::SOAPInt
   #   customerProfileId - SOAP::SOAPInt
   #   billTo - CustomerAddressType
