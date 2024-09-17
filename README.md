@@ -1,12 +1,13 @@
 ﻿# Authorize.Net Ruby SDK
 
+[![Authorize.net Ruby CI](https://github.com/AuthorizeNet/sdk-ruby/actions/workflows/ruby-workflow.yml/badge.svg?branch=master)](https://github.com/AuthorizeNet/sdk-ruby/actions/workflows/ruby-workflow.yml)
 [![Version         ][rubygems_badge]][rubygems]
 
 Starting Release 1.8.6 November 2015 the Authorize.Net API has been [reorganized to be more merchant focused](https://developer.authorize.net/api/upgrade_guide/).
 AIM, ARB, CIM, Reporting and SIM have all been deprecated in favor of sdk-ruby/lib/authorize_net/api.
 
 ## Requirements
-* Ruby 2.2.2 or higher
+* Ruby 2.4 or higher
 * RubyGem 1.3.7 or higher (to build the gem)
 * RDoc 1.0 or higher (to build documentation)
 * Rake 0.8.7 or higher (to use the rake tasks)
@@ -36,7 +37,7 @@ The Authorize.Net API only support connections using the TLS 1.2 security protoc
 ```
   > bundle install
   > rake gem
-  > sudo gem install ./authorizenet-1.9.3.gem
+  > sudo gem install ./authorizenet-<version>.gem
 ```
 
 

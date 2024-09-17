@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "authorizenet"
-  s.version = "2.0.1"
+  s.version = "2.0.2"
   s.platform = Gem::Platform::RUBY
   s.date = "2021-03-31"
   s.summary = "Authorize.Net Payments SDK"
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.license = "https://github.com/AuthorizeNet/sdk-ruby/blob/master/LICENSE.txt"
 
   s.required_ruby_version     = '>= 2.4.0'
-  s.required_rubygems_version = '>= 1.3.6'
+  s.required_rubygems_version = '>= 1.3.7'
 
   s.add_runtime_dependency 'activesupport', '>= 5.2.4.5'
   s.add_runtime_dependency 'nokogiri', '~> 1.6', '>= 1.6.4'
