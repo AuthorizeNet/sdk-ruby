@@ -57,7 +57,7 @@ module AuthorizeNet::API
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfPermissionType
   class ArrayOfPermissionType < ::Array
   end
-  
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfContactDetail
   class ArrayOfContactDetail < ::Array
   end
@@ -244,14 +244,14 @@ module AuthorizeNet::API
     include ROXML
     xml_accessor :email
     xml_accessor :firstName
-    xml_accessor :lastName    
+    xml_accessor :lastName
     def initialize(email = nil, firstName = nil, lastName = nil)
       @email = email
       @firstName = firstName
       @lastName = lastName
     end
   end
-  
+
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}transRetailInfoType
   #   marketType - SOAP::SOAPString
   #   deviceType - SOAP::SOAPString
@@ -757,7 +757,7 @@ end
       @amexDataTAA2 = amexDataTAA2
       @amexDataTAA3 = amexDataTAA3
       @amexDataTAA4 = amexDataTAA4
-      
+
     end
   end
 
@@ -1242,13 +1242,13 @@ end
   #{AnetApi/xml/v1/schema/AnetApiSchema.xsd}subsequentAuthInformation
   #     originalNetworkTransId - SOAP::SOAPString
   #     originalAuthAmount - SOAP::SOAPDecimal
-  #     reason - MerchantInitTransReasonEnum 
+  #     reason - MerchantInitTransReasonEnum
   class SubsequentAuthInformation
     include ROXML
     xml_accessor :originalNetworkTransId
-	xml_accessor :originalAuthAmount
-    xml_accessor :reason #, as: MerchantInitTransReasonEnum 
-    
+    xml_accessor :originalAuthAmount
+    xml_accessor :reason #, as: MerchantInitTransReasonEnum
+
     def initialize(originalNetworkTransId = nil, originalAuthAmount = nil, reason = nil)
       @originalNetworkTransId = originalNetworkTransId
       @reason = reason
@@ -1272,16 +1272,18 @@ end
     xml_accessor :driversLicense, as: DriversLicenseType
     xml_accessor :taxId
     xml_accessor :defaultPaymentProfile
-	xml_accessor :subsequentAuthInformation, as: SubsequentAuthInformation
+    xml_accessor :subsequentAuthInformation, as: SubsequentAuthInformation
+    xml_accessor :excludeFromAccountUpdater
 
-    def initialize(customerType = nil, billTo = nil, payment = nil, driversLicense = nil, taxId = nil, defaultPaymentProfile = nil, subsequentAuthInformation = nil)
+    def initialize(customerType = nil, billTo = nil, payment = nil, driversLicense = nil, taxId = nil, defaultPaymentProfile = nil, subsequentAuthInformation = nil, excludeFromAccountUpdater = nil)
       @customerType = customerType
       @billTo = billTo
       @payment = payment
       @driversLicense = driversLicense
       @taxId = taxId
       @defaultPaymentProfile = defaultPaymentProfile
-	  @subsequentAuthInformation = subsequentAuthInformation
+      @subsequentAuthInformation = subsequentAuthInformation
+      @excludeFromAccountUpdater = excludeFromAccountUpdater
     end
   end
 
@@ -1291,6 +1293,8 @@ end
   #   payment - PaymentType
   #   driversLicense - DriversLicenseType
   #   taxId - SOAP::SOAPString
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
+  #   subsequentAuthInformation - SubsequentAuthInformation
   #   customerPaymentProfileId - (any)
   class CustomerPaymentProfileExType
     include ROXML
@@ -1299,14 +1303,18 @@ end
     xml_accessor :payment, as: PaymentType
     xml_accessor :driversLicense, as: DriversLicenseType
     xml_accessor :taxId
+    xml_accessor :defaultPaymentProfile
+    xml_accessor :subsequentAuthInformation, as: SubsequentAuthInformation
     xml_accessor :customerPaymentProfileId
 
-    def initialize(customerType = nil, billTo = nil, payment = nil, driversLicense = nil, taxId = nil, customerPaymentProfileId = nil)
+    def initialize(customerType = nil, billTo = nil, payment = nil, driversLicense = nil, taxId = nil, defaultPaymentProfile = nil, subsequentAuthInformation = nil, customerPaymentProfileId = nil)
       @customerType = customerType
       @billTo = billTo
       @payment = payment
       @driversLicense = driversLicense
       @taxId = taxId
+      @defaultPaymentProfile = defaultPaymentProfile
+      @subsequentAuthInformation = subsequentAuthInformation
       @customerPaymentProfileId = customerPaymentProfileId
     end
   end
@@ -1327,6 +1335,7 @@ end
   #   billTo - CustomerAddressType
   #   customerProfileId - (any)
   #   customerPaymentProfileId - (any)
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
   #   payment - PaymentMaskedType
   #   driversLicense - DriversLicenseMaskedType
   #   taxId - SOAP::SOAPString
@@ -1342,10 +1351,11 @@ end
     xml_accessor :driversLicense, as: DriversLicenseMaskedType
     xml_accessor :taxId
     xml_accessor :subscriptionIds, as: SubscriptionIdList
-	xml_accessor :originalNetworkTransId
-	xml_accessor :originalAuthAmount
+    xml_accessor :originalNetworkTransId
+    xml_accessor :originalAuthAmount
+    xml_accessor :excludeFromAccountUpdater
 
-    def initialize(customerType = nil, billTo = nil, customerProfileId = nil, customerPaymentProfileId = nil, payment = nil, driversLicense = nil, taxId = nil, subscriptionIds = nil, defaultPaymentProfile = nil, originalNetworkTransId = nil, originalAuthAmount = nil)
+    def initialize(customerType = nil, billTo = nil, customerProfileId = nil, customerPaymentProfileId = nil, payment = nil, driversLicense = nil, taxId = nil, subscriptionIds = nil, defaultPaymentProfile = nil, originalNetworkTransId = nil, originalAuthAmount = nil, excludeFromAccountUpdater = nil)
       @customerType = customerType
       @billTo = billTo
       @customerProfileId = customerProfileId
@@ -1355,8 +1365,9 @@ end
       @taxId = taxId
       @subscriptionIds = subscriptionIds
       @defaultPaymentProfile = defaultPaymentProfile
-	  @originalAuthAmount = originalAuthAmount
-	  @originalNetworkTransId = originalNetworkTransId
+      @originalAuthAmount = originalAuthAmount
+      @originalNetworkTransId = originalNetworkTransId
+      @excludeFromAccountUpdater = excludeFromAccountUpdater
     end
   end
 
@@ -1474,7 +1485,7 @@ end
       @profileType = profileType
     end
   end
-  
+
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}lineItemType
   #   itemId - SOAP::SOAPString
@@ -1531,7 +1542,7 @@ end
     xml_accessor :discountAmount, as: BigDecimal
     xml_accessor :taxIncludedInTotal
     xml_accessor :taxIsAfterDiscount
-    
+
     def initialize(itemId = nil, name = nil, description = nil, quantity = nil, unitPrice = nil, taxable = nil, unitOfMeasure = nil,typeOfSupply = nil, taxRate = nil, taxAmount = nil, nationalTax = nil, localTax = nil, vatRate = nil, alternateTaxId = nil, alternateTaxType = nil, alternateTaxTypeApplied = nil, alternateTaxRate = nil, alternateTaxAmount = nil, totalAmount = nil, commodityCode = nil, productCode = nil, productSKU = nil, discountRate = nil, discountAmount = nil, taxIncludedInTotal = nil, taxIsAfterDiscount = nil)
       @itemId = itemId
       @name = name
@@ -1559,7 +1570,7 @@ end
       @discountAmount = discountAmount
       @taxIncludedInTotal = taxIncludedInTotal
       @taxIsAfterDiscount = taxIsAfterDiscount
-      
+
     end
   end
 
@@ -1577,20 +1588,20 @@ end
   #     isFirstRecurringPayment - SOAP::SOAPBoolean
   #     isFirstSubsequentAuth - SOAP::SOAPBoolean
   #     isSubsequentAuth - SOAP::SOAPBoolean
-  #     isStoredCredentials - SOAP::SOAPBoolean 
+  #     isStoredCredentials - SOAP::SOAPBoolean
   class ProcessingOptions
     include ROXML
     xml_accessor :isFirstRecurringPayment
     xml_accessor :isFirstSubsequentAuth
     xml_accessor :isSubsequentAuth
     xml_accessor :isStoredCredentials
-    
+
     def initialize(isFirstRecurringPayment = nil, isFirstSubsequentAuth = nil, isSubsequentAuth = nil, isStoredCredentials = nil)
       @isFirstRecurringPayment = isFirstRecurringPayment
       @isFirstSubsequentAuth = isFirstSubsequentAuth
       @isSubsequentAuth = isSubsequentAuth
       @isStoredCredentials = isStoredCredentials
-            
+
     end
   end
 
@@ -1599,13 +1610,13 @@ end
     Pre = AuthIndicatorEnum.new("pre")
     Final = AuthIndicatorEnum.new("final")
   end
-  
+
   #{AnetApi/xml/v1/schema/AnetApiSchema.xsd}authorizationIndicatorType
   #     authorizationIndicator - AuthIndicatorEnum
   class AuthorizationIndicatorType
     include ROXML
     xml_accessor :authorizationIndicator #, as: AuthIndicatorEnum
-    
+
     def initialize(authorizationIndicator = nil)
       @authorizationIndicator = authorizationIndicator
     end
@@ -1644,7 +1655,7 @@ end
     xml_accessor :splitTenderId
     xml_accessor :processingOptions
     xml_accessor :subsequentAuthInformation
-	xml_accessor :authorizationIndicatorType
+    xml_accessor :authorizationIndicatorType
 
     def initialize(amount = nil, tax = nil, shipping = nil, duty = nil, lineItems = [], customerProfileId = nil, customerPaymentProfileId = nil, customerShippingAddressId = nil, order = nil, taxExempt = nil, recurringBilling = nil, cardCode = nil, splitTenderId = nil, processingOptions = nil, subsequentAuthInformation = nil, authorizationIndicatorType = nil)
       @amount = amount
@@ -1662,7 +1673,7 @@ end
       @splitTenderId = splitTenderId
       @processingOptions = processingOptions
       @subsequentAuthInformation = subsequentAuthInformation
-	  @authorizationIndicatorType = authorizationIndicatorType
+      @authorizationIndicatorType = authorizationIndicatorType
     end
   end
 
@@ -2219,7 +2230,7 @@ end
   #     nationalTaxAmount - SOAP::SOAPDecimal
   #     localTaxAmount - SOAP::SOAPDecimal
   #     alternateTaxAmount - SOAP::SOAPDecimal
-  #     alternateTaxId - SOAP::SOAPString 
+  #     alternateTaxId - SOAP::SOAPString
   #     vatTaxRate - SOAP::SOAPDecimal
   #     vatTaxAmount - SOAP::SOAPDecimal
   class OtherTaxType
@@ -2356,7 +2367,7 @@ end
     xml_accessor :surcharge, as: ExtendedAmountType
     xml_accessor :employeeId
     xml_accessor :tip, as: ExtendedAmountType
-    xml_accessor :otherTax, as: OtherTaxType 
+    xml_accessor :otherTax, as: OtherTaxType
     xml_accessor :shipFrom, as: NameAndAddressType
     xml_accessor :networkTransId
     xml_accessor :originalNetworkTransId
@@ -2653,7 +2664,7 @@ end
     xml_accessor :emvResponse, as: EmvResponse
     xml_accessor :transHashSha2
     xml_accessor :profile, as: CustomerProfileIdType
-    xml_accessor :networkTransId 
+    xml_accessor :networkTransId
 
     def initialize(responseCode = nil, rawResponseCode = nil, authCode = nil, avsResultCode = nil, cvvResultCode = nil, cavvResultCode = nil, transId = nil, refTransID = nil, transHash = nil, testRequest = nil, accountNumber = nil, accountType = nil, splitTenderId = nil, prePaidCard = nil, messages = nil, errors = nil, splitTenderPayments = nil, userFields = nil, shipTo = nil, secureAcceptance = nil, emvResponse = nil, transHashSha2 = nil, profile = nil,networkTransId = nil)
       @responseCode = responseCode
@@ -3119,8 +3130,8 @@ end
     TestRequest = SettingNameEnum.new("testRequest")
     TypeEmailReceipt = SettingNameEnum.new("typeEmailReceipt")
     HostedProfilePaymentOptions = SettingNameEnum.new("hostedProfilePaymentOptions")
-	HostedProfileSaveButtonText = SettingNameEnum.new("hostedProfileSaveButtonText")
-	HostedPaymentVisaCheckoutOptions = SettingNameEnum.new("hostedPaymentVisaCheckoutOptions")
+    HostedProfileSaveButtonText = SettingNameEnum.new("hostedProfileSaveButtonText")
+    HostedPaymentVisaCheckoutOptions = SettingNameEnum.new("hostedPaymentVisaCheckoutOptions")
   end
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ARBGetSubscriptionListSearchTypeEnum
@@ -3457,6 +3468,7 @@ end
   #   refId - SOAP::SOAPString
   #   customerProfileId - (any)
   #   address - CustomerAddressType
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   class CreateCustomerShippingAddressRequest
     include ROXML
     xml_accessor :merchantAuthentication
@@ -3502,7 +3514,9 @@ end
   #   refId - SOAP::SOAPString
   #   transId - (any)
   #   customer - CustomerProfileBaseType
-  #   customerProfileId - NumericStringsType
+  #   customerProfileId - (any)
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   #   profileType - CustomerProfileTypeEnum
   class CreateCustomerProfileFromTransactionRequest
     include ROXML
@@ -3510,7 +3524,7 @@ end
     xml_accessor :refId
     xml_accessor :transId
     xml_accessor :customer, as: CustomerProfileBaseType
-    xml_accessor :customerProfileId, as: NumericStringsType
+    xml_accessor :customerProfileId # This should NOT be NumericStringsType because NumericStringsType is an array type, not the base type.
     xml_accessor :defaultPaymentProfile
     xml_accessor :defaultShippingAddress
     xml_accessor :profileType
@@ -3647,6 +3661,7 @@ end
   #   refId - SOAP::SOAPString
   #   messages - MessagesType
   #   sessionToken - SOAP::SOAPString
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   #   address - CustomerAddressExType
   #   subscriptionIds - SubscriptionIdList
   class GetCustomerShippingAddressResponse
@@ -3676,7 +3691,7 @@ end
     include ROXML
     xml_accessor :merchantAuthentication
     xml_accessor :refId
-    xml_accessor :profile, as: CustomerProfileExType
+    xml_accessor :profile, as: CustomerProfileInfoExType
 
     def initialize(merchantAuthentication = nil, refId = nil, profile = nil)
       @merchantAuthentication = merchantAuthentication
@@ -3750,6 +3765,7 @@ end
   #   refId - SOAP::SOAPString
   #   customerProfileId - (any)
   #   address - CustomerAddressExType
+  #   defaultShippingAddress - SOAP::SOAPBoolean
   class UpdateCustomerShippingAddressRequest
     include ROXML
     xml_accessor :merchantAuthentication
@@ -4699,7 +4715,7 @@ end
     xml_accessor :subsequentAuthInformation, as: SubsequentAuthInformation
     xml_accessor :otherTax, as: OtherTaxType
     xml_accessor :shipFrom, as: NameAndAddressType
-	xml_accessor :authorizationIndicatorType, as: AuthorizationIndicatorType
+    xml_accessor :authorizationIndicatorType, as: AuthorizationIndicatorType
 
     def initialize(transactionType = nil, amount = nil, currencyCode = nil, payment = nil, profile = nil, solution = nil, callId = nil, authCode = nil, refTransId = nil, splitTenderId = nil, order = nil, lineItems = nil, tax = nil, duty = nil, shipping = nil, taxExempt = nil, poNumber = nil, customer = nil, billTo = nil, shipTo = nil, customerIP = nil, cardholderAuthentication = nil, retail = nil, transactionSettings = nil, userFields = nil, surcharge = nil, merchantDescriptor = nil, subMerchant = nil, tip = nil, employeeId = nil, processingOptions = nil, subsequentAuthInformation= nil, otherTax = nil, shipFrom = nil, authorizationIndicatorType = nil)
       @transactionType = transactionType
@@ -4736,7 +4752,7 @@ end
       @subsequentAuthInformation= subsequentAuthInformation
       @otherTax = otherTax
       @shipFrom = shipFrom
-	  @authorizationIndicatorType = authorizationIndicatorType
+      @authorizationIndicatorType = authorizationIndicatorType
     end
   end
 
@@ -4781,6 +4797,7 @@ end
   end
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}customerPaymentProfileListItemType
+  #   defaultPaymentProfile - SOAP::SOAPBoolean
   #   customerPaymentProfileId - SOAP::SOAPInt
   #   customerProfileId - SOAP::SOAPInt
   #   billTo - CustomerAddressType
@@ -4794,18 +4811,20 @@ end
     xml_accessor :customerProfileId
     xml_accessor :billTo, as: CustomerAddressType
     xml_accessor :payment, as: PaymentMaskedType
-	xml_accessor :originalNetworkTransId
-	xml_accessor :originalAuthAmount
-	
+    xml_accessor :originalNetworkTransId
+    xml_accessor :originalAuthAmount
+    xml_accessor :excludeFromAccountUpdater
 
-    def initialize(customerPaymentProfileId = nil, customerProfileId = nil, billTo = nil, payment = nil, defaultPaymentProfile = nil, originalNetworkTransId = nil, originalAuthAmount = nil)
+
+    def initialize(customerPaymentProfileId = nil, customerProfileId = nil, billTo = nil, payment = nil, defaultPaymentProfile = nil, originalNetworkTransId = nil, originalAuthAmount = nil, excludeFromAccountUpdater = nil)
       @customerPaymentProfileId = customerPaymentProfileId
       @customerProfileId = customerProfileId
       @billTo = billTo
       @payment = payment
       @defaultPaymentProfile = defaultPaymentProfile
-	  @originalNetworkTransId = originalNetworkTransId
-	  @originalAuthAmount = originalAuthAmount
+      @originalNetworkTransId = originalNetworkTransId
+      @originalAuthAmount = originalAuthAmount
+      @excludeFromAccountUpdater = excludeFromAccountUpdater
     end
   end
 
@@ -5269,7 +5288,7 @@ end
     VisaCheckout = PaymentMethodsTypeEnum.new("VisaCheckout")
     ApplePay = PaymentMethodsTypeEnum.new("ApplePay")
     AndroidPay = PaymentMethodsTypeEnum.new("AndroidPay")
-	GooglePay = PaymentMethodsTypeEnum.new("GooglePay")
+    GooglePay = PaymentMethodsTypeEnum.new("GooglePay")
   end
 
   # {AnetApi/xml/v1/schema/AnetApiSchema.xsd}ArrayOfPaymentMethod

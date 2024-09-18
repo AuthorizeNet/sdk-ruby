@@ -1,15 +1,13 @@
 ﻿# Authorize.Net Ruby SDK
 
+[![Authorize.net Ruby CI](https://github.com/AuthorizeNet/sdk-ruby/actions/workflows/ruby-workflow.yml/badge.svg?branch=master)](https://github.com/AuthorizeNet/sdk-ruby/actions/workflows/ruby-workflow.yml)
 [![Version         ][rubygems_badge]][rubygems]
-[![Travis CI       ][travis_badge]][travis]
-[![Coverage        ][coverage_badge]][coverage]
-[![Scrutinizer     ][scrutinizer_badge]][scrutinizer]
 
 Starting Release 1.8.6 November 2015 the Authorize.Net API has been [reorganized to be more merchant focused](https://developer.authorize.net/api/upgrade_guide/).
 AIM, ARB, CIM, Reporting and SIM have all been deprecated in favor of sdk-ruby/lib/authorize_net/api.
 
 ## Requirements
-* Ruby 2.2.2 or higher
+* Ruby 2.4 or higher
 * RubyGem 1.3.7 or higher (to build the gem)
 * RDoc 1.0 or higher (to build documentation)
 * Rake 0.8.7 or higher (to use the rake tasks)
@@ -39,7 +37,7 @@ The Authorize.Net API only support connections using the TLS 1.2 security protoc
 ```
   > bundle install
   > rake gem
-  > sudo gem install ./authorizenet-1.9.3.gem
+  > sudo gem install ./authorizenet-<version>.gem
 ```
 
 
@@ -111,10 +109,6 @@ To run the integration tests in the sandbox:
 ```
 rake spec
 ```
-To run the unit tests:
-```
-rake spec:ci
-```
 
 To run rspec tests, create a spec/credentials.yml with the following credentials and the values obtained as described below.
 ```ruby
@@ -157,9 +151,3 @@ This repository is distributed under a proprietary license. See the provided [`L
 
 [rubygems_badge]: https://badge.fury.io/rb/authorizenet.svg
 [rubygems]: https://rubygems.org/gems/authorizenet
-[travis_badge]: https://travis-ci.org/AuthorizeNet/sdk-ruby.svg?branch=master
-[travis]: https://travis-ci.org/AuthorizeNet/sdk-ruby
-[coverage_badge]: https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/badges/coverage.png?b=master
-[coverage]: https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/?branch=master
-[scrutinizer_badge]: https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/badges/quality-score.png?b=master
-[scrutinizer]: https://scrutinizer-ci.com/g/AuthorizeNet/sdk-ruby/?branch=master
