@@ -9,8 +9,9 @@ module AuthorizeNet
       unless connection_failure?
         begin
           xml = Nokogiri::XML(@raw_response.body) do |config|
-            # confirm noent is the right flag
-            config.recover.noent.nonet
+            # Security: Do NOT use .noent - it enables entity substitution which allows XXE attacks.
+            # Predefined XML entities (&amp;, &lt;, etc.) are decoded by default without .noent.
+            config.recover.nonet
           end
           @root = xml.children[0]
           @result_code = node_content_unless_nil(@root.at_css('messages resultCode'))
