@@ -19,7 +19,11 @@ class SensitiveDataConfigType
 		      SensitiveTag.new("expirationDate", "", "XXX", false),
 		      SensitiveTag.new("accountNumber", "(\\p{N}+)(\\p{N}{4})", "XXXX-\\2", false),
 		      SensitiveTag.new("nameOnAccount", "", "XXX", false),
-		      SensitiveTag.new("transactionKey", "", "XXX", false)]).freeze
+		      SensitiveTag.new("transactionKey", "", "XXX", false),
+		      SensitiveTag.new("accessToken", "", "XXX", false),
+		      SensitiveTag.new("connectedAccessToken", "", "XXX", false),
+		      SensitiveTag.new("sessionToken", "", "XXX", false),
+		      SensitiveTag.new("token", "", "XXX", false)]).freeze
 	@sensitiveStringRegexes = ["4\\p{N}{3}([\\ \\-]?)\\p{N}{4}\\1\\p{N}{4}\\1\\p{N}{4}",
 			          "4\\p{N}{3}([\\ \\-]?)(?:\\p{N}{4}\\1){2}\\p{N}(?:\\p{N}{3})?",
             			  "5[1-5]\\p{N}{2}([\\ \\-]?)\\p{N}{4}\\1\\p{N}{4}\\1\\p{N}{4}",
@@ -33,26 +37,24 @@ class SensitiveDataFilter < Logger::Formatter
         @@sensitiveTagConfig = nil
 	@@tagPatterns = nil
 	@@tagReplacements = nil
+	@@tagValuePatterns = nil
 	@@cardPatterns = nil
 
         def initialize
 	    @@sensitiveTagConfig = SensitiveDataConfigType.new
 	    @@cardPatterns       = @@sensitiveTagConfig.sensitiveStringRegexes
-            @@tagPatterns        = Array.new(@@sensitiveTagConfig.sensitiveStringRegexes.length)
+	    @@tagPatterns        = Array.new(@@sensitiveTagConfig.sensitiveTags.length)
 	    @@tagReplacements    = Array.new(@@sensitiveTagConfig.sensitiveTags.length)
+	    @@tagValuePatterns   = Array.new(@@sensitiveTagConfig.sensitiveTags.length)
 
 	    @@sensitiveTagConfig.sensitiveTags.each_with_index do |sensitiveTag, index|
 	    tagName = sensitiveTag.tagName
 	    replacement = sensitiveTag.replacement
+	    contentPattern = sensitiveTag.pattern
 
-		    if sensitiveTag.pattern.nil? || sensitiveTag.pattern.empty?
-	  	       pattern = "(.*)"
-		    else
-		       pattern = sensitiveTag.pattern
-		    end
-
-	    @@tagPatterns[index] = "<"+tagName+">"+pattern+"</"+tagName+">"
-	    @@tagReplacements[index] = "<"+tagName+">"+replacement+"</"+tagName+">"
+	    @@tagPatterns[index] = Regexp.new("(<(?:\\w+:)?#{Regexp.escape(tagName)}\\b[^>]*>)(.*?)(</(?:\\w+:)?#{Regexp.escape(tagName)}\\s*>)", Regexp::IGNORECASE | Regexp::MULTILINE)
+	    @@tagReplacements[index] = replacement
+	    @@tagValuePatterns[index] = contentPattern
 	    end
         end
 
@@ -72,8 +74,24 @@ class SensitiveDataFilter < Logger::Formatter
 
 	def maskSensitiveXmlString(input)
 	    input = input.force_encoding("UTF-8")
-            @@tagPatterns.each_with_index do |item, index| 
-		 input = input.gsub(/#{item}/,@@tagReplacements[index])
+            # Structurally mask the whole merchantAuthentication element to avoid leaking credentials by tag miss.
+	    input = input.gsub(/(<(?:\w+:)?merchantAuthentication\b[^>]*>)(.*?)(<\/(?:\w+:)?merchantAuthentication\s*>)/im, "\\1XXX\\3")
+
+            @@tagPatterns.each_with_index do |item, index|
+		 replacement = @@tagReplacements[index]
+		 valuePattern = @@tagValuePatterns[index]
+		 input = input.gsub(item) do
+		  openTag = $1
+		  value = $2
+		  closeTag = $3
+
+		  if valuePattern.nil? || valuePattern.empty?
+		    "#{openTag}#{replacement}#{closeTag}"
+		  else
+		    maskedValue = value.gsub(/#{valuePattern}/, replacement)
+		    "#{openTag}#{maskedValue}#{closeTag}"
+		  end
+		 end
             end
             return input
 	end

@@ -559,6 +559,45 @@ describe Transaction do
     expect(response.transactions).not_to eq nil
   end
 
+  it "should mask sensitive token elements in request XML" do
+    filter = SensitiveDataFilter.new
+    xml = "<merchantAuthentication xmlns=\"AnetApi/xml/v1/schema/AnetApiSchema.xsd\"><accessToken>oauth-access-token</accessToken><connectedAccessToken>request-connected-token</connectedAccessToken><sessionToken>request-session-token</sessionToken><token>request-hosted-page-token</token><name>merchant-login</name></merchantAuthentication><ns:accessToken xmlns:ns=\"urn:test\" attr=\"1\">request-extra-access-token</ns:accessToken><sessionToken type=\"bearer\">request-extra-session-token</sessionToken><token source=\"hosted\">request-extra-token</token><connectedAccessToken source=\"oauth\">request-extra-connected-token</connectedAccessToken>"
+
+    masked = filter.maskSensitiveXmlString(xml)
+
+    expect(masked).to include("<merchantAuthentication xmlns=\"AnetApi/xml/v1/schema/AnetApiSchema.xsd\">XXX</merchantAuthentication>")
+    expect(masked).to include("<ns:accessToken xmlns:ns=\"urn:test\" attr=\"1\">XXX</ns:accessToken>")
+    expect(masked).to include("<sessionToken type=\"bearer\">XXX</sessionToken>")
+    expect(masked).to include("<token source=\"hosted\">XXX</token>")
+    expect(masked).to include("<connectedAccessToken source=\"oauth\">XXX</connectedAccessToken>")
+    expect(masked).not_to include("oauth-access-token")
+    expect(masked).not_to include("request-connected-token")
+    expect(masked).not_to include("request-session-token")
+    expect(masked).not_to include("request-hosted-page-token")
+    expect(masked).not_to include("request-extra-access-token")
+    expect(masked).not_to include("request-extra-session-token")
+    expect(masked).not_to include("request-extra-token")
+    expect(masked).not_to include("request-extra-connected-token")
+  end
+
+  it "should mask sensitive token elements in response XML" do
+    filter = SensitiveDataFilter.new
+    xml = "<getHostedPaymentPageResponse><accessToken>response-access-token</accessToken><connectedAccessToken>response-connected-token</connectedAccessToken><sessionToken>response-session-token</sessionToken><token>response-hosted-page-token</token><ns:token xmlns:ns=\"urn:test\" attr=\"2\">response-hosted-page-token-ns</ns:token></getHostedPaymentPageResponse>"
+
+    masked = filter.maskSensitiveXmlString(xml)
+
+    expect(masked).to include("<accessToken>XXX</accessToken>")
+    expect(masked).to include("<connectedAccessToken>XXX</connectedAccessToken>")
+    expect(masked).to include("<token>XXX</token>")
+    expect(masked).to include("<sessionToken>XXX</sessionToken>")
+    expect(masked).to include("<ns:token xmlns:ns=\"urn:test\" attr=\"2\">XXX</ns:token>")
+    expect(masked).not_to include("response-access-token")
+    expect(masked).not_to include("response-connected-token")
+    expect(masked).not_to include("response-session-token")
+    expect(masked).not_to include("response-hosted-page-token")
+    expect(masked).not_to include("response-hosted-page-token-ns")
+  end
+
   def get_actual(expected, className, topElement)
     xmlText = @transaction.serialize(expected, topElement)
     className.from_xml(xmlText)
