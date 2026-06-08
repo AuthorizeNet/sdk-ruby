@@ -79,7 +79,7 @@ class SensitiveDataFilter < Logger::Formatter
 	end
 
 	def formatLogEntry(severity, time, progname, msg)
-              constants = YAML.load_file(File.dirname(__FILE__) + "/constants.yml")
+              constants = YAML.safe_load_file(File.dirname(__FILE__) + "/constants.yml")
 	      progname = constants['clientId']
               date_format = time.strftime("%Y-%m-%d %H:%M:%S")
 	      if severity == "INFO" or severity == "WARN"

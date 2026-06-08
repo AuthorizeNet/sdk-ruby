@@ -10,7 +10,7 @@ class Log
         begin	
 	    filepath = './LogConfig.yml'
 	    if(File.file?(filepath))
-		cnf = YAML::load(File.open(filepath))
+		cnf = YAML.safe_load(File.open(filepath))
 		if(@@loglevels.include? cnf['loglevel'].downcase)
 			@@shouldLog = true
 			@logger = Logger.new(cnf['filepath'])
@@ -18,7 +18,7 @@ class Log
 			if(cnf['maskSensitiveData'])
 		            @logger.formatter = SensitiveDataFilter.new 
 			else
-      			      constants = YAML.load_file(File.dirname(__FILE__) + "/constants.yml")
+      		      constants = YAML.safe_load_file(File.dirname(__FILE__) + "/constants.yml")
 			      @logger.formatter = proc do |severity, datetime, progname, msg|
 			      progname = constants['clientId']
 		              date_format = datetime.strftime("%Y-%m-%d %H:%M:%S")

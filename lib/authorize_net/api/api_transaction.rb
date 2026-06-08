@@ -85,7 +85,7 @@ module AuthorizeNet::API
     def serialize(object, type)
       doc = Nokogiri::XML::Document.new
       doc.root = object.to_xml
-      constants = YAML.load_file(File.dirname(__FILE__) + "/constants.yml")
+      constants = YAML.safe_load_file(File.dirname(__FILE__) + "/constants.yml")
       clientId = constants['clientId']
 
       builder = Nokogiri::XML::Builder.new(encoding: 'utf-8') do |x|
